@@ -107,7 +107,7 @@ public class PropostaScambio {
 	
 	@Override
 	public String toString() {
-		return String.format("Richiesta: " + richiesta.toString() + " -> " + " Offerta: " + offerta.toString() + " | " + " Sato: " + checkStato());
+		return String.format("Richiesta: " + richiesta.toString() + " -> " + " Offerta: " + offerta.toString() + " | " + " Stato: " + checkStato());
 	}
 
 }

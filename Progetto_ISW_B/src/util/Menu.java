@@ -46,9 +46,9 @@ public class Menu {
 		
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append(CORNICE);
-		sb.append(titolo);
-		sb.append(CORNICE);
+		sb.append(CORNICE + "\n");
+		sb.append(titolo  + "\n");
+		sb.append(CORNICE + "\n");
 		
 		for (int i = 0; i < voci.length; i++) {
 			sb.append((i + 1) + "\t" + voci[i] + "\n");

@@ -24,14 +24,14 @@ import utenti.Fruitore;
  */
 public class GestorePersistenza {
 	
-	private static final String FILE_CONFIGURATORI = "../Progetto_ISW_V4/src/dati/configuratori.json";
-	private static final String FILE_GERARCHIE = "../Progetto_ISW_V4/src/dati/gerarchie.json";
-	private static final String FILE_COMPRENSORI = "../Progetto_ISW_V4/src/dati/comprensori.json";
-	private static final String FILE_FATT_CONVERSIONE = "../Progetto_ISW_V4/src/dati/fattConversione.json";
-	private static final String FILE_CATEGORIEFOGLIA = "../Progetto_ISW_V4/src/dati/categorieFoglia.json";
-	private static final String FILE_FRUITORI = "../Progetto_ISW_V4/src/dati/fruitori.json";
-	private static final String FILE_PROPOSTE = "../Progetto_ISW_V4/src/dati/proposte.json";
-	private static final String FILE_INSIEMI_CHIUSI = "../Progetto_ISW_V4/src/dati/insiemiChiusi.json";
+	private static final String FILE_CONFIGURATORI = "../Progetto_ISW_B/src/dati/configuratori.json";
+	private static final String FILE_GERARCHIE = "../Progetto_ISW_B/src/dati/gerarchie.json";
+	private static final String FILE_COMPRENSORI = "../Progetto_ISW_B/src/dati/comprensori.json";
+	private static final String FILE_FATT_CONVERSIONE = "../Progetto_ISW_B/src/dati/fattConversione.json";
+	private static final String FILE_CATEGORIEFOGLIA = "../Progetto_ISW_B/src/dati/categorieFoglia.json";
+	private static final String FILE_FRUITORI = "../Progetto_ISW_B/src/dati/fruitori.json";
+	private static final String FILE_PROPOSTE = "../Progetto_ISW_B/src/dati/proposte.json";
+	private static final String FILE_INSIEMI_CHIUSI = "../Progetto_ISW_B/src/dati/insiemiChiusi.json";
 	
 	private static final String MSG_ERRORE_SALVATAGGIO = "Errore durante il salvataggio: ";
 	private static final String MSG_FILE_NON_TROVATO = "File non trovato: ";
