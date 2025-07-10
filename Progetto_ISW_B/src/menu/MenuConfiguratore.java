@@ -18,6 +18,7 @@ import applicazione.PropostaScambio;
 import utenti.Configuratore;
 import util.InputDati;
 import util.Menu;
+import vista.VistaConfiguratore;
 
 /**
  * Classe per definite il menu delle funzionalità del configuratore
@@ -29,6 +30,7 @@ public class MenuConfiguratore extends Menu {
 	
 	private Configuratore config;
 	private LogicaPersistenza logica;
+	private VistaConfiguratore vc;
 
 	private final static String titolo = "\tMENU CONFIGURATORE";
 
@@ -75,11 +77,6 @@ public class MenuConfiguratore extends Menu {
 	private static final String MSG_NOME_CATEGORIA_NON_VALIDO = "E' già presente una categoria con questo nome.";
 	private static final String MSG_NESSUN_COMPRENSORIO = "Non è presente nessun comprensorio all'interno del sistema, creane uno prima di creare una gerarchia.";
 
-	/**
-	 * VISUALIZZA COMPRENSORI
-	 */
-	private static final String NESSUN_COMPRENSORIO = "Non è ancora presente nessun comprensorio";
-	
 	/**
 	 * VISUALIZZA GERARCHIE
 	 */
@@ -128,68 +125,99 @@ public class MenuConfiguratore extends Menu {
 		super(titolo, vociConfig);
 		this.config = config;
 		this.logica = logica;
+		this.vc = new VistaConfiguratore();
 	}
 	
 
+	public void mostraComprensori() {
+		vc.visualizzaComprensori(formattaComprensori());
+	}
+	
+	public void mostraGerarchie() {
+		vc.visualizzaGerarchie(formattaGerarchie());
+	}
+	
+	public void mostraFatConv() {
+		vc.visualizzaFatConv(formattaFatConv());
+	}
+	
+	public void mostraProposte() {
+		vc.visualizzaProposte(formattaProposte());
+	}
+	
+	public void mostraInsiemiChiusi() {
+		vc.visualizzaInsiemiChiusi(formattaInsiemiChiusi());
+	}
+	
+	
 	/*
 	 * FUNZIONI DI VISUALIZZAZIONE
 	 */
 
+	private <T> String formatta(ArrayList<T> lista) {
+		
+		StringBuffer sb = new StringBuffer();
+		if(lista.isEmpty()) {
+			return null;
+		} else {
+			for (T e : lista) {
+				sb.append(e.toString());
+			}
+			return sb.toString();
+		}	
+	}
+	
 	/**
 	 * Metodo di visualizzazione dei comprensori geografici.
 	 */
-	public void visualizzaComprensori() {
+	public String formattaComprensori() {
 		ArrayList<Comprensorio> comprensori = logica.getComprensori();
-		if(comprensori.isEmpty()) {
-			System.out.println(NESSUN_COMPRENSORIO);
-		} else {
-			for (Comprensorio c : comprensori) {
-				System.out.println(c.toString());
-			}
-		}	
+		return formatta(comprensori);
 	}
 
 	/**
 	 * Metodo di visualizzazione delle gerarchie.
 	 */
-	public void visualizzaGerarchie() {
+	public String formattaGerarchie() {
 		ArrayList<Gerarchia> gerarchie = logica.getGerarchie();
-		if(gerarchie.isEmpty()) {
-			System.out.println(NESSUNA_GERARCHIA);
-		} else {
-			for (Gerarchia g : gerarchie) {
-				String tree = Gerarchia.generaAlberoStringa(g);
-				System.out.println("\n"+tree);
-			}
-		}
+		return formatta(gerarchie);
 	}
 
 	/**
 	 * Metodo di visualizzazione della matrice dei fattori di conversione.
 	 */
-	public void visualizzaFatConv() {
+	public String formattaFatConv() {
 		FatConversione fdc = logica.getFatConversione();
-		fdc.stampaFDC();
-		visualizzaLegenda();
+		if(fdc == null)
+			return null;
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append(fdc.toString());
+		sb.append(formattaLegenda());
+		
+		return sb.toString();
 	}
 	
 	/**
 	 * Metodo di visualizzazione legenda relativa alle categorie foglia della matrice dei fattori di conversione.
 	 */
-	public void visualizzaLegenda() {
-		ArrayList<CategoriaFoglia> categorieFoglia = logica.getCategorieFoglia();
-		StringBuffer sb = new StringBuffer();
-		sb.append(LEGENDA);
-		for(CategoriaFoglia f : categorieFoglia) {
-			sb.append(String.format("F%d : %s\n", f.getId(), f.getNome()));
-		}
-		System.out.println(sb.toString());
+	private String formattaLegenda() {
+	    StringBuilder sb = new StringBuilder(LEGENDA);
+	    for (CategoriaFoglia f : logica.getCategorieFoglia()) {
+	        sb.append("F")
+	          .append(f.getId())
+	          .append(" : ")
+	          .append(f.getNome())
+	          .append("\n");
+	    }
+	    return sb.toString();
 	}
+
 	
 	/**
 	 * Metodo per visualizzare le proposte relative ad una specifica categoria foglia
 	 */
-	public void visualizzaProposte() {
+	public String formattaProposte() {
 		
 		ArrayList<CategoriaFoglia> categorieFoglia = logica.getCategorieFoglia();
 		ArrayList<PropostaScambio> proposte = logica.getScambi();
@@ -197,8 +225,7 @@ public class MenuConfiguratore extends Menu {
 		int selezionata = selezionaCategoria(categorieFoglia);
 		
 		if(selezionata == categorieFoglia.size()) {
-			System.out.println(MSG_OPERAZIONE_ANNULLATA);
-			return;
+			return MSG_OPERAZIONE_ANNULLATA;
 		}
 			
 		CategoriaFoglia f = categorieFoglia.get(selezionata);
@@ -208,6 +235,7 @@ public class MenuConfiguratore extends Menu {
 		for(PropostaScambio p : proposte) {
 			boolean presenteRichiesta = p.getNomeRichiesta().equals(f.getNome());
 			boolean presenteOfferta = p.getNomeOfferta().equals(f.getNome());
+			
 			if(presenteRichiesta || presenteOfferta) {
 				if(!presenteProposta) {
 					sb.append(MSG_ELENCO_PROPOSTE)
@@ -215,16 +243,20 @@ public class MenuConfiguratore extends Menu {
 						.append(":\n");
 					presenteProposta = true;
 				}
-				sb.append("> ").append(p.toString()).append("\n").append("\t").append(FRUITORE_ASSOCIATO + p.getAssociato().getMail() + "\n");
 				
+				sb.append("> ")
+					.append(p.toString())
+					.append("\n")
+					.append("\t")
+					.append(FRUITORE_ASSOCIATO 
+							+ p.getAssociato().getMail() 
+							+ "\n");
 			}
 		}
-		
 		if(presenteProposta) {
-			System.out.println(sb.toString());
+			return sb.toString();
 		} else {
-			System.out.println(MSG_ASSENZA_PROPOSTE_PER_PRESTAZIONE);
-			return;
+			return MSG_ASSENZA_PROPOSTE_PER_PRESTAZIONE;
 		}
 		
 	}
@@ -232,15 +264,9 @@ public class MenuConfiguratore extends Menu {
 	/**
 	 * Metodo per andare a visualizzare l'insiemi chiusi in modo da poter poi contatare i fruitori associati
 	 */
-	public void visualizzaInsiemiChiusi() {
+	public String formattaInsiemiChiusi() {
 		ArrayList<InsiemeChiuso> insiemi = logica.getInsiemi();
-		StringBuffer sb = new StringBuffer();
-		sb.append(MSG_LISTA_INSIEMI_CHIUSI);
-		for(InsiemeChiuso ic: insiemi) {
-			sb.append(ic.toString());
-		}
-		System.out.println(sb.toString());
-		
+		return formatta(insiemi);
 	}
 	
 	
@@ -253,13 +279,14 @@ public class MenuConfiguratore extends Menu {
 	 * Metodo di salvataggio dei file gson.
 	 */
 	public void salva() {
-		GestorePersistenza.salvaConfiguratori(logica.getConfiguratori());
 		salvaGerarchieEFoglie();
+		GestorePersistenza.salvaConfiguratori(logica.getConfiguratori());
 		GestorePersistenza.salvaComprensori(logica.getComprensori());
 		GestorePersistenza.salvaFruitori(logica.getFruitori());
 		GestorePersistenza.salvaScambi(logica.getScambi());
 		GestorePersistenza.salvaInsiemiChiusi(logica.getInsiemi());
-		System.out.println(MSG_SALVATAGGIO);
+		
+		vc.mostraMessaggio(MSG_SALVATAGGIO);
 	}
 	
 	/**
@@ -282,11 +309,11 @@ public class MenuConfiguratore extends Menu {
 	 * -completa il salvataggio.
 	 */
 	public void creaComprensorio() {
-		System.out.println(MSG_CREAZIONE_COMPRENSORIO);
+		vc.mostraMessaggio(MSG_CREAZIONE_COMPRENSORIO);
 		String nomeComprensorio = InputDati.leggiStringaNonVuota(MSG_NOME_COMPRENSORIO);
 		for (Comprensorio c : logica.getComprensori()) {
 			if (c.getNome().equals(nomeComprensorio)) {
-				System.out.println(MSG_NOME_COMP_NON_VALIDO);
+				vc.mostraErrore(MSG_NOME_COMP_NON_VALIDO);
 				return;
 			}
 		}
@@ -302,18 +329,15 @@ public class MenuConfiguratore extends Menu {
 				comuni.add(comune);
 			}
 		}
-
 		if (comuni.isEmpty()) {
-			System.out.println(MSG_ERRORE_INSERIMENTO_COMUNI);
+			vc.mostraErrore(MSG_ERRORE_INSERIMENTO_COMUNI);
 			return;
 		}
-
 		Comprensorio nuovoComprensorio = new Comprensorio(nomeComprensorio, comuni);
 		logica.addComprensorio(nuovoComprensorio);
-		System.out.println(MSG_SUCCESSO_COMPRENSORIO);
-		
 		GestorePersistenza.salvaComprensori(logica.getComprensori());
-
+		
+		vc.mostraMessaggio(MSG_SUCCESSO_COMPRENSORIO);
 	}
 
 	/**
@@ -323,19 +347,18 @@ public class MenuConfiguratore extends Menu {
 	 * -completa il salvataggio.
 	 */
 	public void creaGerarchia() {
-		System.out.println(MSG_CREAZIONE_GERARCHIA);
+		vc.mostraMessaggio(MSG_CREAZIONE_GERARCHIA);
 		String nomeGerarchia = InputDati.leggiStringaNonVuota(MSG_NOME_GERARCHIA);
 	
 		for(Gerarchia g: logica.getGerarchie()) {
 			if(g.eNomeUguale(nomeGerarchia)) {
-				System.out.println(MSG_NOME_GERARCHIA_NON_VALIDO);
+				vc.mostraErrore(MSG_NOME_GERARCHIA_NON_VALIDO);
 				return;
 			}
 		}
-		
 		Comprensorio comp = null;
 		if(logica.getComprensori().isEmpty()) {
-			System.out.println(MSG_NESSUN_COMPRENSORIO);
+			vc.mostraErrore(MSG_NESSUN_COMPRENSORIO);
 			return;
 		} else {
 			comp = selezionaComprensorio(logica.getComprensori());
@@ -357,13 +380,13 @@ public class MenuConfiguratore extends Menu {
 		int dimensioneDominio = valoriCampo.size();
 		
 		Gerarchia nuovaGerarchia = addGerarchia(nomeGerarchia, comp, nomeCampo, valoriCampo, dimensioneDominio);
-		System.out.println(MSG_INSERISCI_SOTTOCATEG);
+		vc.mostraMessaggio(MSG_INSERISCI_SOTTOCATEG);
 		addSottoCategorie(nuovaGerarchia.getCatRadice());
 		
 		logica.addGerarchia(nuovaGerarchia);
-		System.out.println(MSG_GERARCHIA_CREATA_CON_SUCCESSO);
-		
 		salvaGerarchieEFoglie();
+	
+		vc.mostraMessaggio(MSG_GERARCHIA_CREATA_CON_SUCCESSO);
 	}
 
 	/**
@@ -422,11 +445,12 @@ public class MenuConfiguratore extends Menu {
 	 * @param radice = categoria di aggancio
 	 */
 	private void creaCategoriaNonFoglia(Categoria radice) {
-		System.out.println(MSG_CATEGORIA_NON_FOGLIA);
+		vc.mostraMessaggio(MSG_CATEGORIA_NON_FOGLIA);
+		
 		String nomeCatNonFl = InputDati.leggiStringaNonVuota(MSG_NOME_CATEGORIA);
 		for(Categoria c: radice.getSottoCateg()) {
 			if(c.eUguale(nomeCatNonFl)) {
-				System.out.println(MSG_NOME_CATEGORIA_NON_VALIDO);
+				vc.mostraErrore(MSG_NOME_CATEGORIA_NON_VALIDO);
 				return;
 			}
 		}
@@ -445,9 +469,8 @@ public class MenuConfiguratore extends Menu {
 		}
 		int dimensioneDominio = valoriCampo.size();
 		CampoCaratteristico cC = new CampoCaratteristico(nomeCampo, valoriCampo);
-		//cC.aggiungiValori(valoriCampo);
-		
 		CategoriaNonFoglia catNnF1 = new CategoriaNonFoglia(nomeCatNonFl, cC, dimensioneDominio);
+		
 		radice.getSottoCateg().add(catNnF1);
 		addSottoCategorie(catNnF1);
 		
@@ -461,24 +484,21 @@ public class MenuConfiguratore extends Menu {
 	 */
 	private void creaCategoriaFoglia(Categoria radice) {
 		
-		System.out.println(MSG_CATEGORIA_FOGLIA);
+		vc.mostraMessaggio(MSG_CATEGORIA_FOGLIA);
 		String nomeFoglia = InputDati.leggiStringaNonVuota(MSG_NOME_CATEGORIA);
 		
 		for(Categoria c: radice.getSottoCateg()) {
 			if(c.eUguale(nomeFoglia)) {
-				System.out.println(MSG_NOME_CATEGORIA_NON_VALIDO);
+				vc.mostraErrore(MSG_NOME_CATEGORIA_NON_VALIDO);
 				return;
 			}
 		}
 		int ultimoID = logica.recuperaUltimoID();
-		
 		CategoriaFoglia nuovaCategFoglia = new CategoriaFoglia(nomeFoglia, ultimoID);
 		radice.getSottoCateg().add(nuovaCategFoglia);
 		
 		logica.addCategoriaFoglia(nuovaCategFoglia);
-		
 		aggiungiFDC(nuovaCategFoglia.getId());
-		
 	}
 	
 	/**
@@ -491,15 +511,19 @@ public class MenuConfiguratore extends Menu {
 	
 	
 	private int selezionaCategoria(ArrayList<CategoriaFoglia> categorieFoglia) {
-		System.out.println(MSG_PRESTAZIONI_DISPONIBILI);
+		vc.mostraMessaggio(formattaCategorie(categorieFoglia));
+		return InputDati.leggiInteroConMINeMAX(MSG_SELEZIONA_PRESTAZIONE, 0, categorieFoglia.size());
+	}
+
+
+	private String formattaCategorie(ArrayList<CategoriaFoglia> categorieFoglia) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(MSG_PRESTAZIONI_DISPONIBILI);
 		for(int i = 0; i < categorieFoglia.size(); i++) {
-			System.out.println(i + ": " + categorieFoglia.get(i).getNome());
+			sb.append(i + ": " + categorieFoglia.get(i).getNome());
 		}
-		System.out.println(categorieFoglia.size() + MSG_ANNULLA);
-		
-		int fogliaSelezionata = InputDati.leggiInteroConMINeMAX(MSG_SELEZIONA_PRESTAZIONE, 0, categorieFoglia.size());
-		
-		return fogliaSelezionata;
+		sb.append(categorieFoglia.size() + MSG_ANNULLA);
+		return sb.toString();
 	}
 	
 }

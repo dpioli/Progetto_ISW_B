@@ -186,17 +186,17 @@ public class FatConversione {
 	/**
 	 * Metodo che stampa i fattori di conversione a terminale.
 	 */
-	public void stampaFDC() {
-		if(fdc.size() == 1)
-			System.out.println(NESSUN_FDC);
-		else
-			System.out.println(this.toString());
+	private boolean eVuoto() {
+		return (fdc.size() == 1) ? true : false;
 	}
 	
 	/**
 	 * Metodo di formattazione stringa da stampare a video.
 	 */
 	public String toString() {
+		
+		if(eVuoto()) return null;
+		
 		StringBuffer sb = new StringBuffer();
 		//STAMPO LA PRIMA RIGA CON GLI IDENTIFICATIVI
 		for (int i = 0; i < fdc.get(0).size(); i++) {

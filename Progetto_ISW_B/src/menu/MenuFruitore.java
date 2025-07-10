@@ -16,6 +16,8 @@ import persistenza.LogicaPersistenza;
 import utenti.Fruitore;
 import util.InputDati;
 import util.Menu;
+import vista.Vista;
+import vista.VistaFruitore;
 
 /**
  * Classe per definite il menu delle funzionalità del fruitore
@@ -27,6 +29,7 @@ public class MenuFruitore extends Menu{
 	
 	private Fruitore fruit;
 	private LogicaPersistenza logica;
+	private VistaFruitore vf;
 	
 	private static final String titolo = "\tMENU FRUITORE";
 	
@@ -74,6 +77,9 @@ public class MenuFruitore extends Menu{
 	private static final String MSG_PROPOSTA_NON_SODDISFATTA = "\nAl momemnto non ci sono proposte che soddisfano la tua proposta.\n"
 			+ "Sarai contattato appena verra' soddisfatta !!";
 	
+	private static final double SOGLIA_BASSA = 0.4;
+	private static final double SOGLIA_ALTA = 0.6;
+	
 	
 	private static String[] vociFruit = {NAVIGA, RICHIEDI_PRESTAZIONI, RITIRA_PROPOSTE, VISUALIZZA_PROPOSTE, MSG_P_PRECEDENTE};
 	
@@ -87,14 +93,15 @@ public class MenuFruitore extends Menu{
 		super(titolo, vociFruit);
 		this.fruit = fruit;
 		this.logica = logica;
+		this.vf = new VistaFruitore();
 	}
 	
 	/**
 	 * Metodo per navigare in profondita' tra le gerarchie
 	 */
 	public void naviga() {
-		System.out.println(X);
-		System.out.println(MSG_INIZIALE);
+		vf.mostraMessaggio(X);
+		vf.mostraMessaggio(MSG_INIZIALE);
 		ArrayList<Gerarchia> gerarch = new ArrayList<Gerarchia>();
 		for(Gerarchia g: logica.getGerarchie()) {
 			if(g.getNomeComprensorio().equals(fruit.getNomeComprensorio())) {
@@ -103,7 +110,7 @@ public class MenuFruitore extends Menu{
 		}
 		Gerarchia gScelta;
 		if(gerarch.isEmpty()) {
-			System.out.println(MSG_ASSENZA_GERARCH);
+			vf.mostraErrore(MSG_ANNULLATO_SCAMBIO);
 			return;
 		} else {
 			gScelta = selezionaGerarchia(gerarch);
@@ -112,15 +119,18 @@ public class MenuFruitore extends Menu{
 		}	
 	}
 	
+	
 	/**
 	 * Metodo per selezionare una gerarchia presente all'interno del comprensorio selezionato
 	 * @param gerarch
 	 * @return
 	 */
 	private Gerarchia selezionaGerarchia(ArrayList<Gerarchia> gerarch) {
+		StringBuffer sb = new StringBuffer();
 		for(int i = 0; i < gerarch.size(); i++) {
-			System.out.println(i + COLON + gerarch.get(i).getCatRadice().getNome());
+			sb.append(i + COLON + gerarch.get(i).getCatRadice().getNome());
 		}
+		vf.mostraMessaggio(sb.toString());
 		
 		int scelta = InputDati.leggiIntero(MSG_SELEZ_GERARCH, 0, gerarch.size() - 1);
 		return gerarch.get(scelta);
@@ -134,29 +144,29 @@ public class MenuFruitore extends Menu{
 	 * @param valoriImpostati
 	 */
 	private void navigaCategoria(Categoria categoriaCorrente, Map<String, String> valoriImpostati) {
-	    System.out.println(CATEGORIA_CORRENTE + categoriaCorrente.getNome());
+	   vf.mostraMessaggio(CATEGORIA_CORRENTE + categoriaCorrente.getNome());
 
 	    if (!valoriImpostati.isEmpty()) {
-	        System.out.println(VALORI_IMPOSTATI + valoriImpostati);
+	 	   vf.mostraMessaggio(VALORI_IMPOSTATI + valoriImpostati);
 	    }
 
 	    if (categoriaCorrente.isFoglia()) {
-	        System.out.println(MSG_CATEG_FOGLIA + categoriaCorrente.getNome());
-	        System.out.println(MSG_MENU_PRINCIPALE);
-	        return;
+	 	   vf.mostraMessaggio(MSG_CATEG_FOGLIA + categoriaCorrente.getNome());
+		   vf.mostraMessaggio(MSG_MENU_PRINCIPALE);
+	       return;
 	    }
 
 	    List<Categoria> sottocategorie = categoriaCorrente.getSottoCateg();
 	    if (sottocategorie == null || sottocategorie.isEmpty()) {
-	        System.out.println(MSG_ASSENZA_SOTTOCATEG);
-	        return;
+	 	   vf.mostraErrore(MSG_ASSENZA_SOTTOCATEG);
+	       return;
 	    }
 
 	    CampoCaratteristico campo = categoriaCorrente.getCampCaratt();
 	    Categoria prossimaCategoria = null;
 
 	    if (campo != null) {
-	        System.out.println(MSG_CAMPO_CARATT + campo.getNomeCampo());
+	 	   vf.mostraMessaggio(MSG_CAMPO_CARATT + campo.getNomeCampo());
 	    }
 
 	    prossimaCategoria = selezionaSottoCategoria(sottocategorie);
@@ -172,14 +182,19 @@ public class MenuFruitore extends Menu{
 	 * @return
 	 */
 	private Categoria selezionaSottoCategoria(List<Categoria> sottocategorie) {
-	    System.out.println(MSG_SOTTOCATEG_DISP);
+		vf.mostraMessaggio(MSG_SOTTOCATEG_DISP);
+		
+		StringBuffer sb = new StringBuffer();
 	    for (int i = 0; i < sottocategorie.size(); i++) {
-	        System.out.println((i + 1) + DOT + sottocategorie.get(i).getNome());
+	       sb.append((i + 1) + DOT + sottocategorie.get(i).getNome());
 	    }
+	    sb.append(MSG_VOCE_TORNA_INDIETRO);
+	    vf.mostraMessaggio(sb.toString());
 	    
-	    System.out.println(MSG_VOCE_TORNA_INDIETRO);
 	    int scelta = InputDati.leggiIntero(MSG_SELEZ_GERARCH, 0, sottocategorie.size());
-	    if (scelta == 0) return null;
+	    if (scelta == 0)
+	    	return null;
+	    
 	    return sottocategorie.get(scelta - 1);
 	}
 	
@@ -199,11 +214,11 @@ public class MenuFruitore extends Menu{
 		ArrayList<CategoriaFoglia> foglie = recuperaFoglieDisponibili();
 		
 		if(foglie.isEmpty()) {
-			System.out.println(MSG_CHECK_COMPRENSORIO);
+			vf.mostraErrore(MSG_CHECK_COMPRENSORIO);
 			return;
 		}
 	
-		stampaPrestazioni(foglie); 
+		formattaPrestazioni(foglie); 
 		
 		//RICHIESTA
 		int scelta = InputDati.leggiInteroConMINeMAX(MSG_SEL_PRESTAZIONE, 0, foglie.size()- 1);
@@ -215,10 +230,10 @@ public class MenuFruitore extends Menu{
 		do {
 			incambio = InputDati.leggiInteroConMINeMAX(MSG_SEL_OFFERTA, 0, foglie.size()- 1);
 			if(incambio == scelta) {
-				System.out.println(MSG_PRESTAZIONE_NON_VALIDA);
+				vf.mostraErrore(MSG_PRESTAZIONE_NON_VALIDA);
 			}
 		} while(incambio == scelta);
-		;
+		
 		ArrayList<Double> fattori = logica.getFatConversione().prendiRiga(scelta + 1); 
 		//prendendo tutti i fdc dalla tabella uscenti da id della prestazione richiesta
 	    double valore = (fattori.get(incambio + 1) * ore);
@@ -231,13 +246,15 @@ public class MenuFruitore extends Menu{
 		//SCAMBIO
 		PropostaScambio scambio = new PropostaScambio(richiesta, offerta, id);
 		boolean sn = InputDati.yesOrNo(MSG_CONFERMA + scambio.toString() + MSG_Y_N);
+		
 		if(sn) { //aggiunto alle proposte aperte
 			scambio.setFruitoreAssociato(fruit);
 			logica.addScambio(scambio);
 			GestorePersistenza.salvaScambi(logica.getScambi());
-			verificaSoddisfacimento(scambio);// verifica che lo scambio venga soddisfatto da delle proposte preesistenti
+			// verifica che lo scambio venga soddisfatto da delle proposte preesistenti
+			verificaSoddisfacimento(scambio);
 		} else {
-			System.out.println(MSG_ANNULLATO_SCAMBIO +  MSG_MENU_PRINCIPALE );
+			vf.mostraErrore(MSG_ANNULLATO_SCAMBIO + MSG_MENU_PRINCIPALE );
 			return;
 		}
 	}
@@ -245,14 +262,10 @@ public class MenuFruitore extends Menu{
 	public static double arrotondaCustom(double valore) {
 	    int intero = (int) Math.floor(valore);
 	    double decimale = valore - intero;
-
-	    if (decimale <= 0.4) {
-	        return intero; // arrotonda per difetto
-	    } else if ( decimale < 0.6) {
-	        return intero + 0.5; // mantiene il .5
-	    } else {
-	        return intero + 1; // arrotonda per eccesso
-	    }
+	    
+	    return (decimale < SOGLIA_BASSA) ? intero  // arrotonda per difetto
+	            : (decimale < SOGLIA_ALTA) ? intero + 0.5
+	            : intero + 1;  // arrotonda per eccesso
 	}
 	
 	/**
@@ -268,7 +281,6 @@ public class MenuFruitore extends Menu{
 	            disponibili.addAll(raccoltaFoglie(g.getCatRadice()));
 	        }
 	    }
-
 	    return disponibili;
 	}
 	
@@ -306,7 +318,6 @@ public class MenuFruitore extends Menu{
 	            return f;
 	        }
 	    }
-
 	    return null;
 	}
 	
@@ -314,7 +325,7 @@ public class MenuFruitore extends Menu{
 	 * Metodo di stampa delle prestazioni disponibili
 	 * @param foglie
 	 */
-	private void stampaPrestazioni(ArrayList<CategoriaFoglia> foglie) {
+	private void formattaPrestazioni(ArrayList<CategoriaFoglia> foglie) {
 		StringBuffer sb = new StringBuffer();
 		int i = 0; //contatore per legenda
 		sb.append(MSG_PRESTAZIONI_A_DISPOSIZIONE);		
@@ -324,7 +335,7 @@ public class MenuFruitore extends Menu{
 			sb.append(f.getNome());
 			sb.append(NEW_LINE);
 		}
-		System.out.println(sb.toString());
+		vf.mostraMessaggio(sb.toString());
 	}
 	
 	
@@ -345,7 +356,7 @@ public class MenuFruitore extends Menu{
 		
 		ArrayList<PropostaScambio> proposteValide = selezionaProposteValide(logica.getScambi(), proposta);
 		if(proposteValide.isEmpty()) {
-			System.out.println(MSG_PROPOSTA_NON_SODDISFATTA);
+			vf.mostraErrore(MSG_PROPOSTA_NON_SODDISFATTA);
 			return;
 		}
 		
@@ -354,12 +365,15 @@ public class MenuFruitore extends Menu{
 				InsiemeChiuso ins = new InsiemeChiuso(logica.recuperaIdInsiemeChiuso());
 				aggiornaStatoAChiusa(proposta, logica.getScambi());
 				aggiornaStatoAChiusa(p, logica.getScambi());
+				
 				ins.aggiungiProposteAInsiemeChiuso(proposta);
 				ins.aggiungiProposteAInsiemeChiuso(p);
+				
 				logica.aggiungiInsieme(ins);
 				GestorePersistenza.salvaInsiemiChiusi(logica.getInsiemi());
 				GestorePersistenza.salvaScambi(logica.getScambi());
-				System.out.println(MSG_PROPOSTA_SODDISFATTA);
+				
+				vf.mostraMessaggio(MSG_PROPOSTA_SODDISFATTA);
 				return;
 			}
 		}
@@ -369,6 +383,7 @@ public class MenuFruitore extends Menu{
 		
 		if(cercaCatena(catena, proposteValide)) {
 			InsiemeChiuso insC = new InsiemeChiuso(logica.recuperaIdInsiemeChiuso());
+			
 			for(PropostaScambio p: catena) {
 				aggiornaStatoAChiusa(p, logica.getScambi());
 				insC.aggiungiProposteAInsiemeChiuso(p);
@@ -376,10 +391,11 @@ public class MenuFruitore extends Menu{
 			logica.aggiungiInsieme(insC);
 			GestorePersistenza.salvaInsiemiChiusi(logica.getInsiemi());
 			GestorePersistenza.salvaScambi(logica.getScambi());
-			System.out.println(MSG_PROPOSTA_SODDISFATTA);
+			
+			vf.mostraMessaggio(MSG_PROPOSTA_SODDISFATTA);
 			return;
 		} else {
-			System.out.println(MSG_PROPOSTA_NON_SODDISFATTA);
+			vf.mostraMessaggio(MSG_PROPOSTA_NON_SODDISFATTA);
 			return;
 		}
 	}
@@ -441,15 +457,12 @@ public class MenuFruitore extends Menu{
 	 * @return true se i fruitori sono diversi e se il cmprensorio è lo stesso, false altrimenti
 	 */
 	private boolean verificaFruitore(PropostaScambio p1, PropostaScambio p2) {
-		boolean f = p1.getNomeAssociato().equals(p2.getNomeAssociato());
-		boolean c = p1.getComprensorio().equals(p2.getComprensorio());
-		if(f) {
-			return false;
-		} else if (c) {
-			return true;
-		} else {
-			return false;
-		}
+		boolean stessoNome = p1.getNomeAssociato().equals(p2.getNomeAssociato());
+		boolean stessoComprensorio = p1.getComprensorio().equals(p2.getComprensorio());
+		
+		return stessoNome ? false
+				: stessoComprensorio ? true
+				: false;
 	}
 	
 	/**
@@ -459,14 +472,11 @@ public class MenuFruitore extends Menu{
 	 * @return true veirfica soddisfatta / false verifica non soddisfatta
 	 */
 	private boolean verificaSoddisfacimentoNome(PropostaScambio p1, PropostaScambio p2) {
-		boolean ro = p1.getNomeRichiesta().equals(p2.getNomeOfferta());
-		boolean or = p1.getNomeOfferta().equals(p2.getNomeRichiesta());
+		boolean soddisfRO= p1.getNomeRichiesta().equals(p2.getNomeOfferta());
+		boolean soddisfOR = p1.getNomeOfferta().equals(p2.getNomeRichiesta());
 		
-		if(ro && or) {
-			return true;
-		} else {
-			return false;
-		}
+		return (soddisfRO && soddisfOR) ? true
+				: false;
 	}
 	
 	private boolean verificaRichiestaOfferta(PropostaScambio p1, PropostaScambio p2) {
@@ -474,11 +484,8 @@ public class MenuFruitore extends Menu{
 		boolean nomeRichiestaOfferta =  p1.getNomeRichiesta().equals(p2.getNomeOfferta());
 		boolean oreRichiestaOfferta = Math.abs(p1.getOreRichiesta() - p2.getOreOfferta()) < errore;
 		
-		if(nomeRichiestaOfferta && oreRichiestaOfferta) {
-			return true;
-		} else {
-			return false;
-		}
+		return (nomeRichiestaOfferta && oreRichiestaOfferta) ? true
+				: false;
 	}
 	
 	private boolean verificaOffertaRichiesta(PropostaScambio p1, PropostaScambio p2) {
@@ -486,11 +493,8 @@ public class MenuFruitore extends Menu{
 		boolean nomeOffertaRichiesta = p1.getNomeOfferta().equals(p2.getNomeRichiesta());
 		boolean oreOffertaRichiesta = Math.abs(p1.getOreOfferta() - p2.getOreRichiesta()) < errore;
 		
-		if(nomeOffertaRichiesta && oreOffertaRichiesta) {
-			return true;
-		} else {
-			return false;
-		}
+		return (nomeOffertaRichiesta && oreOffertaRichiesta) ? true
+				: false;
 	}
 	
 	/**
@@ -501,14 +505,11 @@ public class MenuFruitore extends Menu{
 	 */
 	private boolean verificaSoddisfacimentoOre(PropostaScambio p1, PropostaScambio p2) {
 		double errore = 0.5;
-		boolean ro = Math.abs(p1.getOreRichiesta() - p2.getOreOfferta()) < errore;
-		boolean or = Math.abs(p1.getOreOfferta() - p2.getOreRichiesta()) < errore;
+		boolean oreRO = Math.abs(p1.getOreRichiesta() - p2.getOreOfferta()) < errore;
+		boolean oreOR = Math.abs(p1.getOreOfferta() - p2.getOreRichiesta()) < errore;
 		
-		if(ro && or) {
-			return true;
-		} else {
-			return false;
-		}
+		return (oreRO && oreOR) ? true 
+				: false;
 	}
 	
 	/**
@@ -517,14 +518,11 @@ public class MenuFruitore extends Menu{
 	 * @return true se lo stato della proposta è aperto /false se lo stato della proposta è chiuso 
 	 */
 	private boolean controlloStato(PropostaScambio proposta) {
-		boolean c = proposta.getStatoFinale() != StatoProposta.CHIUSA;
-		boolean r = proposta.getStatoFinale() != StatoProposta.RITIRATA;
+		boolean chiusa = proposta.getStatoFinale() != StatoProposta.CHIUSA;
+		boolean ritirata = proposta.getStatoFinale() != StatoProposta.RITIRATA;
 		
-		if(c && r) {
-			return true;
-		} else {
-			return false;
-		}
+		return (chiusa && ritirata) ? true
+				: false;
 	}
 	
 	/**
@@ -542,14 +540,14 @@ public class MenuFruitore extends Menu{
 		}
 		
 		if(proposteFruit.isEmpty()) {
-			System.out.println(MSG_ASSENZA_PROPOSTE_RITIRATE);
+			vf.mostraErrore(MSG_ASSENZA_PROPOSTE_RITIRATE);
 			return;
 		}
 		
 		int selezionata = selezionaPropostaRitirabile(proposteFruit);
 		
 		if(selezionata == proposteFruit.size()) {
-			System.out.println(MSG_OPERAZIONE_ANNULLATA);
+			vf.mostraErrore(MSG_OPERAZIONE_ANNULLATA);
 			return;
 		}
 		
@@ -558,9 +556,9 @@ public class MenuFruitore extends Menu{
 		if(conferma) {
 			aggiornaStatoARitirata(p, proposte);
 			GestorePersistenza.salvaScambi(proposte);
-			System.out.println(MSG_PROPOSTA_RITIRATA);
+			vf.mostraMessaggio(MSG_PROPOSTA_RITIRATA);
 		} else {
-			System.out.println(MSG_OPERAZIONE_ANNULLATA);
+			vf.mostraMessaggio(MSG_OPERAZIONE_ANNULLATA);
 		}
 	}
 	
@@ -573,7 +571,7 @@ public class MenuFruitore extends Menu{
 		for(PropostaScambio p : proposte) {
 			if(p.getId() == proposta.getId()) {
 				p.setStatoFinale(StatoProposta.RITIRATA);
-				System.out.println(p.toString());
+				vf.mostraMessaggio(p.toString());
 			}
 		}
 	}
@@ -597,15 +595,22 @@ public class MenuFruitore extends Menu{
 	 * @return
 	 */
 	private int selezionaPropostaRitirabile(ArrayList<PropostaScambio> proposte) {
-		System.out.println(MSG_PROPOSTE_RITIRABILI);
-		for(int i = 0; i < proposte.size(); i++) {
-			System.out.println(i + COLON + proposte.get(i).toString());
-		}
-		System.out.println(proposte.size() + ANNULLA_SELEZIONE);
+		vf.mostraMessaggio(MSG_PROPOSTE_RITIRABILI);
+		vf.mostraMessaggio(formattaProposte(proposte));
 		
 		int propostaSelezionata = InputDati.leggiInteroConMINeMAX(MSG_SELEZIONA_PROPOSTA_DA_RITIRATE, 0, proposte.size());
-		
 		return propostaSelezionata;
+	}
+
+	private String formattaProposte(ArrayList<PropostaScambio> proposte) {
+		StringBuffer sb = new StringBuffer();
+		
+		for(int i = 0; i < proposte.size(); i++) {
+			sb.append(i + COLON + proposte.get(i).toString());
+		}
+		sb.append(proposte.size() + ANNULLA_SELEZIONE);
+		
+		return sb.toString();
 	}
 	
 	/**
@@ -613,13 +618,14 @@ public class MenuFruitore extends Menu{
 	 * sia che siano aperte, chiuse, ritirate.
 	 * Effettuato solo il controllo per vedere quelle di cui il fruitore è autore
 	 */
-	public void visualizzaProposte() {
+	public String formattaPropostePerFruitore() {
 		ArrayList<PropostaScambio> proposte = logica.getScambi();
 		ArrayList<PropostaScambio> proposteFruit = new ArrayList<>();
 		
+		StringBuffer sb = new StringBuffer();
+		
 		if(proposte.isEmpty()) {
-			System.out.println(MSG_ASSENZA_PROPOSTE);
-			return;
+			return MSG_ASSENZA_PROPOSTE;
 		}
 			
 		for(PropostaScambio p: proposte) {
@@ -629,14 +635,18 @@ public class MenuFruitore extends Menu{
 		}
 		
 		if(proposteFruit.isEmpty()) {
-			System.out.println(MSG_ASSENZA_PROPOSTE);
-			return;
+			return MSG_ASSENZA_PROPOSTE;
 		} else {
 			for(PropostaScambio p: proposteFruit) {
-				System.out.println(NEW_LINE_ARROW + p.toString());
+				sb.append(NEW_LINE_ARROW + p.toString());
 			}
+			return sb.toString();
 				
 		}
+	}
+	
+	public void mostraProposte() {
+		vf.visualizzaProposte(formattaPropostePerFruitore());
 	}
 
 }

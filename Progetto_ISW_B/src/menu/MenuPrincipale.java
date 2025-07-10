@@ -4,6 +4,7 @@ import persistenza.LogicaPersistenza;
 import utenti.Configuratore;
 import utenti.Fruitore;
 import util.Menu;
+import vista.Vista;
 
 /**
  * Classe per la visualizzazione della schermata principale del programma
@@ -11,10 +12,9 @@ import util.Menu;
  *
  */
 
-public class MenuPrincipale{
+public class MenuPrincipale extends Menu{
 	
 	private LogicaPersistenza logica;
-	private Menu menu;
 	
 	/**
 	 * Menu Iniziale
@@ -22,9 +22,9 @@ public class MenuPrincipale{
 	private static final String MSG_BENVENUTO = "   BENVENUTO -- PAGINA INIZIALE";
 	private static final String MSG_ACC_CONFIG = "Accedi come configuratore";
 	private static final String MSG_ACC_FRUIT = "Accedi come fruitore";
+	private static String[] voci = {MSG_ACC_CONFIG, MSG_ACC_FRUIT};
 	private static final int CASE_CONFIGURATORE = 1;
 	private static final int CASE_FRUITORE = 2;
-	private String[] vociIniziali = {MSG_ACC_CONFIG, MSG_ACC_FRUIT};
 	
 	/**
 	 * Menu Autenticazione 
@@ -67,8 +67,8 @@ public class MenuPrincipale{
 	 * @param logica
 	 */
 	public MenuPrincipale(LogicaPersistenza logica) {
+		super(MSG_BENVENUTO, voci);
 		this.logica = logica;
-		this.menu = new Menu(MSG_BENVENUTO, vociIniziali);
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class MenuPrincipale{
 	public void azioniMenuPrincipale() {
 		int scelta;
 		do {
-			scelta = menu.scegli();
+			scelta = chiediScelta();
 			switch(scelta) {
 			case CASE_CONFIGURATORE:
 				autenticazioneConfig();
@@ -94,7 +94,7 @@ public class MenuPrincipale{
 		Menu menuAccessoFruit = new Menu(MSG_AUTENT, vociAutenticazione);
 		int scelta;
 		do {
-			scelta = menuAccessoFruit.scegli();
+			scelta = menuAccessoFruit.chiediScelta();
 			switch(scelta) {
 			case CASE_PRIMO_ACCESSO:
 				autentic.primoAccessoFruit();
@@ -125,7 +125,7 @@ public class MenuPrincipale{
 		Menu menuAccessoConfig = new Menu(MSG_AUTENT, vociAutenticazione);
 		int scelta;
 		do {
-			scelta = menuAccessoConfig.scegli();
+			scelta = menuAccessoConfig.chiediScelta();
 			switch(scelta) {
 			case CASE_PRIMO_ACCESSO:
 				autentic.primoAccessoConfig();
@@ -155,7 +155,7 @@ public class MenuPrincipale{
 	private void avviaMenuConfiguratore(MenuConfiguratore menuConfig) {
 		int scelta;
 		do {
-			scelta = menuConfig.scegli();
+			scelta = menuConfig.chiediScelta();
 			switch(scelta) {
 			case CASE_N_COMPRENSORIO:
 				menuConfig.creaComprensorio();
@@ -164,19 +164,19 @@ public class MenuPrincipale{
 				menuConfig.creaGerarchia();
 				break;
 			case CASE_V_COMPRENSORI:
-				menuConfig.visualizzaComprensori();
+				menuConfig.mostraComprensori();
 				break;
 			case CASE_V_GERARCHIE:
-				menuConfig.visualizzaGerarchie();
+				menuConfig.mostraGerarchie();
 				break;
 			case CASE_V_FAT_CONV:
-				menuConfig.visualizzaFatConv();
+				menuConfig.mostraFatConv();
 				break;
 			case CASE_V_PROPOSTE:
-				menuConfig.visualizzaProposte();
+				menuConfig.mostraProposte();
 				break;
 			case CASE_V_INSIEMI_CHIUSI:
-				menuConfig.visualizzaInsiemiChiusi();
+				menuConfig.mostraInsiemiChiusi();
 				break;
 			case CASE_SALVA:
 				menuConfig.salva();
@@ -192,7 +192,7 @@ public class MenuPrincipale{
 	private void avviaMenuFruitore(MenuFruitore menuFruit) {
 		int scelta;
 		do {
-			scelta = menuFruit.scegli();
+			scelta = menuFruit.chiediScelta();
 			switch(scelta) {
 			case CASE_NAVIGA:
 				menuFruit.naviga();
@@ -204,7 +204,7 @@ public class MenuPrincipale{
 				menuFruit.ritiraProposte();
 				break;
 			case CASE_V_FRUIT_PROPOSTE:
-				menuFruit.visualizzaProposte();
+				menuFruit.mostraProposte();
 				break;
 			case CASE_P_AUT:
 				break;
