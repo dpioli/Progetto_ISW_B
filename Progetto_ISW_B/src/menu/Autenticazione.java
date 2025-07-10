@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import applicazione.Comprensorio;
+import controller.GestoreComprensori;
 import persistenza.GestorePersistenza;
 import persistenza.LogicaPersistenza;
 import utenti.Configuratore;
@@ -158,14 +159,14 @@ public class Autenticazione {
 	 * 4. Inserimento password
 	 * 5. Inserimento mail
 	 */
-	public void primoAccessoFruit() {
+	public void primoAccessoFruit(GestoreComprensori gC) {
 		
 		if(logica.getComprensori().isEmpty()) {
 			System.out.println(MSG_ASSENZA_COMPRENSORIO);
 			return;
 		}
 		System.out.println(MSG_SELEZ_COMP);
-		Comprensorio comp = Menu.selezionaComprensorio(logica.getComprensori());
+		Comprensorio comp = gC.selezionaComprensorio();
 		
 		String newUsername = inserisciUsernameFruit();
 		String newPassword = InputDati.leggiStringaNonVuota(MSG_NEW_PASSWORD);

@@ -85,20 +85,5 @@ public class Menu {
 	
 	
 	
-	
-	
-	
-	public static Comprensorio selezionaComprensorio(ArrayList<Comprensorio> comprensori) {
-		for(int i = 0; i < comprensori.size(); i++) {
-			System.out.println(i + ": " + comprensori.get(i));
-		}
-		
-		int scelta = InputDati.leggiIntero("Seleziona il comprensorio di appartenenza della gerarchia > ", 0, comprensori.size());
-		return comprensori.get(scelta);
-	}
-
-	
-
-	
 
 }

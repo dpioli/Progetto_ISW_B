@@ -1,5 +1,6 @@
 package menu;
 
+import controller.GestoreComprensori;
 import persistenza.LogicaPersistenza;
 import utenti.Configuratore;
 import utenti.Fruitore;
@@ -15,6 +16,7 @@ import vista.Vista;
 public class MenuPrincipale extends Menu{
 	
 	private LogicaPersistenza logica;
+	private GestoreComprensori gC;
 	
 	/**
 	 * Menu Iniziale
@@ -69,6 +71,7 @@ public class MenuPrincipale extends Menu{
 	public MenuPrincipale(LogicaPersistenza logica) {
 		super(MSG_BENVENUTO, voci);
 		this.logica = logica;
+		this.gC = new GestoreComprensori(logica);
 	}
 	
 	/**
@@ -97,7 +100,7 @@ public class MenuPrincipale extends Menu{
 			scelta = menuAccessoFruit.chiediScelta();
 			switch(scelta) {
 			case CASE_PRIMO_ACCESSO:
-				autentic.primoAccessoFruit();
+				autentic.primoAccessoFruit(gC);
 				break;
 			case CASE_ACCESSO:
 				Fruitore fruit = autentic.accessoFruitore();

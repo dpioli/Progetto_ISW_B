@@ -83,6 +83,24 @@ public class GestorePersistenza {
 	    return oggetto != null ? oggetto : null; // per collezioni non creiamo nuovi oggetti vuoti
 	}
 	
+	
+	
+	
+	
+	//////////////////////////////////////////////////
+	/*
+	 public static <T> ArrayList<T> caricaLista(TypeToken<ArrayList<T>> typeToken, String nomeFile) {
+		  	Type listType = typeToken.getType();
+		    ArrayList<T> lista = carica(listType, nomeFile);
+		    return (lista != null) ? lista : new ArrayList<>();
+		    }
+		*/
+	
+	
+	
+	
+	
+	
 	/**
 	 * Metodo generico per andare a creare l'oggetto se questo non è inizializzato
 	 * @param <T>
@@ -170,6 +188,21 @@ public class GestorePersistenza {
 		salva(insiemi, FILE_INSIEMI_CHIUSI);
 	}
 	
+	
+	
+	public static void salvaTutto(LogicaPersistenza logica) {
+		salvaGerarchie(logica.getGerarchie());
+		salvaCategorieFoglia(logica.getCategorieFoglia());
+		salvaFatConversione(logica.getFatConversione());
+		salvaConfiguratori(logica.getConfiguratori());
+		salvaComprensori(logica.getComprensori());
+		salvaFruitori(logica.getFruitori());
+		salvaScambi(logica.getScambi());
+		salvaInsiemiChiusi(logica.getInsiemi());
+	}
+	
+	
+	
 	/*
 	 * 
 	 * 
@@ -177,6 +210,8 @@ public class GestorePersistenza {
 	 * 
 	 * 
 	 */
+	
+
 	
 	/**
 	 * Metodo per caricare le gerarchie
