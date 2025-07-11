@@ -5,7 +5,7 @@ package utenti;
  * @author Erjona Maxhaku 735766
  *
  */
-public class Configuratore {
+public class Configuratore implements IUtente{
 	
 	private String username;
 	private String password;

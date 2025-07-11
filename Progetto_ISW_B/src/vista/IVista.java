@@ -1,6 +1,6 @@
 package vista;
 
-import util.Menu;
+import menu.Menu;
 
 public interface IVista {
 	

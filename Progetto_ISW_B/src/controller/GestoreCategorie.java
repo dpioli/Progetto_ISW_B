@@ -224,7 +224,7 @@ public class GestoreCategorie {
 		
 		StringBuffer sb = new StringBuffer();
 	    for (int i = 0; i < sottocategorie.size(); i++) {
-	       sb.append((i + 1) + DOT + sottocategorie.get(i).getNome());
+	       sb.append((i + 1) + DOT + sottocategorie.get(i).getNome() + "\n");
 	    }
 	    sb.append(MSG_VOCE_TORNA_INDIETRO);
 	    v.mostraMessaggio(sb.toString());

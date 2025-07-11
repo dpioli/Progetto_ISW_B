@@ -13,11 +13,11 @@ import applicazione.StatoProposta;
 import applicazione.TipoProposta;
 import controller.GestoreGerarchie;
 import controller.GestoreProposte;
+import controller.Gestori;
 import persistenza.GestorePersistenza;
 import persistenza.LogicaPersistenza;
 import utenti.Fruitore;
 import util.InputDati;
-import util.Menu;
 import util.Utilitaria;
 import vista.Vista;
 import vista.VistaFruitore;
@@ -34,6 +34,7 @@ public class MenuFruitore extends Menu{
 	private LogicaPersistenza logica;
 	private VistaFruitore vf;
 	
+	private Gestori g;
 	private GestoreGerarchie gGerarchie;
 	private GestoreProposte gProposte;
 	
@@ -59,7 +60,9 @@ public class MenuFruitore extends Menu{
 		this.fruit = fruit;
 		this.logica = logica;
 		this.vf = new VistaFruitore();
-		this.gGerarchie = new GestoreGerarchie(logica, vf);
+		this.g = new Gestori(logica, vf);
+		this.gGerarchie = g.getgGer();
+		this.gProposte = g.getgProp();
 	}
 	
 	/**

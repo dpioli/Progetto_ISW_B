@@ -6,8 +6,8 @@ import applicazione.FatConversione;
 import controller.GestoreComprensori;
 import controller.GestoreGerarchie;
 import controller.GestoreProposte;
+import controller.Gestori;
 import utenti.Configuratore;
-import util.Menu;
 import vista.VistaConfiguratore;
 
 /**
@@ -22,6 +22,7 @@ public class MenuConfiguratore extends Menu {
 	private LogicaPersistenza logica;
 	private VistaConfiguratore vc;
 	
+	private Gestori g;
 	private GestoreComprensori gComprensori;
 	private GestoreGerarchie gGerarchie;
 	private GestoreProposte gProposte;
@@ -67,9 +68,10 @@ public class MenuConfiguratore extends Menu {
 		this.config = config;
 		this.logica = logica;
 		this.vc = new VistaConfiguratore();
-		this.gComprensori = new GestoreComprensori(logica, vc);
-		this.gGerarchie = new GestoreGerarchie(logica, vc);
-		this.gProposte = new GestoreProposte(logica, vc);
+		this.g = new Gestori(logica, vc);
+		this.gComprensori = g.getgCom();
+		this.gGerarchie = g.getgGer();
+		this.gProposte = g.getgProp();
 	}
 	
 

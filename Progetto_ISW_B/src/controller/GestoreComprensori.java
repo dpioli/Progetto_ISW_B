@@ -31,11 +31,6 @@ public class GestoreComprensori {
 		this.logica = logica;
 		this.v = v;
 	}
-	
-	public GestoreComprensori(LogicaPersistenza logica) {
-		this.comprensori = logica.getComprensori();
-		this.logica = logica;
-	}
 
 	/**
 	 * Metodo di creazione Comprensorio Geografico:
@@ -79,7 +74,7 @@ public class GestoreComprensori {
 		ArrayList<Comprensorio> comprensori = logica.getComprensori();
 		StringBuffer sb = new StringBuffer();
 		for(int i = 0; i < comprensori.size(); i++) {
-			sb.append(i + ": " + comprensori.get(i));
+			sb.append(i + ": " + comprensori.get(i) + "\n"); ///////////////////////////////
 		}
 		
 		v.mostraMessaggio(sb.toString());

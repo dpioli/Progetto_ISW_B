@@ -7,7 +7,7 @@ public class Vista implements IVista{
 		if(sb.equals(null)) {
 			mostraErrore(msgErrore);
 		} else {
-			System.out.println(sb);
+			mostraMessaggio(sb);
 		}	
 	}
 	    

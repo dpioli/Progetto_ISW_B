@@ -1,5 +1,6 @@
 package menu;
 
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,24 +27,13 @@ public class Autenticazione {
 	private static final String USERNAME_PREDEFINITO = "configuratore";
 	private static final String PASSWORD_PREDEFINITA = "password";
 
-	private static final String MSG_ASK_USERNAME = "Inserisci l'username (ESC per uscire) > ";
-	private static final String MSG_ASK_PASSWORD = "Inserisci la password (ESC per uscire) > ";
-
 	private static final String MSG_ASK_USER_PREDEF = "Inserisci l'username predefinito > ";
 	private static final String MSG_ASK_PSW_PREDEF = "Inserisci la password predefinita > ";
 	
-	private static final String UTENTE_NON_PRESENTE = "Questo utente non è presente nel sistema. \nTornando indietro...";
-	private static final String PSW_ERRATA = "Password errata. (ESC per uscire) ";
-
-	private static final String MSG_NEW_CREDENZIALI = "Inserisci le nuove credenziali di seguito\n\n";
 	private static final String MSG_NEW_USERNAME = "Inserisci un nuovo username > ";
 	private static final String MSG_NEW_PASSWORD = "Inserisci una nuova password > ";
 	
-	private static final String MSG_RILEVA_PRIMO_ACCESSO = "\nSembra che tu non sia ancora registrato!\nREGISTRATI >";
 	private static final String MSG_RICHIESTA_AUTENTICAZIONE = "Inserire le credenziali di autenticazione: ";
-
-	private static final String MSG_ACCESSO_RIUSCITO = "\nAccesso effettuato con successo -- ";
-
 	private static final String MSG_NON_VALIDO = "Username non valido, utente già registrato nel sistema. Riprova. ";
 	
 	///////////////////
@@ -54,8 +44,6 @@ public class Autenticazione {
 	private static final String FORMATO_MAIL_ERRATO = "\nPer piacere, inserire l'indirizzo email nel formato corretto.";
 	private static final String FILTER = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+.[A-Za-z]";
 	
-	private static final String RILEVATA_RICHIESTA_DI_USCITA = "Rilevata richiesta di uscita.";
-	private static final String ESC = "ESC";
 	
 	/**
 	 * Costruttore della classe Autenticazione 
@@ -68,70 +56,36 @@ public class Autenticazione {
 		this.v = new Vista();
 	}
 	
+
+	
 	/**
 	 * Metodo che permette di accedere alle funzionalita' di un configuratore.
 	 * Se rileva a un primo accesso rimanda alla pagina di registrazione.
 	 * @return Configuratore
 	 */
 	public Configuratore accessoConfiguratore() {
-		String username = InputDati.leggiStringaNonVuota(MSG_ASK_USERNAME);
-		String password;
-		
-		if(richiedeUscita(username)) {
-			v.mostraMessaggio(RILEVATA_RICHIESTA_DI_USCITA);
-			return null;
-		}
-		
-		if(username.equals(USERNAME_PREDEFINITO)) {
-			v.mostraMessaggio(MSG_RILEVA_PRIMO_ACCESSO);
-			primoAccessoConfig();
-		} 
-		
-		for(Configuratore c: logica.getConfiguratori()) {
-			if(c.getUsername().equals(username)) {
-				do{
-					password = InputDati.leggiStringaNonVuota(MSG_ASK_PASSWORD);
-					if(c.getPassword().equals(password)) {
-						v.mostraMessaggio(MSG_ACCESSO_RIUSCITO + username +"\n");
-						return c;
-					} else {
-						v.mostraErrore(PSW_ERRATA);
-					}
-				}while(!richiedeUscita(password));
-			}
-		}
-		v.mostraErrore(UTENTE_NON_PRESENTE);
-		return null;
+	    return LogicaAutenticazione.accessoGenerico(
+	        () -> logica.getConfiguratori(),
+	        true,
+	        this::primoAccessoConfig,
+	        v
+	    );
 	}
 	
+
 	/**
 	 * Metodo che verifica le credenziali del fruitore
 	 * @return Fruitore
 	 */
 	public Fruitore accessoFruitore() {
-		String username = InputDati.leggiStringaNonVuota(MSG_ASK_USERNAME);
-		String password;
-		if(richiedeUscita(username)) {
-			v.mostraMessaggio(RILEVATA_RICHIESTA_DI_USCITA);
-			return null;
-		}
-		
-		for(Fruitore f: logica.getFruitori()) {
-			if(f.getUsername().equals(username)) {
-				do {
-					password = InputDati.leggiStringaNonVuota(MSG_ASK_PASSWORD);
-					if(f.getPassword().equals(password)) {
-						v.mostraMessaggio(MSG_ACCESSO_RIUSCITO + username + "\n");
-						return f;
-					} else {
-						v.mostraErrore(PSW_ERRATA);
-					}
-				} while (!richiedeUscita(password));
-			}
-		}
-		v.mostraErrore(UTENTE_NON_PRESENTE);
-		return null;
+	    return LogicaAutenticazione.accessoGenerico(
+	        () -> logica.getFruitori(),
+	        false,
+	        null,
+	        v
+	    );
 	}
+	
 	
 	/***
 	 * METODO PER REGISTRARSI PER LA PRIMA VOLTA COME CONFIGUTATORE
@@ -140,18 +94,22 @@ public class Autenticazione {
 	 * 3. Salvaraggio.
 	 */
 	public void primoAccessoConfig() {
-		
-		controllaPredefinite();
-			
-		v.mostraMessaggio(MSG_NEW_CREDENZIALI);
-		String newUsername = inserisciUsername();
-		String newPassword = InputDati.leggiStringaNonVuota(MSG_NEW_PASSWORD);
-		
-		logica.addConfiguratore(new Configuratore(newUsername, newPassword));
-		GestorePersistenza.salvaConfiguratori(logica.getConfiguratori());
-		
-		v.mostraMessaggio(MSG_SUCC_REGIST);
+	    controllaPredefinite();
+
+	    LogicaAutenticazione.primoAccessoGenerico(
+	        () -> {
+	            String username = inserisciUsername();
+	            String password = InputDati.leggiStringaNonVuota(MSG_NEW_PASSWORD);
+	            return new Configuratore(username, password);
+	        },
+	        config -> logica.addConfiguratore(config),
+	        () -> GestorePersistenza.salvaConfiguratori(logica.getConfiguratori()),
+	        true,
+	        MSG_SUCC_REGIST,
+	        v
+	    );
 	}
+
 	
 	/**
 	 * METODO PER REGISTRARSI PER LA PRIMA VOLTA COME FRUITORE
@@ -162,23 +120,29 @@ public class Autenticazione {
 	 * 5. Inserimento mail
 	 */
 	public void primoAccessoFruit(GestoreComprensori gC) {
-		
-		if(logica.getComprensori().isEmpty()) {
-			v.mostraErrore(MSG_ASSENZA_COMPRENSORIO);
-			return;
-		}
-		v.mostraMessaggio(MSG_SELEZ_COMP);
-		Comprensorio comp = gC.selezionaComprensorio();
-		
-		String newUsername = inserisciUsernameFruit();
-		String newPassword = InputDati.leggiStringaNonVuota(MSG_NEW_PASSWORD);
-		String mail = inserisciEmail();
-		
-		logica.addFruitore(new Fruitore(comp, newUsername, newPassword, mail));
-		GestorePersistenza.salvaFruitori(logica.getFruitori());
-		
-		v.mostraMessaggio(MSG_SUCC_REGIST);
+	    if (logica.getComprensori().isEmpty()) {
+	        v.mostraErrore(MSG_ASSENZA_COMPRENSORIO);
+	        return;
+	    }
+
+	    v.mostraMessaggio(MSG_SELEZ_COMP);
+	    Comprensorio comp = gC.selezionaComprensorio();
+
+	    LogicaAutenticazione.primoAccessoGenerico(
+	        () -> {
+	            String username = inserisciUsername();
+	            String password = InputDati.leggiStringaNonVuota(MSG_NEW_PASSWORD);
+	            String email = inserisciEmail();
+	            return new Fruitore(comp, username, password, email);
+	        },
+	        fruitore -> logica.addFruitore(fruitore),
+	        () -> GestorePersistenza.salvaFruitori(logica.getFruitori()),
+	        false,
+	        MSG_SUCC_REGIST, 
+	        v
+	    );
 	}
+	
 
 	/***
 	 * Metodo che controlla se l'username inserito è già presente nel sistema.
@@ -221,43 +185,21 @@ public class Autenticazione {
 	
 	/***
 	 * Metodo per ricezione stringa di input del nuovo username.
-	 * Controlla che la stringa non sia vuota e che non coincida con l'username predefinito del configuratore.
+	 * Controlla che la stringa non sia vuota e che non sia già registrata.
 	 * @return stringa username
 	 */
 	public String inserisciUsername() {
-		boolean corretto = false;
+		
 		String newUsername = "";
 		do {
 			newUsername = InputDati.leggiStringaNonVuota(MSG_NEW_USERNAME);
-			if(newUsername.equals(USERNAME_PREDEFINITO)) {
+			if(ePresenteConfiguratore(newUsername) || ePresenteFruitore(newUsername)) {
 				v.mostraErrore(MSG_NON_VALIDO);
-			} if (ePresenteConfiguratore(newUsername)) {
-				v.mostraErrore(MSG_NON_VALIDO);
-			}
-			else break;
-		} while(!corretto);
-		return newUsername;
+			} else 
+				return newUsername;
+		} while(true);
 	}
 	
-	/**
-	 * Metodo per controllare l'unicità del nome del fruitore
-	 * @return username valido 
-	 */
-	public String inserisciUsernameFruit() {
-		boolean corretto = false;
-		String newUsername = "";
-		do {
-			newUsername = InputDati.leggiStringaNonVuota(MSG_NEW_USERNAME);
-			if(ePresenteConfiguratore(newUsername)) {
-				v.mostraErrore(MSG_NON_VALIDO);
-			} else if(ePresenteFruitore(newUsername)) {
-				v.mostraErrore(MSG_NON_VALIDO);
-			} else {
-				break;
-			}
-		} while(!corretto);
-		return newUsername;
-	}
 	
 	/**
 	 * Metodo per inserire la mail del fruitore
@@ -305,13 +247,6 @@ public class Autenticazione {
 		return false;
 	}
 
-	/**
-	 * Metodo che verifica se l'input corrisponde alla parola chiave di uscita.
-	 * @param input
-	 * @return true se corrispondono
-	 */
-	public boolean richiedeUscita(String in) {
-		return in.equalsIgnoreCase(ESC) ? true : false;
-	}
+	
 
 }

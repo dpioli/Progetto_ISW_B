@@ -1,11 +1,13 @@
 package menu;
 
 import controller.GestoreComprensori;
+import controller.Gestori;
 import persistenza.LogicaPersistenza;
 import utenti.Configuratore;
 import utenti.Fruitore;
-import util.Menu;
+import utenti.IUtente;
 import vista.Vista;
+
 
 /**
  * Classe per la visualizzazione della schermata principale del programma
@@ -13,9 +15,10 @@ import vista.Vista;
  *
  */
 
-public class MenuPrincipale extends Menu{
+public class MenuPrincipale extends Menu {
 	
 	private LogicaPersistenza logica;
+	private Gestori g;
 	private GestoreComprensori gC;
 	
 	/**
@@ -71,7 +74,8 @@ public class MenuPrincipale extends Menu{
 	public MenuPrincipale(LogicaPersistenza logica) {
 		super(MSG_BENVENUTO, voci);
 		this.logica = logica;
-		this.gC = new GestoreComprensori(logica);
+		this.g= new Gestori(logica, new Vista());
+		this.gC = g.getgCom();
 	}
 	
 	/**
@@ -82,140 +86,66 @@ public class MenuPrincipale extends Menu{
 		do {
 			scelta = chiediScelta();
 			switch(scelta) {
-			case CASE_CONFIGURATORE:
-				autenticazioneConfig();
-				break;	
-			case CASE_FRUITORE:
-				autenticazioneFruit();
-				break;
+				case CASE_CONFIGURATORE -> autenticazioneConfig();
+				case CASE_FRUITORE -> autenticazioneFruit();
 			}
 		} while (scelta != CASE_USCITA );
 	}
 	
+	
+	private void autenticazioneConfig() {
+		LogicaAutenticazione.gestioneAutenticazione(
+	        () -> new Autenticazione(logica).primoAccessoConfig(),
+	        () -> new Autenticazione(logica).accessoConfiguratore(),
+	        config -> avviaMenuConfiguratore(new MenuConfiguratore(config, logica))
+	    );
+	}
+	
+	
 	private void autenticazioneFruit() {
-		Autenticazione autentic = new Autenticazione(logica);
-		Menu menuAccessoFruit = new Menu(MSG_AUTENT, vociAutenticazione);
-		int scelta;
-		do {
-			scelta = menuAccessoFruit.chiediScelta();
-			switch(scelta) {
-			case CASE_PRIMO_ACCESSO:
-				autentic.primoAccessoFruit(gC);
-				break;
-			case CASE_ACCESSO:
-				Fruitore fruit = autentic.accessoFruitore();
-				if(fruit != null) {
-					MenuFruitore menuFruit = new MenuFruitore(fruit, logica);
-					avviaMenuFruitore(menuFruit);
-				} else {
-					scelta = CASE_P_INIZIALE;
-				}
-				break;
-			case CASE_P_INIZIALE:
-				break;
-			default:
-				System.exit(CASE_USCITA);
-			}
-		} while (scelta != CASE_P_INIZIALE);
-		
+	    LogicaAutenticazione.gestioneAutenticazione(
+	        () -> new Autenticazione(logica).primoAccessoFruit(gC),
+	        () -> new Autenticazione(logica).accessoFruitore(),
+	        fruit -> avviaMenuFruitore(new MenuFruitore(fruit, logica))
+	    );
 	}
 
-	/**
-	 * Metodo per autenticare l'utente come configuratore o registrarsi come tale.
-	 */
-	private void autenticazioneConfig() {
-		Autenticazione autentic = new Autenticazione(logica);
-		Menu menuAccessoConfig = new Menu(MSG_AUTENT, vociAutenticazione);
-		int scelta;
-		do {
-			scelta = menuAccessoConfig.chiediScelta();
-			switch(scelta) {
-			case CASE_PRIMO_ACCESSO:
-				autentic.primoAccessoConfig();
-				break;
-			case CASE_ACCESSO:
-				Configuratore config = autentic.accessoConfiguratore();
-				if(config != null) {
-					MenuConfiguratore menuConfig = new MenuConfiguratore(config, logica);
-					avviaMenuConfiguratore(menuConfig);
-				} else {
-					scelta = CASE_P_INIZIALE;
-				}
-				break;
-			case  CASE_P_INIZIALE:
-				break;
-			default:
-				System.exit(CASE_USCITA);
-			}
-		} while (scelta != CASE_P_INIZIALE);
-	}
-	
-	
+
 	/**
 	 * Metodo per mostrare le azione che un configuratore puo' svolgere
 	 * @param menuConfig
 	 */
 	private void avviaMenuConfiguratore(MenuConfiguratore menuConfig) {
-		int scelta;
-		do {
-			scelta = menuConfig.chiediScelta();
-			switch(scelta) {
-			case CASE_N_COMPRENSORIO:
-				menuConfig.creaComprensorio();
-				break;
-			case CASE_N_GERARCHIA:
-				menuConfig.creaGerarchia();
-				break;
-			case CASE_V_COMPRENSORI:
-				menuConfig.mostraComprensori();
-				break;
-			case CASE_V_GERARCHIE:
-				menuConfig.mostraGerarchie();
-				break;
-			case CASE_V_FAT_CONV:
-				menuConfig.mostraFatConv();
-				break;
-			case CASE_V_PROPOSTE:
-				menuConfig.mostraProposte();
-				break;
-			case CASE_V_INSIEMI_CHIUSI:
-				menuConfig.mostraInsiemiChiusi();
-				break;
-			case CASE_SALVA:
-				menuConfig.salva();
-				break;
-			case CASE_P_AUTENTICAZIONE:
-				break;
-			default:
-				System.exit(CASE_USCITA);
-			}
-		} while (scelta != CASE_P_AUTENTICAZIONE);
+		LogicaAutenticazione.gestioneMenuUtente(menuConfig, CASE_P_AUTENTICAZIONE, scelta -> {
+	        switch (scelta) {
+	            case CASE_N_COMPRENSORIO -> menuConfig.creaComprensorio();
+	            case CASE_N_GERARCHIA -> menuConfig.creaGerarchia();
+	            case CASE_V_COMPRENSORI -> menuConfig.mostraComprensori();
+	            case CASE_V_GERARCHIE -> menuConfig.mostraGerarchie();
+	            case CASE_V_FAT_CONV -> menuConfig.mostraFatConv();
+	            case CASE_V_PROPOSTE -> menuConfig.mostraProposte();
+	            case CASE_V_INSIEMI_CHIUSI -> menuConfig.mostraInsiemiChiusi();
+	            case CASE_SALVA -> menuConfig.salva();
+	            default -> System.exit(CASE_USCITA);
+	        }
+	    });
 	}
 	
+	
+	/**
+	 * Metodo per mostrare le azione che un fruitore puo' svolgere
+	 * @param menuFruit
+	 */
 	private void avviaMenuFruitore(MenuFruitore menuFruit) {
-		int scelta;
-		do {
-			scelta = menuFruit.chiediScelta();
-			switch(scelta) {
-			case CASE_NAVIGA:
-				menuFruit.naviga();
-				break;
-			case CASE_RICHIEDI_PRESTAZIONI:
-				menuFruit.richiediPrestazioni();
-				break;
-			case CASE_RITIRA_PROPOSTE:
-				menuFruit.ritiraProposte();
-				break;
-			case CASE_V_FRUIT_PROPOSTE:
-				menuFruit.mostraProposte();
-				break;
-			case CASE_P_AUT:
-				break;
-			default:
-				System.exit(CASE_USCITA);
-			}
-		} while (scelta != CASE_P_AUT);
-		
+		LogicaAutenticazione.gestioneMenuUtente(menuFruit, CASE_P_AUT, scelta -> {
+	        switch (scelta) {
+	            case CASE_NAVIGA -> menuFruit.naviga();
+	            case CASE_RICHIEDI_PRESTAZIONI -> menuFruit.richiediPrestazioni();
+	            case CASE_RITIRA_PROPOSTE -> menuFruit.ritiraProposte();
+	            case CASE_V_FRUIT_PROPOSTE -> menuFruit.mostraProposte();
+	            default -> System.exit(CASE_USCITA);
+	        }
+	    });
 	}
-
+	
 }

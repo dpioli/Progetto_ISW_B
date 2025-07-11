@@ -1,5 +1,7 @@
-package util;
+package menu;
 
+import persistenza.LogicaPersistenza;
+import util.InputDati;
 import vista.Vista;
 
 /**
@@ -18,7 +20,7 @@ public class Menu {
 	private String titolo;
 	private String[] voci;
 	private Vista vista;
-
+	
 	public Menu(String titolo, String[] voci) {
 		this.titolo = titolo;
 		this.voci = voci;
@@ -35,7 +37,7 @@ public class Menu {
 
 	public int chiediScelta() {
 		vista.mostraMenu(this);
-		return InputDati.leggiIntero(RICHIESTA_INSERIMENTO, 1, voci.length);
+		return InputDati.leggiIntero(RICHIESTA_INSERIMENTO, 0, voci.length);
 	}
 	
 	public String formattaMenu() {
@@ -43,7 +45,7 @@ public class Menu {
 		StringBuffer sb = new StringBuffer();
 		
 		sb.append(CORNICE);
-		sb.append(titolo);
+		sb.append(titolo + "\n");
 		sb.append(CORNICE);
 		
 		for (int i = 0; i < voci.length; i++) {
@@ -51,7 +53,6 @@ public class Menu {
 		}
 	    	
 		sb.append(VOCE_USCITA);
-		sb.append("\n");
 		
 		return sb.toString();
 	}

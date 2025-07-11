@@ -9,7 +9,7 @@ import applicazione.Comprensorio;
  *
  */
 
-public class Fruitore {
+public class Fruitore implements IUtente{
 	
 	private String username;
 	private String password;

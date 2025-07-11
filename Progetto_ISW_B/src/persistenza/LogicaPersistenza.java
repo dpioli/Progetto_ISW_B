@@ -189,6 +189,10 @@ public class LogicaPersistenza {
 	public void addConfiguratore(Configuratore configuratore) {
 		configuratori.add(configuratore);
 	}
+	
+	public void addFruitore(Fruitore fruitore) {
+		fruitori.add(fruitore);
+	}
 
 	public void addComprensorio(Comprensorio comprensorio) {
 		comprensori.add(comprensorio);
@@ -198,14 +202,6 @@ public class LogicaPersistenza {
 		gerarchie.add(gerarchia);
 	}
 	
-	public void addFruitore(Fruitore fruitore) {
-		fruitori.add(fruitore);
-	}
-	
-	public void addScambio(PropostaScambio scambio) {
-		scambi.add(scambio);
-	}
-
 	public void addCategoriaFoglia(CategoriaFoglia nuovaCategFoglia) {
 		categorieFoglia.add(nuovaCategFoglia);
 	}
@@ -214,9 +210,14 @@ public class LogicaPersistenza {
 		fatConversione.aggancia(nuova);	
 	}
 	
+	public void addScambio(PropostaScambio scambio) {
+		scambi.add(scambio);
+	}
+	
 	public void aggiungiInsieme(InsiemeChiuso insieme) {
 		insiemi.add(insieme);
 	}
+	
 	
 	/**
 	 * Metodi che recupera l'identificativo,

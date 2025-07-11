@@ -47,7 +47,7 @@ public class GestorePersistenza {
 	}
 	
 	/**
-	 * Metdo generico per salvare i dati su un file json
+	 * Metodo generico per salvare i dati su un file json
 	 * @param <T>
 	 * @param oggetto
 	 * @param fpath
@@ -84,37 +84,19 @@ public class GestorePersistenza {
 	}
 	
 	
-	
-	
-	
-	//////////////////////////////////////////////////
-	/*
-	 public static <T> ArrayList<T> caricaLista(TypeToken<ArrayList<T>> typeToken, String nomeFile) {
-		  	Type listType = typeToken.getType();
-		    ArrayList<T> lista = carica(listType, nomeFile);
-		    return (lista != null) ? lista : new ArrayList<>();
-		    }
-		*/
-	
-	
-	
-	
-	
-	
 	/**
-	 * Metodo generico per andare a creare l'oggetto se questo non è inizializzato
+	 * Metodo generico per caricare una lista di oggetti
 	 * @param <T>
-	 * @param classe
-	 * @return oggetto inizializzato
+	 * @param typeToken
+	 * @param nomeFile
+	 * @return
 	 */
-	private static <T> T creaOggettoVuoto(Class<T> classe) {
-        try {
-            return classe.getDeclaredConstructor().newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+	public static <T> ArrayList<T> caricaLista(TypeToken<ArrayList<T>> typeToken, String nomeFile) {
+		 Type listType = typeToken.getType();
+		 ArrayList<T> lista = carica(listType, nomeFile);
+		 return (lista != null) ? lista : new ArrayList<>();
+	}
+
 	
 	/*
 	 * 
@@ -189,7 +171,6 @@ public class GestorePersistenza {
 	}
 	
 	
-	
 	public static void salvaTutto(LogicaPersistenza logica) {
 		salvaGerarchie(logica.getGerarchie());
 		salvaCategorieFoglia(logica.getCategorieFoglia());
@@ -211,47 +192,69 @@ public class GestorePersistenza {
 	 * 
 	 */
 	
-
-	
-	/**
-	 * Metodo per caricare le gerarchie
-	 * @return insieme delle gerarchie
-	 */
-	public static ArrayList<Gerarchia> caricaGerarchie(){
-	    Type listType = new TypeToken<ArrayList<Gerarchia>>() {}.getType();
-	    ArrayList<Gerarchia> gerarchie = carica(listType, FILE_GERARCHIE);
-	    if(gerarchie == null) {
-	    	return new ArrayList<Gerarchia>();
-	    }
-	    return gerarchie;
-	}
-
-	
-	/**
-	 * Metodo per caricare i comprensori
-	 * @return insieme dei comprensori
-	 */
-	public static ArrayList<Comprensorio> caricaComprensorio(){
-	    Type listType = new TypeToken<ArrayList<Comprensorio>>() {}.getType();
-	    ArrayList<Comprensorio> comprensori = carica(listType, FILE_COMPRENSORI);
-	    if (comprensori == null) {
-	        return new ArrayList<Comprensorio>();
-	    }
-	    return comprensori;
-	}
 	
 	/**
 	 * Metodo per caricare i configuratori
 	 * @return insieme dei configuratori
 	 */
-	public static ArrayList<Configuratore> caricaConfiguratori(){
-	    Type listType = new TypeToken<ArrayList<Configuratore>>() {}.getType();
-	    ArrayList<Configuratore> configuratori = carica(listType, FILE_CONFIGURATORI);
-	    if(configuratori == null) {
-	    	return new ArrayList<Configuratore>();
-	    }
-	    return configuratori;
+	public static ArrayList<Configuratore> caricaConfiguratori() {
+	     return caricaLista(new TypeToken<ArrayList<Configuratore>>() {}, FILE_CONFIGURATORI);
 	}
+
+	
+	/**
+	 * Metodo per caricare i fruitori
+	 * @return lista dei fruitori registrati
+	 */
+	public static ArrayList<Fruitore> caricaFruitori() {
+		return caricaLista(new TypeToken<ArrayList<Fruitore>>() {}, FILE_FRUITORI);
+	}
+	
+	
+	/**
+	 * Metodo per caricare i comprensori
+	 * @return insieme dei comprensori
+	 */
+	 public static ArrayList<Comprensorio> caricaComprensorio() {
+	     return caricaLista(new TypeToken<ArrayList<Comprensorio>>() {}, FILE_COMPRENSORI);
+	 }
+	
+	
+	/**
+	 * Metodo per caricare le categorie foglia presenti
+	 * @return lista delle categorie foglia
+	 */
+	public static ArrayList<CategoriaFoglia> caricaCategorieFoglia() {
+	     return caricaLista(new TypeToken<ArrayList<CategoriaFoglia>>() {}, FILE_CATEGORIEFOGLIA);
+	}
+	
+	
+	/**
+	 * Metodo per caricare le gerarchie
+	 * @return insieme delle gerarchie
+	 */
+	public static ArrayList<Gerarchia> caricaGerarchie() {
+        return caricaLista(new TypeToken<ArrayList<Gerarchia>>() {}, FILE_GERARCHIE);
+    }
+
+	
+	/**
+	 * Metodo per caricare le proposte di scambio che sono state accettate
+	 * @return lista delle proposte accettate
+	 */
+	public static ArrayList<PropostaScambio> caricaScambi() {
+		return caricaLista(new TypeToken<ArrayList<PropostaScambio>>() {}, FILE_PROPOSTE);
+	}
+	
+	
+	/**
+	 * Metodo per caricare gli insiemi chiusi
+	 * @return lista degli insiemi chiusi
+	 */
+	public static ArrayList<InsiemeChiuso> caricaInsiemi() {
+		return caricaLista(new TypeToken<ArrayList<InsiemeChiuso>>() {}, FILE_INSIEMI_CHIUSI);
+	}
+	
 	
 	/**
 	 * Metodo per caricare i fattori di conversione
@@ -261,59 +264,9 @@ public class GestorePersistenza {
 		Type listType = new TypeToken<FatConversione>() {}.getType();
 		FatConversione fatConversione = carica(listType, FILE_FATT_CONVERSIONE);
 		if(fatConversione == null) {
-			//System.out.println("Non è stato trovato nessun dato trovato per i fattori di conversione.");
 			return new FatConversione();
 		}
 		return fatConversione;
 	}
-	
-	/**
-	 * Metodo per caricare le categorie foglia presenti
-	 * @return lista delle categorie foglia
-	 */
-	public static ArrayList<CategoriaFoglia> caricaCategorieFoglia() {
-		Type listType = new TypeToken<ArrayList<CategoriaFoglia>>() {}.getType();
-		ArrayList<CategoriaFoglia> categorieFoglia = carica(listType, FILE_CATEGORIEFOGLIA);
-		if(categorieFoglia == null) {
-			return new ArrayList<CategoriaFoglia>();
-		}
-		return categorieFoglia;
-	}
-	
-	/**
-	 * Metodo per caricare i fruitori
-	 * @return lista dei fruitori registrati
-	 */
-	public static ArrayList<Fruitore> caricaFruitori() {
-		Type listType = new TypeToken<ArrayList<Fruitore>>() {}.getType();
-		ArrayList<Fruitore> fruitori = carica(listType, FILE_FRUITORI);
-		if(fruitori == null) {
-			return new ArrayList<Fruitore>();
-		}
-		return fruitori;
-	}
-	
-	/**
-	 * Metodo per caricare le proposte di scambio che sono state accettate
-	 * @return lista delle proposte accettate
-	 */
-	public static ArrayList<PropostaScambio> caricaScambi() {
-		Type listType = new TypeToken<ArrayList<PropostaScambio>>() {}.getType();
-		ArrayList<PropostaScambio> scambi = carica(listType, FILE_PROPOSTE);
-		if(scambi == null) {
-			return new ArrayList<PropostaScambio>();
-		}
-		return scambi;
-	}
-	
-	public static ArrayList<InsiemeChiuso> caricaInsiemi() {
-		Type listType = new TypeToken<ArrayList<InsiemeChiuso>>() {}.getType();
-		ArrayList<InsiemeChiuso> insiemi = carica(listType, FILE_INSIEMI_CHIUSI);
-		if(insiemi == null) {
-			return new ArrayList<InsiemeChiuso>();
-		}
-		return insiemi;
-	}
-	
-	
+
 }
