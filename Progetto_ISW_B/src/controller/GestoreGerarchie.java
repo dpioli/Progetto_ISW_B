@@ -2,6 +2,8 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import applicazione.CampoCaratteristico;
@@ -13,15 +15,14 @@ import applicazione.Gerarchia;
 import persistenza.GestorePersistenza;
 import persistenza.LogicaPersistenza;
 import utenti.Configuratore;
+import utenti.Fruitore;
 import util.InputDati;
 import util.Utilitaria;
 import vista.Vista;
 
 public class GestoreGerarchie {
 	
-	/**
-	 * CREAZIONE GERARCHIA
-	 */
+	
 	private static final String MSG_CREAZIONE_GERARCHIA = "Stai creando una nuova gerarchie, inserisci"
 			+ " le informazioni necessarie";
 	private static final String MSG_NOME_GERARCHIA = "Inserisci il nome della nuova gerarchia >";
@@ -31,33 +32,40 @@ public class GestoreGerarchie {
 	private static final String MSG_DESCRIZIONE_CAMPOCARATT = "Inserisci la descrizione per questo valore (premere invio altrimenti) > ";
 	private static final String MSG_INSERISCI_SOTTOCATEG = "Inserisci le sottocategorie della gerarchia appena creata:\n ";
 	private static final String MSG_GERARCHIA_CREATA_CON_SUCCESSO = "La gerarchia è stata creata con successo!";
-	
-	private static final String MSG_CERAZIONE_NODI = "Vuoi creare una categoria intermedia (1) o una foglia (2)? > ";
-	
-	private static final String MSG_CATEGORIA_NON_FOGLIA = "Stai creando una categroia intermedia:";
-	private static final String MSG_CATEGORIA_FOGLIA = "Stai creando una categoria foglia: ";
-	private static final String MSG_NOME_CATEGORIA = "Inserisci il nome della categoria >";
-	private static final String MSG_NOME_CATEGORIA_NON_VALIDO = "E' già presente una categoria con questo nome.";
-	private static final String MSG_NESSUN_COMPRENSORIO = "Non è presente nessun comprensorio all'interno del sistema, creane uno prima di creare una gerarchia.";
 
-	private static final String MSG_SELEZIONA_PRESTAZIONE = "\nSeleziona la prestazione per cui vuoi ottenere le proposte (annulla altrimenti) > ";
-	private static final String MSG_ANNULLA = ": Annulla";
-	private static final String MSG_PRESTAZIONI_DISPONIBILI = "Prestazioni disponibili: ";
-	private static final String MSG_LISTA_INSIEMI_CHIUSI = "Lista degli insiemi chiusi: \n";
-	
+	private static final String MSG_NESSUN_COMPRENSORIO = "Non è presente nessun comprensorio all'interno del sistema, creane uno prima di creare una gerarchia.";
 	private static final String MSG_TERMINAZIONE = "fine";
 	
+	
+	private static final String X = "\n******************************************";
+	private static final String MSG_INIZIALE = "Gerarchie presenti nel tuo comprensorio:";
+	private static final String MSG_SELEZ_GERARCH = "Seleziona una gerarchia > ";
+	private static final String COLON = ": ";
+	private static final String MSG_ANNULLATO_SCAMBIO = "Hai annullato la proposta di scambio...";	
 	
 	
 	ArrayList<Gerarchia> gerarchie; 
 	LogicaPersistenza logica;
 	Vista v;
+	GestoreCategorie gC;
 	
 	public GestoreGerarchie(LogicaPersistenza logica, Vista v) {
 		this.gerarchie = logica.getGerarchie();
 		this.logica = logica;
 		this.v = v;
+		this.gC = new GestoreCategorie(logica, v);
 	}
+	
+	
+	
+	/*
+	 * 
+	 * 
+	 *  CONFIGURATORE
+	 * 
+	 * 
+	 */
+	
 	
 	/**
 	 * Metodo di creazione Gerarchia:
@@ -100,7 +108,7 @@ public class GestoreGerarchie {
 		
 		Gerarchia nuovaGerarchia = addGerarchia(nomeGerarchia, config, comp, nomeCampo, valoriCampo, dimensioneDominio);
 		v.mostraMessaggio(MSG_INSERISCI_SOTTOCATEG);
-		addSottoCategorie(nuovaGerarchia.getCatRadice());
+		gC.addSottoCategorie(nuovaGerarchia.getCatRadice());
 		
 		logica.addGerarchia(nuovaGerarchia);
 		salvaGerarchieEFoglie();
@@ -126,125 +134,6 @@ public class GestoreGerarchie {
 		return nuovaGerarchia;
 	}
 	
-	/**
-	 * Metodo di aggiunta sottocategoria. 
-	 * Richiama la funzione di creazione categoria per ogni valore del campo caratteristico
-	 * della categoria passata come parametro.
-	 * @param categoria a cui aggiungere sottocategorie
-	 */
-	private void addSottoCategorie(Categoria categoria) {
-		for(Entry<String, String> v: categoria.getValoriCampo().entrySet()) {
-			creaCategoria(categoria);
-		}
-		
-	}
-	
-	/**
-	 * Metodo di creazione categoria che rimanda a uno dei due casi tra foglia e non foglia.
-	 * @param radice = categoria di aggancio
-	 */
-	private void creaCategoria(Categoria radice) {
-		int scelta = InputDati.leggiIntero(MSG_CERAZIONE_NODI, 1, 2);
-		
-		switch(scelta) {
-		case 1:
-			creaCategoriaNonFoglia(radice);
-			break;
-		case 2:
-			creaCategoriaFoglia(radice);
-			break;
-		default:
-			return;
-		}
-	}
-
-	/**
-	 * Metodo di creazione categoria non foglia.
-	 * Controlla l'unicità del nome.
-	 * Richiede l'inserimento del nome del campo caratteristico e dei sui valori.
-	 * @param radice = categoria di aggancio
-	 */
-	private void creaCategoriaNonFoglia(Categoria radice) {
-		v.mostraMessaggio(MSG_CATEGORIA_NON_FOGLIA);
-		
-		String nomeCatNonFl = InputDati.leggiStringaNonVuota(MSG_NOME_CATEGORIA);
-		for(Categoria c: radice.getSottoCateg()) {
-			if(c.eUguale(nomeCatNonFl)) {
-				v.mostraErrore(MSG_NOME_CATEGORIA_NON_VALIDO);
-				return;
-			}
-		}
-		String nomeCampo = InputDati.leggiStringaNonVuota(MSG_NOME_CAMPOCARATT);
-		HashMap<String, String> valoriCampo = new HashMap<>();
-		
-		boolean continua = true;
-		while(continua) {
-			String valore = InputDati.leggiStringaNonVuota(MSG_VALORE_CAMPOCARATT);
-			if(valore.equalsIgnoreCase(MSG_TERMINAZIONE)) {
-				continua = false;
-			} else {
-				String desc = InputDati.leggiStringa(MSG_DESCRIZIONE_CAMPOCARATT);
-				valoriCampo.put(valore, desc);
-			}
-		}
-		int dimensioneDominio = valoriCampo.size();
-		CampoCaratteristico cC = new CampoCaratteristico(nomeCampo, valoriCampo);
-		CategoriaNonFoglia catNnF1 = new CategoriaNonFoglia(nomeCatNonFl, cC, dimensioneDominio);
-		
-		radice.getSottoCateg().add(catNnF1);
-		addSottoCategorie(catNnF1);
-		
-	}
-
-	/**
-	 * Metodo che crea una categoria foglia controllando l'unicità del nome e recuperando l'ID
-	 * della foglia precedente per ricavare quello nuovo.
-	 * Chiama il metodo di aggiunta dell'FDC per il calcolo dei fattori rispetto a quelle preesistenti.
-	 * @param radice = categoria di aggancio
-	 */
-	private void creaCategoriaFoglia(Categoria radice) {
-		
-		v.mostraMessaggio(MSG_CATEGORIA_FOGLIA);
-		String nomeFoglia = InputDati.leggiStringaNonVuota(MSG_NOME_CATEGORIA);
-		
-		for(Categoria c: radice.getSottoCateg()) {
-			if(c.eUguale(nomeFoglia)) {
-				v.mostraErrore(MSG_NOME_CATEGORIA_NON_VALIDO);
-				return;
-			}
-		}
-		int ultimoID = logica.recuperaUltimoID();
-		CategoriaFoglia nuovaCategFoglia = new CategoriaFoglia(nomeFoglia, ultimoID);
-		radice.getSottoCateg().add(nuovaCategFoglia);
-		
-		logica.addCategoriaFoglia(nuovaCategFoglia);
-		aggiungiFDC(nuovaCategFoglia.getId());
-	}
-	
-	/**
-	 * Metodo che aggiunge un fattore di conversione alla logica.
-	 * @param id della foglia nuova
-	 */
-	private void aggiungiFDC(Integer nuova) {
-		logica.aggiungiFDC(nuova);
-	}
-	
-	
-	public int selezionaCategoria(ArrayList<CategoriaFoglia> categorieFoglia) {
-		v.mostraMessaggio(formattaCategorie(categorieFoglia));
-		return InputDati.leggiInteroConMINeMAX(MSG_SELEZIONA_PRESTAZIONE, 0, categorieFoglia.size());
-	}
-
-
-	private String formattaCategorie(ArrayList<CategoriaFoglia> categorieFoglia) {
-		StringBuffer sb = new StringBuffer();
-		sb.append(MSG_PRESTAZIONI_DISPONIBILI);
-		for(int i = 0; i < categorieFoglia.size(); i++) {
-			sb.append(i + ": " + categorieFoglia.get(i).getNome());
-		}
-		sb.append(categorieFoglia.size() + MSG_ANNULLA);
-		return sb.toString();
-	}
 	
 	/**
 	 * Metodo di visualizzazione delle gerarchie.
@@ -261,5 +150,64 @@ public class GestoreGerarchie {
 		GestorePersistenza.salvaCategorieFoglia(logica.getCategorieFoglia());
 		GestorePersistenza.salvaFatConversione(logica.getFatConversione());
 	}
+	
+	
+	
+	/*
+	 * 
+	 * 
+	 *  FRUITORE
+	 * 
+	 * 
+	 */
+	
+	/**
+	 * Metodo per navigare in profondita' tra le gerarchie
+	 */
+	public void naviga(Fruitore fruit) {
+		v.mostraMessaggio(X);
+		v.mostraMessaggio(MSG_INIZIALE);
+		ArrayList<Gerarchia> gerarch = new ArrayList<Gerarchia>();
+		for(Gerarchia g: logica.getGerarchie()) {
+			if(g.getNomeComprensorio().equals(fruit.getNomeComprensorio())) {
+				gerarch.add(g);
+			}
+		}
+		Gerarchia gScelta;
+		if(gerarch.isEmpty()) {
+			v.mostraErrore(MSG_ANNULLATO_SCAMBIO);
+			return;
+		} else {
+			gScelta = selezionaGerarchia(gerarch);
+            gC.navigaCategoria(gScelta.getCatRadice(), new HashMap<>()); 
+            // Inizializziamo la mappa dei valori di campo per la navigazione
+		}	
+	}
+	
+	
+	/**
+	 * Metodo per selezionare una gerarchia presente all'interno del comprensorio selezionato
+	 * @param gerarch
+	 * @return
+	 */
+	private Gerarchia selezionaGerarchia(ArrayList<Gerarchia> gerarch) {
+		StringBuffer sb = new StringBuffer();
+		for(int i = 0; i < gerarch.size(); i++) {
+			sb.append(i + COLON + gerarch.get(i).getCatRadice().getNome());
+		}
+		v.mostraMessaggio(sb.toString());
+		
+		int scelta = InputDati.leggiIntero(MSG_SELEZ_GERARCH, 0, gerarch.size() - 1);
+		return gerarch.get(scelta);
+	}
+	
+	public int selezionaCategoria(ArrayList<CategoriaFoglia> categorieFoglia) {
+		return gC.selezionaCategoria(categorieFoglia);
+	}
+	
+	public ArrayList<CategoriaFoglia> recuperaFoglieDisponibili(Fruitore fruit) {
+	   return gC.recuperaFoglieDisponibili(fruit);
+	}
+	
 
 }

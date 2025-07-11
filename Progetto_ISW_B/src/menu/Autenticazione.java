@@ -10,7 +10,7 @@ import persistenza.LogicaPersistenza;
 import utenti.Configuratore;
 import utenti.Fruitore;
 import util.InputDati;
-import util.Menu;
+import vista.Vista;
 
 
 /**
@@ -21,6 +21,7 @@ import util.Menu;
 public class Autenticazione {
 
 	private LogicaPersistenza logica;
+	private Vista v;
 	
 	private static final String USERNAME_PREDEFINITO = "configuratore";
 	private static final String PASSWORD_PREDEFINITA = "password";
@@ -64,6 +65,7 @@ public class Autenticazione {
 	 */
 	public Autenticazione(LogicaPersistenza logica) {
 		this.logica = logica;
+		this.v = new Vista();
 	}
 	
 	/**
@@ -76,12 +78,12 @@ public class Autenticazione {
 		String password;
 		
 		if(richiedeUscita(username)) {
-			System.out.println(RILEVATA_RICHIESTA_DI_USCITA);
+			v.mostraMessaggio(RILEVATA_RICHIESTA_DI_USCITA);
 			return null;
 		}
 		
 		if(username.equals(USERNAME_PREDEFINITO)) {
-			System.out.println(MSG_RILEVA_PRIMO_ACCESSO);
+			v.mostraMessaggio(MSG_RILEVA_PRIMO_ACCESSO);
 			primoAccessoConfig();
 		} 
 		
@@ -90,15 +92,15 @@ public class Autenticazione {
 				do{
 					password = InputDati.leggiStringaNonVuota(MSG_ASK_PASSWORD);
 					if(c.getPassword().equals(password)) {
-						System.out.println(MSG_ACCESSO_RIUSCITO + username +"\n");
+						v.mostraMessaggio(MSG_ACCESSO_RIUSCITO + username +"\n");
 						return c;
 					} else {
-						System.out.println(PSW_ERRATA);
+						v.mostraErrore(PSW_ERRATA);
 					}
 				}while(!richiedeUscita(password));
 			}
 		}
-		System.out.println(UTENTE_NON_PRESENTE);
+		v.mostraErrore(UTENTE_NON_PRESENTE);
 		return null;
 	}
 	
@@ -110,7 +112,7 @@ public class Autenticazione {
 		String username = InputDati.leggiStringaNonVuota(MSG_ASK_USERNAME);
 		String password;
 		if(richiedeUscita(username)) {
-			System.out.println(RILEVATA_RICHIESTA_DI_USCITA);
+			v.mostraMessaggio(RILEVATA_RICHIESTA_DI_USCITA);
 			return null;
 		}
 		
@@ -119,15 +121,15 @@ public class Autenticazione {
 				do {
 					password = InputDati.leggiStringaNonVuota(MSG_ASK_PASSWORD);
 					if(f.getPassword().equals(password)) {
-						System.out.println(MSG_ACCESSO_RIUSCITO + username + "\n");
+						v.mostraMessaggio(MSG_ACCESSO_RIUSCITO + username + "\n");
 						return f;
 					} else {
-						System.out.println(PSW_ERRATA);
+						v.mostraErrore(PSW_ERRATA);
 					}
 				} while (!richiedeUscita(password));
 			}
 		}
-		System.out.println(UTENTE_NON_PRESENTE);
+		v.mostraErrore(UTENTE_NON_PRESENTE);
 		return null;
 	}
 	
@@ -141,14 +143,14 @@ public class Autenticazione {
 		
 		controllaPredefinite();
 			
-		System.out.println(MSG_NEW_CREDENZIALI);
+		v.mostraMessaggio(MSG_NEW_CREDENZIALI);
 		String newUsername = inserisciUsername();
 		String newPassword = InputDati.leggiStringaNonVuota(MSG_NEW_PASSWORD);
 		
 		logica.addConfiguratore(new Configuratore(newUsername, newPassword));
 		GestorePersistenza.salvaConfiguratori(logica.getConfiguratori());
 		
-		System.out.println(MSG_SUCC_REGIST);
+		v.mostraMessaggio(MSG_SUCC_REGIST);
 	}
 	
 	/**
@@ -162,10 +164,10 @@ public class Autenticazione {
 	public void primoAccessoFruit(GestoreComprensori gC) {
 		
 		if(logica.getComprensori().isEmpty()) {
-			System.out.println(MSG_ASSENZA_COMPRENSORIO);
+			v.mostraErrore(MSG_ASSENZA_COMPRENSORIO);
 			return;
 		}
-		System.out.println(MSG_SELEZ_COMP);
+		v.mostraMessaggio(MSG_SELEZ_COMP);
 		Comprensorio comp = gC.selezionaComprensorio();
 		
 		String newUsername = inserisciUsernameFruit();
@@ -175,7 +177,7 @@ public class Autenticazione {
 		logica.addFruitore(new Fruitore(comp, newUsername, newPassword, mail));
 		GestorePersistenza.salvaFruitori(logica.getFruitori());
 		
-		System.out.println(MSG_SUCC_REGIST);
+		v.mostraMessaggio(MSG_SUCC_REGIST);
 	}
 
 	/***
@@ -186,7 +188,7 @@ public class Autenticazione {
 	public boolean ePresenteConfiguratore(String username) {
 		for(Configuratore c: logica.getConfiguratori()) {
 			if(c.getUsername().equals(username)) {
-				System.out.println(MSG_NON_VALIDO);
+				v.mostraErrore(MSG_NON_VALIDO);
 				return true;
 			}
 		}
@@ -200,7 +202,7 @@ public class Autenticazione {
 	public void controllaPredefinite() {
 		boolean predefinito;
 		do {
-			System.out.println(MSG_RICHIESTA_AUTENTICAZIONE);
+			v.mostraMessaggio(MSG_RICHIESTA_AUTENTICAZIONE);
 			String username = InputDati.leggiStringaNonVuota(MSG_ASK_USER_PREDEF);
 			String password = InputDati.leggiStringaNonVuota(MSG_ASK_PSW_PREDEF);
 			predefinito = rilevaPrimoAccesso(username, password);
@@ -228,9 +230,9 @@ public class Autenticazione {
 		do {
 			newUsername = InputDati.leggiStringaNonVuota(MSG_NEW_USERNAME);
 			if(newUsername.equals(USERNAME_PREDEFINITO)) {
-				System.out.println(MSG_NON_VALIDO);
+				v.mostraErrore(MSG_NON_VALIDO);
 			} if (ePresenteConfiguratore(newUsername)) {
-				System.out.println(MSG_NON_VALIDO);
+				v.mostraErrore(MSG_NON_VALIDO);
 			}
 			else break;
 		} while(!corretto);
@@ -247,9 +249,9 @@ public class Autenticazione {
 		do {
 			newUsername = InputDati.leggiStringaNonVuota(MSG_NEW_USERNAME);
 			if(ePresenteConfiguratore(newUsername)) {
-				System.out.println(MSG_NON_VALIDO);
+				v.mostraErrore(MSG_NON_VALIDO);
 			} else if(ePresenteFruitore(newUsername)) {
-				System.out.println(MSG_NON_VALIDO);
+				v.mostraErrore(MSG_NON_VALIDO);
 			} else {
 				break;
 			}
@@ -268,7 +270,7 @@ public class Autenticazione {
 			if(controllaEmail(email)) 
 				return email;
 			else
-				System.out.println(FORMATO_MAIL_ERRATO);
+				v.mostraErrore(FORMATO_MAIL_ERRATO);
 		} while (true);
 	}
 	
@@ -296,7 +298,7 @@ public class Autenticazione {
 	public boolean ePresenteFruitore(String username) {
 		for(Fruitore f: logica.getFruitori()) {
 			if(f.getUsername().equals(username)) {
-				System.out.println(MSG_NON_VALIDO);
+				v.mostraErrore(MSG_NON_VALIDO);
 				return true;
 			}
 		}

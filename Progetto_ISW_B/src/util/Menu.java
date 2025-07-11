@@ -1,9 +1,5 @@
 package util;
 
-import java.util.ArrayList;
-
-import applicazione.Comprensorio;
-import vista.IVista;
 import vista.Vista;
 
 /**
@@ -15,8 +11,8 @@ import vista.Vista;
  */
 public class Menu {
 	
-	final private static String CORNICE = "--------------------------------";
-	final private static String VOCE_USCITA = "0\tEsci dal programma";
+	final private static String CORNICE = "--------------------------------\n";
+	final private static String VOCE_USCITA = "0\tEsci dal programma\n";
 	final private static String RICHIESTA_INSERIMENTO = "Digita il numero dell'opzione desiderata > ";
 
 	private String titolo;
@@ -46,9 +42,9 @@ public class Menu {
 		
 		StringBuffer sb = new StringBuffer();
 		
-		sb.append(CORNICE + "\n");
-		sb.append(titolo  + "\n");
-		sb.append(CORNICE + "\n");
+		sb.append(CORNICE);
+		sb.append(titolo);
+		sb.append(CORNICE);
 		
 		for (int i = 0; i < voci.length; i++) {
 			sb.append((i + 1) + "\t" + voci[i] + "\n");
@@ -59,31 +55,5 @@ public class Menu {
 		
 		return sb.toString();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

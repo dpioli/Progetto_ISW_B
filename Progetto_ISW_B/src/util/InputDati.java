@@ -2,8 +2,12 @@ package util;
 
 import java.util.*;
 
+import vista.Vista;
+
 public class InputDati {
+	
 	private static Scanner lettore = creaScanner();
+	private static Vista v = new Vista();
 
 	private final static String ERRORE_FORMATO = "Attenzione: il dato inserito non e' nel formato corretto";
 	private final static String ERRORE_MINIMO = "Attenzione: e' richiesto un valore maggiore o uguale a ";
@@ -21,7 +25,7 @@ public class InputDati {
 	}
 
 	public static String leggiStringa(String messaggio) {
-		System.out.print(messaggio);
+		v.mostraMessaggio(messaggio);
 		return lettore.next();
 	}
 
@@ -34,7 +38,7 @@ public class InputDati {
 			if (lettura.length() > 0)
 				finito = true;
 			else
-				System.out.println(ERRORE_STRINGA_VUOTA);
+				v.mostraErrore(ERRORE_STRINGA_VUOTA);
 		} while (!finito);
 
 		return lettura;
@@ -44,13 +48,13 @@ public class InputDati {
 		boolean finito = false;
 		char valoreLetto = '\0';
 		do {
-			System.out.print(messaggio);
+			v.mostraMessaggio(messaggio);
 			String lettura = lettore.next();
 			if (lettura.length() > 0) {
 				valoreLetto = lettura.charAt(0);
 				finito = true;
 			} else {
-				System.out.println(ERRORE_STRINGA_VUOTA);
+				v.mostraErrore(ERRORE_STRINGA_VUOTA);
 			}
 		} while (!finito);
 		return valoreLetto;
@@ -65,7 +69,7 @@ public class InputDati {
 			if (ammissibili.indexOf(valoreLetto) != -1)
 				finito = true;
 			else
-				System.out.println(MESSAGGIO_AMMISSIBILI + ammissibili);
+				v.mostraMessaggio(MESSAGGIO_AMMISSIBILI + ammissibili);
 		} while (!finito);
 		return valoreLetto;
 	}
@@ -74,12 +78,12 @@ public class InputDati {
 		boolean finito = false;
 		int valoreLetto = 0;
 		do {
-			System.out.print(messaggio);
+			v.mostraMessaggio(messaggio);
 			try {
 				valoreLetto = lettore.nextInt();
 				finito = true;
 			} catch (InputMismatchException e) {
-				System.out.println(ERRORE_FORMATO);
+				v.mostraErrore(ERRORE_FORMATO);
 				String daButtare = lettore.next();
 			}
 		} while (!finito);
@@ -102,7 +106,7 @@ public class InputDati {
 			if (valoreLetto >= minimo)
 				finito = true;
 			else
-				System.out.println(ERRORE_MINIMO + minimo);
+				v.mostraErrore(ERRORE_MINIMO + minimo);
 		} while (!finito);
 
 		return valoreLetto;
@@ -121,8 +125,8 @@ public class InputDati {
 		do {
 			valoreLetto = leggiIntero(messaggio);
 			if (valoreLetto < minimo || valoreLetto > massimo) {
-				System.out.println(ERRORE_MINIMO + minimo);
-				System.out.println( ERRORE_MASSIMO + massimo);
+				v.mostraErrore(ERRORE_MINIMO + minimo);
+				v.mostraErrore( ERRORE_MASSIMO + massimo);
 			}
 			else finito = true;
 		} while (!finito);
@@ -138,9 +142,9 @@ public class InputDati {
 			if (valoreLetto >= minimo && valoreLetto <= massimo)
 				finito = true;
 			else if (valoreLetto < minimo)
-				System.out.println(ERRORE_MINIMO + minimo);
+				v.mostraErrore(ERRORE_MINIMO + minimo);
 			else
-				System.out.println(ERRORE_MASSIMO + massimo);
+				v.mostraErrore(ERRORE_MASSIMO + massimo);
 		} while (!finito);
 
 		return valoreLetto;
@@ -150,12 +154,12 @@ public class InputDati {
 		boolean finito = false;
 		double valoreLetto = 0;
 		do {
-			System.out.print(messaggio);
+			v.mostraMessaggio(messaggio);
 			try {
 				valoreLetto = lettore.nextDouble();
 				finito = true;
 			} catch (InputMismatchException e) {
-				System.out.println(ERRORE_FORMATO);
+				v.mostraErrore(ERRORE_FORMATO);
 				String daButtare = lettore.next();
 			}
 		} while (!finito);
@@ -170,7 +174,7 @@ public class InputDati {
 			if (valoreLetto >= minimo)
 				finito = true;
 			else
-				System.out.println(ERRORE_MINIMO + minimo);
+				v.mostraErrore(ERRORE_MINIMO + minimo);
 		} while (!finito);
 
 		return valoreLetto;
@@ -190,8 +194,8 @@ public class InputDati {
 		do {
 			valoreLetto = leggiDouble(messaggio);
 			if (valoreLetto < minimo || valoreLetto > massimo) {
-				System.out.println(ERRORE_MINIMO + minimo);
-				System.out.println( ERRORE_MASSIMO + massimo);
+				v.mostraErrore(ERRORE_MINIMO + minimo);
+				v.mostraErrore(ERRORE_MASSIMO + massimo);
 			}
 			else finito = true;
 		} while (!finito);

@@ -1,25 +1,12 @@
 package menu;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 import persistenza.GestorePersistenza;
 import persistenza.LogicaPersistenza;
-import applicazione.CampoCaratteristico;
-import applicazione.Categoria;
-import applicazione.CategoriaFoglia;
-import applicazione.CategoriaNonFoglia;
-import applicazione.Comprensorio;
 import applicazione.FatConversione;
-import applicazione.Gerarchia;
-import applicazione.InsiemeChiuso;
-import applicazione.PropostaScambio;
 import controller.GestoreComprensori;
 import controller.GestoreGerarchie;
 import controller.GestoreProposte;
 import utenti.Configuratore;
-import util.InputDati;
 import util.Menu;
 import vista.VistaConfiguratore;
 

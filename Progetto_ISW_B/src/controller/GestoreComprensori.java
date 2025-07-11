@@ -11,9 +11,7 @@ import vista.Vista;
 
 public class GestoreComprensori {
 	
-	/**
-	 * CREAZIONE COMPRENSORIO
-	 */
+
 	private static final String MSG_CREAZIONE_COMPRENSORIO = "Stai creando un nuovo comprensorio, inserisci" 
 								+ " le informazioni necessarie";
 	private static final String MSG_NOME_COMPRENSORIO = "Inserisci il nome del comprensorio > ";
