@@ -63,9 +63,5 @@ public class CampoCaratteristico {
 			valoriCampo.put(v, descrizione);
 		}
 	}
-	
-	public String toString() {
-		return String.format("%s --> %s", this.getNomeCampo(), this.getValori().keySet());
-	}
 
 }

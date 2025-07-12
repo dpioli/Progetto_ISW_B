@@ -105,9 +105,4 @@ public class PropostaScambio {
 		return offerta.getPrestazione().getNome();
 	}
 	
-	@Override
-	public String toString() {
-		return String.format("Richiesta: " + richiesta.toString() + " -> " + " Offerta: " + offerta.toString() + " | " + " Stato: " + checkStato());
-	}
-
 }

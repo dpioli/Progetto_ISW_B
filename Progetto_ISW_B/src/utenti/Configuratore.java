@@ -36,8 +36,4 @@ public class Configuratore implements IUtente{
 		this.password = password;
 	}
 	
-	@Override
-	public String toString() {
-		return String.format("Username = %s", this.getUsername());
-	}
 }

@@ -51,41 +51,4 @@ public class Gerarchia {
 		return catRadice.eUguale(nomeGerarchia);
 	}
 	
-	/**
-	 * Metodo per ottenere la stringa di visualizzazione della gerarchia
-	 * @param gerarchia
-	 * @return stringa dell'albero generato
-	 */
-	public static String generaAlberoStringa(Gerarchia gerarchia) {
-        StringBuilder builder = new StringBuilder();
-        costruisciStringa(gerarchia.getCatRadice(), "", false, builder);
-        return builder.toString();
-    }
-	
-	/**
-	 * Metodo per generare il grafo della gerarchia 
-	 * @param categoria
-	 * @param prefisso
-	 * @param èUltimo
-	 * @param builder
-	 */
-    private static void costruisciStringa(Categoria categoria, String prefisso, boolean èUltimo, StringBuilder builder) {
-        builder.append(prefisso);
-        if (!prefisso.isEmpty()) {
-            builder.append(èUltimo ? "└── " : "├── ");
-        }
-        if(!(categoria.isFoglia())) {
-        	builder.append(categoria.getNome()).append(categoria.getValoriCampo().toString()).append("\n");
-        } else {
-        	builder.append(categoria.getNome()).append("\n");
-        }
-        
-        List<Categoria> figli = categoria.getSottoCateg();
-        for (int i = 0; i < figli.size(); i++) {
-            boolean ultimo = (i == figli.size() - 1);
-            String nuovoPrefisso = prefisso + (prefisso.isEmpty() ? " " : (èUltimo ? "    " : "│   "));
-            costruisciStringa(figli.get(i), nuovoPrefisso, ultimo, builder);
-        }
-    }
-	
 }

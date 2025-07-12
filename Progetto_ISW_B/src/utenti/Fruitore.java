@@ -65,9 +65,4 @@ public class Fruitore implements IUtente{
 		this.comprensorio = comprensorio;
 	}
 
-	@Override
-	public String toString() {
-		return String.format("Username = %s", this.getUsername());
-	}
-
 }

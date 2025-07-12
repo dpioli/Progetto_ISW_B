@@ -45,11 +45,6 @@ public class Comprensorio {
 	 */
 	public boolean ePresete(String cerca) {
 		return nome.equalsIgnoreCase(cerca);
-	}
-	
-	public String toString() {
-		return String.format("Comprensorio: %s\nComuni: %s", this.nome, this.comuni);
-	}
-	
+	}	
 
 }
