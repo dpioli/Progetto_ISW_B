@@ -35,11 +35,11 @@ public class Menu {
 	}
 
 	public int chiediScelta() {
-		vista.mostraMenu(this);
+		vista.mostraMessaggio(formattaMenu());
 		return InputDati.leggiIntero(RICHIESTA_INSERIMENTO, 0, voci.length);
 	}
 	
-	public String formattaMenu() {
+	private String formattaMenu() {
 		
 		StringBuffer sb = new StringBuffer();
 		

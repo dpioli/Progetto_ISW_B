@@ -217,36 +217,5 @@ public class LogicaPersistenza {
 	public void aggiungiInsieme(InsiemeChiuso insieme) {
 		insiemi.add(insieme);
 	}
-	
-	
-	/**
-	 * Metodi che recupera l'identificativo,
-	 * permette di calcolare quello della successiva per mantenere la persistenza.
-	 * @return id 
-	 */
-	public int recuperaUltimoID() {
-		if(categorieFoglia.isEmpty())
-			return 0;
-		int ultimo = categorieFoglia.size() - 1;
-		CategoriaFoglia f = categorieFoglia.get(ultimo);
-		return f.getId();
-	}
-	
-	public int recuperaId() {
-		if(scambi.isEmpty())
-			return 0;
-		int ultimo = scambi.size() - 1;
-		PropostaScambio p = scambi.get(ultimo);
-		return p.getId();
-	}
-	
-	public int recuperaIdInsiemeChiuso() {
-		if(insiemi.isEmpty())
-			return 0;
-		int ultimo = insiemi.size() - 1;
-		InsiemeChiuso ins = insiemi.get(ultimo);
-		return ins.getId();
-	}
-	
 
 }

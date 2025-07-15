@@ -1,12 +1,8 @@
 package vista;
-
-import menu.Menu;
-
+/**
+ * Interfaccia per vista nella separazioneMVC
+ */
 public interface IVista {
-	
-	public default void mostraMenu(Menu menu) {
-		System.out.println(menu.formattaMenu());
-	}
 	    
     public default void mostraMessaggio(String msg) {
         System.out.println(msg);
@@ -15,10 +11,5 @@ public interface IVista {
     public default void mostraErrore(String msg) {
         System.err.println("Errore: " + msg);
     }
-
-
-
-
-	
 
 }

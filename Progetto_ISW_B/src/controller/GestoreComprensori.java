@@ -9,11 +9,12 @@ import util.InputDati;
 import util.Utilitaria;
 import vista.Vista;
 
+/**
+ * Controller GRASP che contiene la logica applicativa riguardante gli oggetti Comprensorio.
+ */
 public class GestoreComprensori {
-	
 
-	private static final String MSG_CREAZIONE_COMPRENSORIO = "Stai creando un nuovo comprensorio, inserisci" 
-			+ " le informazioni necessarie";
+	private static final String MSG_CREAZIONE_COMPRENSORIO = "Stai creando un nuovo comprensorio, inserisci le informazioni necessarie";
 	private static final String MSG_NOME_COMPRENSORIO = "Inserisci il nome del comprensorio > ";
 	private static final String MSG_NOME_COMP_NON_VALIDO = "Il nome inserito non è valido in quanto gia presente, riprova";
 	private static final String MSG_INSERISCI_COMUNI = "Inserisci il nome del comune (o 'fine' per terminare) > ";

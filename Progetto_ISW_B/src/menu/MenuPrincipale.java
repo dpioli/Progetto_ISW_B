@@ -29,19 +29,6 @@ public class MenuPrincipale extends Menu {
 	private static final int CASE_FRUITORE = 2;
 	
 	/**
-	 * Menu Autenticazione 
-	 */
-	private static final String MSG_AUTENT = "\tAUTENTICAZIONE";
-	private static final String MSG_PRIMO_ACCESSO = "Registrati";
-	private static final String MSG_CONFIG_REGISTRATO= "Accedi";
-	private final static String MSG_P_PRECEDENTE = "Ritorna alla pagina iniziale";
-
-	private static final int CASE_PRIMO_ACCESSO = 1;
-	private static final int CASE_ACCESSO = 2;
-	private static final int CASE_P_INIZIALE = 3;
-	private String[] vociAutenticazione = {MSG_PRIMO_ACCESSO, MSG_CONFIG_REGISTRATO, MSG_P_PRECEDENTE};
-	
-	/**
 	 * Voci Menu Configuratore
 	 */
 	private static final int CASE_N_COMPRENSORIO = 1;

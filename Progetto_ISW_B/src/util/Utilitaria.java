@@ -24,6 +24,10 @@ public abstract class Utilitaria {
 	private static final double SOGLIA_ALTA = 0.6;
 	
 	private static final String LEGENDA = "----- LEGENDA -----\n";
+	private static final String FRUITORE_ASSOCIATO = "Fruitore associato: ";
+	private static final String ANNULLA_SELEZIONE = ": Annulla selezione";
+	private static final String COLON = ": ";
+
 
 	static final Map<Class<?>, Function<Object, String>> FORMATTERS = new HashMap<>();
 
@@ -35,6 +39,15 @@ public abstract class Utilitaria {
 	    FORMATTERS.put(Proposta.class, o -> formattaProposta((Proposta) o));
 	    FORMATTERS.put(PropostaScambio.class, o -> formattaScambio((PropostaScambio) o));
 	    FORMATTERS.put(InsiemeChiuso.class, o -> formattaInsiemeChiuso((InsiemeChiuso) o));
+	}
+	
+	public static double arrotondaCustom(double valore) {
+	    int intero = (int) Math.floor(valore);
+	    double decimale = valore - intero;
+	    
+	    return (decimale < SOGLIA_BASSA) ? intero  // arrotonda per difetto
+	            : (decimale < SOGLIA_ALTA) ? intero + 0.5
+	            : intero + 1;  // arrotonda per eccesso
 	}
 	
 	public static <T> String formattaLista(ArrayList<T> lista) {
@@ -59,14 +72,6 @@ public abstract class Utilitaria {
 	    return sb.toString();
 	}
 	
-	public static double arrotondaCustom(double valore) {
-	    int intero = (int) Math.floor(valore);
-	    double decimale = valore - intero;
-	    
-	    return (decimale < SOGLIA_BASSA) ? intero  // arrotonda per difetto
-	            : (decimale < SOGLIA_ALTA) ? intero + 0.5
-	            : intero + 1;  // arrotonda per eccesso
-	}
 	
 	/**
 	 * 
@@ -130,6 +135,18 @@ public abstract class Utilitaria {
      * PROPOSTA
      * 
      */
+    public static String formattaProposte(ArrayList<PropostaScambio> proposte) {
+		StringBuffer sb = new StringBuffer();
+		
+		for(int i = 0; i < proposte.size(); i++) {
+			sb.append(i + COLON);
+			sb.append( Utilitaria.formattaScambio(proposte.get(i)) );
+		}
+		sb.append(proposte.size() + ANNULLA_SELEZIONE);
+		
+		return sb.toString();
+	}
+    
     public static String formattaProposta(Proposta p) {
 		return " [prestazione " + p.getTipo().name().toLowerCase() 
 				+ ": "+ p.getPrestazione().getNome() 
@@ -161,6 +178,7 @@ public abstract class Utilitaria {
 		return sb.toString();
 	}
 
+    
 
     /**
      * 
@@ -170,6 +188,13 @@ public abstract class Utilitaria {
     public static String formattaUtente(IUtente u) {
 		return String.format("Username = %s", u.getUsername());
 	}
+    
+    
+    public static String formattaAssociato(PropostaScambio p) {
+    	return String.format(FRUITORE_ASSOCIATO 
+							+ p.getAssociato().getMail() 
+							+ "\n");
+    }
     
     public static String formattaFruitori(ArrayList<Fruitore> fruitoriAssociati) {
 		StringBuffer sb = new StringBuffer();

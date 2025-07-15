@@ -15,11 +15,15 @@ import util.InputDati;
 import util.Utilitaria;
 import vista.Vista;
 
+/**
+ * Controller GRASP che contiene la logica applicativa riguardante gli oggetti Gerarchia.
+ * Mantiene un riferimento a un GestoreCategoria in quanto le gerarchie sono viste come liste di categorie a partire da una categoria radice.
+ */
 public class GestoreGerarchie {
 	
-	
-	private static final String MSG_CREAZIONE_GERARCHIA = "Stai creando una nuova gerarchie, inserisci"
-			+ " le informazioni necessarie";
+	private static final String MSG_NESSUN_COMPRENSORIO = "Non è presente nessun comprensorio all'interno del sistema, creane uno prima di creare una gerarchia.";
+	private static final String MSG_CREAZIONE_GERARCHIA = "Stai creando una nuova gerarchie, inserisci le informazioni necessarie";	
+
 	private static final String MSG_NOME_GERARCHIA = "Inserisci il nome della nuova gerarchia >";
 	private static final String MSG_NOME_GERARCHIA_NON_VALIDO = "E' già presente una gerarchia con questo nome.";
 	private static final String MSG_NOME_CAMPOCARATT = "Inserisci il nome del campo caratteristico > ";
@@ -27,17 +31,13 @@ public class GestoreGerarchie {
 	private static final String MSG_DESCRIZIONE_CAMPOCARATT = "Inserisci la descrizione per questo valore (premere invio altrimenti) > ";
 	private static final String MSG_INSERISCI_SOTTOCATEG = "Inserisci le sottocategorie della gerarchia appena creata:\n ";
 	private static final String MSG_GERARCHIA_CREATA_CON_SUCCESSO = "La gerarchia è stata creata con successo!";
-
-	private static final String MSG_NESSUN_COMPRENSORIO = "Non è presente nessun comprensorio all'interno del sistema, creane uno prima di creare una gerarchia.";
-	private static final String MSG_TERMINAZIONE = "fine";
 	
-	
-	private static final String X = "\n******************************************";
 	private static final String MSG_INIZIALE = "Gerarchie presenti nel tuo comprensorio:";
 	private static final String MSG_SELEZ_GERARCH = "Seleziona una gerarchia > ";
-	private static final String COLON = ": ";
 	private static final String MSG_ANNULLATO_SCAMBIO = "Hai annullato la proposta di scambio...";	
-	
+	private static final String MSG_TERMINAZIONE = "fine";
+	private static final String COLON = ": ";
+	private static final String X = "\n******************************************";
 	
 	LogicaPersistenza logica;
 	ArrayList<Gerarchia> gerarchie; 
@@ -137,6 +137,7 @@ public class GestoreGerarchie {
 		return Utilitaria.formattaLista(gerarchie);
 	}
 	
+	
 	/**
 	 * Metodo di salvataggio gerarchie, categorie foglia e matrice dei fattori di conversione.
 	 */
@@ -145,7 +146,6 @@ public class GestoreGerarchie {
 		GestorePersistenza.salvaCategorieFoglia(logica.getCategorieFoglia());
 		GestorePersistenza.salvaFatConversione(logica.getFatConversione());
 	}
-	
 	
 	
 	/*

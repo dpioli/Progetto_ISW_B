@@ -16,12 +16,12 @@ import util.Utilitaria;
 import vista.Vista;
 import vista.VistaFruitore;
 
+/**
+ * Controller GRASP che contiene la logica applicativa riguardante gli oggetti Proposta e PropostaScambio.
+ */
 public class GestoreProposte {
 	
 	//Configuratore
-	private static final String MSG_ASSENZA_PROPOSTE_PER_PRESTAZIONE = "\nNon è presente nessuna proposta per questa prestazione.\n";
-	private static final String FRUITORE_ASSOCIATO = "Fruitore associato: ";
-	private static final String MSG_ELENCO_PROPOSTE = "\nElenco proposte in cui è presente -> ";
 	private static final String MSG_OPERAZIONE_ANNULLATA = "\nOperazione annullata....\n";
 	
 	//Fruitore
@@ -36,18 +36,15 @@ public class GestoreProposte {
 	private static final String MSG_PRESTAZIONE_NON_VALIDA = "Non puoi offrire la stessa prestazione che richiedi!";
 	
 	private static final String MSG_PROPOSTA_RITIRATA = "\nLa proposta è stata ritirata.\n";
-	private static final String NEW_LINE_ARROW = "\n> ";
-	private static final String MSG_ASSENZA_PROPOSTE = "\nNon ci sono proposte presenti.\n";
 	private static final String MSG_SELEZIONA_PROPOSTA_DA_RITIRATE = "Seleziona la proposta che vuoi ritirare (annulla altrimenti) > ";
-	private static final String ANNULLA_SELEZIONE = ": Annulla selezione";
 	private static final String MSG_PROPOSTE_RITIRABILI = "Proposte ritirabili: ";
 	private static final String MSG_CONFERMA_RITIRO_PROPOSTA = "\nSei sicuro di ritirare questa proposta ";
 	private static final String MSG_ASSENZA_PROPOSTE_RITIRATE = "\nNon hai proposte da ritirare.\n";
+	
 	private static final String MSG_PROPOSTA_SODDISFATTA = "\nLa tua proposta è stata soddisfatta verrai contatato a breve con tutte le informazioni!!\n";
 	private static final String MSG_PROPOSTA_NON_SODDISFATTA = "\nAl momemnto non ci sono proposte che soddisfano la tua proposta.\n"
 			+ "Sarai contattato appena verra' soddisfatta !!";
 	
-	private static final String COLON = ": ";
 	
 	LogicaPersistenza logica;
 	ArrayList<PropostaScambio> proposte; 
@@ -58,85 +55,6 @@ public class GestoreProposte {
 		this.proposte = logica.getScambi();
 		this.v = v;
 	}
-	
-	
-	
-	
-	/**
-	 * 
-	 * 
-	 * CONFIGURATORE
-	 * 
-	 * 
-	 */
-	
-	
-	/**
-	 * Metodo per visualizzare le proposte relative ad una specifica categoria foglia
-	 */
-	public String formattaProposteDiFoglia(GestoreGerarchie gGerarchie) {
-		
-		ArrayList<CategoriaFoglia> categorieFoglia = logica.getCategorieFoglia();
-		ArrayList<PropostaScambio> proposte = logica.getScambi();
-		
-		int selezionata = gGerarchie.selezionaCategoria(categorieFoglia);
-		
-		if(selezionata == categorieFoglia.size()) {
-			return MSG_OPERAZIONE_ANNULLATA;
-		}
-			
-		CategoriaFoglia f = categorieFoglia.get(selezionata);
-		StringBuffer sb = new StringBuffer();
-		boolean presenteProposta = false;
-		
-		for(PropostaScambio p : proposte) {
-			boolean presenteRichiesta = p.getNomeRichiesta().equals(f.getNome());
-			boolean presenteOfferta = p.getNomeOfferta().equals(f.getNome());
-			
-			if(presenteRichiesta || presenteOfferta) {
-				if(!presenteProposta) {
-					sb.append(MSG_ELENCO_PROPOSTE)
-						.append(f.getNome().toUpperCase())
-						.append(":\n");
-					presenteProposta = true;
-				}
-				
-				sb.append("> ")
-					.append( Utilitaria.formattaScambio(p) )
-					.append("\n")
-					.append("\t")
-					.append(FRUITORE_ASSOCIATO 
-							+ p.getAssociato().getMail() 
-							+ "\n");
-			}
-		}
-		if(presenteProposta) {
-			return sb.toString();
-		} else {
-			return MSG_ASSENZA_PROPOSTE_PER_PRESTAZIONE;
-		}
-		
-	}
-	
-	/**
-	 * Metodo per andare a visualizzare l'insiemi chiusi in modo da poter poi contatare i fruitori associati
-	 */
-	public String formattaInsiemiChiusi() {
-		return Utilitaria.formattaLista(logica.getInsiemi());
-	}
-	
-	
-	
-	
-	/**
-	 * 
-	 * 
-	 * FRUITORE
-	 * 
-	 * 
-	 */
-	
-	
 	
 	/**
 	 * Metodo per la formulazione di una richiesta di scambi.
@@ -170,7 +88,7 @@ public class GestoreProposte {
 	    double arrotondato = Utilitaria.arrotondaCustom(valore);
 		Proposta offerta = new Proposta(foglie.get(incambio), TipoProposta.OFFERTA, arrotondato);
 		
-		int id = logica.recuperaId();
+		int id = recuperaId();
 		
 		//SCAMBIO
 		PropostaScambio scambio = new PropostaScambio(richiesta, offerta, id);
@@ -212,7 +130,7 @@ public class GestoreProposte {
 		
 		for(PropostaScambio p: proposteValide) {
 			if(coppiaPerfetta(proposta, p)) {
-				InsiemeChiuso ins = new InsiemeChiuso(logica.recuperaIdInsiemeChiuso());
+				InsiemeChiuso ins = new InsiemeChiuso(recuperaIdInsiemeChiuso());
 				aggiornaStatoAChiusa(proposta, logica.getScambi());
 				aggiornaStatoAChiusa(p, logica.getScambi());
 				
@@ -232,7 +150,7 @@ public class GestoreProposte {
 		catena.add(proposta);
 		
 		if(cercaCatena(catena, proposteValide)) {
-			InsiemeChiuso insC = new InsiemeChiuso(logica.recuperaIdInsiemeChiuso());
+			InsiemeChiuso insC = new InsiemeChiuso(recuperaIdInsiemeChiuso());
 			
 			for(PropostaScambio p: catena) {
 				aggiornaStatoAChiusa(p, logica.getScambi());
@@ -446,58 +364,45 @@ public class GestoreProposte {
 	 */
 	private int selezionaPropostaRitirabile(ArrayList<PropostaScambio> proposte) {
 		v.mostraMessaggio(MSG_PROPOSTE_RITIRABILI);
-		v.mostraMessaggio(formattaProposte(proposte));
+		v.mostraMessaggio(Utilitaria.formattaProposte(proposte));
 		
 		int propostaSelezionata = InputDati.leggiInteroConMINeMAX(MSG_SELEZIONA_PROPOSTA_DA_RITIRATE, 0, proposte.size());
 		return propostaSelezionata;
 	}
-
-	private String formattaProposte(ArrayList<PropostaScambio> proposte) {
-		StringBuffer sb = new StringBuffer();
-		
-		for(int i = 0; i < proposte.size(); i++) {
-			sb.append(i + COLON);
-			sb.append( Utilitaria.formattaScambio(proposte.get(i)) );
-		}
-		sb.append(proposte.size() + ANNULLA_SELEZIONE);
-		
-		return sb.toString();
-	}
-	
 	/**
-	 * Metodo per la visualizzazione delle proposte da parte del fruitore
-	 * sia che siano aperte, chiuse, ritirate.
-	 * Effettuato solo il controllo per vedere quelle di cui il fruitore è autore
+	 * Metodi che recupera l'identificativo,
+	 * permette di calcolare quello della successiva per mantenere la persistenza.
+	 * @return id 
 	 */
-	public String formattaPropostePerFruitore(Fruitore fruit) {
-		ArrayList<PropostaScambio> proposte = logica.getScambi();
-		ArrayList<PropostaScambio> proposteFruit = new ArrayList<>();
-		
-		StringBuffer sb = new StringBuffer();
-		
-		if(proposte.isEmpty()) {
-			return MSG_ASSENZA_PROPOSTE;
-		}
-			
-		for(PropostaScambio p: proposte) {
-			boolean corrisponde = fruit.getUsername().equals(p.getNomeAssociato());
-			if(corrisponde)
-				proposteFruit.add(p);
-		}
-		
-		if(proposteFruit.isEmpty()) {
-			return MSG_ASSENZA_PROPOSTE;
-		} else {
-			for(PropostaScambio p: proposteFruit) {
-				sb.append(NEW_LINE_ARROW + Utilitaria.formattaScambio(p));
-			}
-			return sb.toString();
-				
-		}
+	
+	private int recuperaId() {
+		ArrayList<PropostaScambio> scambi = logica.getScambi();
+		if(scambi.isEmpty())
+			return 0;
+		int ultimo = scambi.size() - 1;
+		PropostaScambio p = scambi.get(ultimo);
+		return p.getId();
 	}
 	
-	public void mostraProposte(Fruitore fruit, VistaFruitore vf) {
-		vf.visualizzaProposte(formattaPropostePerFruitore(fruit));
+	private int recuperaIdInsiemeChiuso() {
+		ArrayList<InsiemeChiuso> insiemi = logica.getInsiemi();
+		if(insiemi.isEmpty())
+			return 0;
+		int ultimo = insiemi.size() - 1;
+		InsiemeChiuso ins = insiemi.get(ultimo);
+		return ins.getId();
+	}
+
+	/**
+	 * Metodo per andare a visualizzare l'insiemi chiusi in modo da poter poi contatare i fruitori associati
+	 */
+	public String formattaInsiemiChiusi() {
+		return Utilitaria.formattaLista(logica.getInsiemi());
+	}
+	
+	
+	public void mostraPropostePerFruitore(Fruitore fruit, VistaFruitore vf) {
+		vf.visualizzaPropostePerFruitore(fruit, logica.getScambi());
 	}
 
 }

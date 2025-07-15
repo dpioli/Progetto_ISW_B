@@ -2,10 +2,6 @@ package menu;
 
 import persistenza.GestorePersistenza;
 import persistenza.LogicaPersistenza;
-import applicazione.FatConversione;
-import controller.GestoreComprensori;
-import controller.GestoreGerarchie;
-import controller.GestoreProposte;
 import controller.Gestori;
 import utenti.Configuratore;
 import util.Utilitaria;
@@ -80,7 +76,7 @@ public class MenuConfiguratore extends Menu {
 	/**
 	 * Metodo di creazione Gerarchia:
 	*/
-	public void creaGerarchia(Configuratore config) {
+	public void creaGerarchia() {
 		g.creaGerarchia(config);
 	}
 	
@@ -97,7 +93,7 @@ public class MenuConfiguratore extends Menu {
 	}
 	
 	public void mostraProposte() {
-		vc.visualizzaProposte(g.formattaProposte());
+		vc.visualizzaProposte(g.formattaProposteDiFoglia( logica.getCategorieFoglia(), logica.getScambi()));
 	}
 	
 	public void mostraInsiemiChiusi() {

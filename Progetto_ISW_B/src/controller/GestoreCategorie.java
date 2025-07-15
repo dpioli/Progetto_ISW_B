@@ -16,6 +16,9 @@ import utenti.Fruitore;
 import util.InputDati;
 import vista.Vista;
 
+/**
+ * Controller GRASP che contiene la logica applicativa riguardante gli oggetti Categoria.
+ */
 public class GestoreCategorie {
 	
 	/**
@@ -34,7 +37,6 @@ public class GestoreCategorie {
 
 	private static final String MSG_SELEZIONA_PRESTAZIONE = "\nSeleziona la prestazione per cui vuoi ottenere le proposte (annulla altrimenti) > ";	
 	private static final String MSG_TERMINAZIONE = "fine";
-	
 
 	/*
 	 * FRUITORE
@@ -47,16 +49,13 @@ public class GestoreCategorie {
 	private static final String MSG_ASSENZA_SOTTOCATEG = "Non ci sono sottocategorie. Ritorno al menu principale.";
 	private static final String MSG_CAMPO_CARATT = "Campo caratteristico: ";
 	private static final String MSG_SOTTOCATEG_DISP = "Sottocategorie disponibili:";
+	private static final String MSG_CHECK_COMPRENSORIO = "\nNon ci sono Gerarchie appartenenti al tuo comprensorio geografico.\n";
+	private static final String MSG_PRESTAZIONI_A_DISPOSIZIONE = "Prestazioni a disposizione >>\n";
+	
 	private static final String DOT = ". ";
 	private static final String COLON = ": ";
 	private static final String NEW_LINE = "\n";
 	private static final String MSG_VOCE_TORNA_INDIETRO = "0. Torna al menu";
-
-	private static final String MSG_CHECK_COMPRENSORIO = "\nNon ci sono Gerarchie appartenenti al tuo comprensorio geografico.\n";
-	private static final String MSG_PRESTAZIONI_A_DISPOSIZIONE = "Prestazioni a disposizione >>\n";
-	
-
-	
 	
 	LogicaPersistenza logica;
 	Vista v;
@@ -154,12 +153,25 @@ public class GestoreCategorie {
 				return;
 			}
 		}
-		int ultimoID = logica.recuperaUltimoID();
+		int ultimoID = recuperaUltimoID();
 		CategoriaFoglia nuovaCategFoglia = new CategoriaFoglia(nomeFoglia, ultimoID);
 		radice.getSottoCateg().add(nuovaCategFoglia);
 		
 		logica.addCategoriaFoglia(nuovaCategFoglia);
 		aggiungiFDC(nuovaCategFoglia.getId());
+	}
+	
+	/**
+	 * Metodo per recuperare ultimo identificativo registrato, in modo da mantenere la persistenza coerente.
+	 * @return
+	 */
+	private int recuperaUltimoID() {
+		ArrayList<CategoriaFoglia> categorieFoglia = logica.getCategorieFoglia();
+		if(categorieFoglia.isEmpty())
+			return 0;
+		int ultimo = categorieFoglia.size() - 1;
+		CategoriaFoglia f = categorieFoglia.get(ultimo);
+		return f.getId();
 	}
 	
 	/**

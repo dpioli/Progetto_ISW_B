@@ -16,7 +16,6 @@ public class MenuFruitore extends Menu{
 	private Fruitore fruit;
 	private LogicaPersistenza logica;
 	private VistaFruitore vf;
-	
 	private Gestori g;
 	
 	private static final String titolo = "\tMENU FRUITORE";
@@ -26,7 +25,6 @@ public class MenuFruitore extends Menu{
 	private static final String RITIRA_PROPOSTE = "Ritira proposte dal sistema";
 	private static final String VISUALIZZA_PROPOSTE = "Visualizza le tue proposte";
 	private final static String MSG_P_PRECEDENTE = "Ritorna alla pagina di autenticazione";
-	
 	
 	private static String[] vociFruit = {NAVIGA, RICHIEDI_PRESTAZIONI, RITIRA_PROPOSTE, VISUALIZZA_PROPOSTE, MSG_P_PRECEDENTE};
 	
@@ -70,7 +68,7 @@ public class MenuFruitore extends Menu{
 	
 	
 	public void mostraProposte() {
-		g.mostraProposte(fruit, vf);
+		g.mostraPropostePerFruitore(fruit, vf);
 	}
 
 }

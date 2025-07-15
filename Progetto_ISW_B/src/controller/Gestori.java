@@ -3,13 +3,23 @@ package controller;
 import java.util.ArrayList;
 
 import applicazione.CategoriaFoglia;
+import applicazione.PropostaScambio;
 import persistenza.LogicaPersistenza;
 import utenti.Configuratore;
 import utenti.Fruitore;
+import util.Utilitaria;
 import vista.Vista;
 import vista.VistaFruitore;
 
+/**
+ * Classe punto di accesso a un sottosistema di gestori (controller GRASP).
+ * Non implementa logica applicativa ma delega i compiti al sottosistema.
+ */
 public class Gestori {
+	
+	private static final String MSG_ASSENZA_PROPOSTE_PER_PRESTAZIONE = "\nNon è presente nessuna proposta per questa prestazione.\n";
+	private static final String MSG_ELENCO_PROPOSTE = "\nElenco proposte in cui è presente -> ";
+	private static final String MSG_OPERAZIONE_ANNULLATA = "\nOperazione annullata....\n";
 	
 	private GestoreComprensori gCom;
 	private GestoreCategorie gCat;
@@ -51,9 +61,7 @@ public class Gestori {
 	public void creaGerarchia(Configuratore config) {
 		gGer.creaGerarchia(gCom, config);
 	}
-	
-	////////////////////////DA SPOSTARE IN UTILITARIA CHECK PLS
-	
+		
 	public String formattaComprensori() {
 		return gCom.formattaComprensori();
 	}
@@ -64,8 +72,41 @@ public class Gestori {
 	/**
 	 * Metodo per visualizzare le proposte relative ad una specifica categoria foglia
 	 */
-	public String formattaProposte() {
-		return gProp.formattaProposteDiFoglia(gGer);
+	public String formattaProposteDiFoglia(ArrayList<CategoriaFoglia> categorieFoglia, ArrayList<PropostaScambio> proposte) {
+		//return gProp.formattaProposteDiFoglia(gGer);
+		int selezionata = gGer.selezionaCategoria(categorieFoglia);
+		
+		if(selezionata == categorieFoglia.size()) {
+			return MSG_OPERAZIONE_ANNULLATA;
+		}
+			
+		CategoriaFoglia f = categorieFoglia.get(selezionata);
+		StringBuffer sb = new StringBuffer();
+		boolean presenteProposta = false;
+		
+		for(PropostaScambio p : proposte) {
+			boolean presenteRichiesta = p.getNomeRichiesta().equals(f.getNome());
+			boolean presenteOfferta = p.getNomeOfferta().equals(f.getNome());
+			
+			if(presenteRichiesta || presenteOfferta) {
+				if(!presenteProposta) {
+					sb.append(MSG_ELENCO_PROPOSTE)
+						.append(f.getNome().toUpperCase())
+						.append(":\n");
+					presenteProposta = true;
+				}
+				
+				sb.append("> ")
+					.append( Utilitaria.formattaScambio(p) )
+					.append("\n\t")
+					.append(Utilitaria.formattaAssociato(p));
+			}
+		}
+		if(presenteProposta) {
+			return sb.toString();
+		} else {
+			return MSG_ASSENZA_PROPOSTE_PER_PRESTAZIONE;
+		}
 	}
 	public String formattaInsiemiChiusi() {
 		return gProp.formattaInsiemiChiusi();
@@ -93,8 +134,8 @@ public class Gestori {
 	}
 	
 	
-	public void mostraProposte(Fruitore fruit, VistaFruitore vf) {
-		gProp.mostraProposte(fruit, vf);
+	public void mostraPropostePerFruitore(Fruitore fruit, VistaFruitore vf) {
+		gProp.mostraPropostePerFruitore(fruit, vf);
 	}
 	
 

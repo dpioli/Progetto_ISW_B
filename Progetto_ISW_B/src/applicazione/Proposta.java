@@ -23,7 +23,6 @@ public class Proposta {
 		this.tipo = tipo;
 		this.quantitaOre = quantitaOre;
 	}
-
 	
 	//GETTERS
 	

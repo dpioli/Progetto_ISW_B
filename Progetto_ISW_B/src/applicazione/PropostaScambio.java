@@ -78,10 +78,6 @@ public class PropostaScambio {
 		this.associato = associato;	
 	}
 	
-	private StatoProposta checkStato() {
-		return (statoFinale == null) ? statoIniziale : statoFinale;
-	}
-	
 	public String getNomeAssociato() {
 		return associato.getUsername();
 	}

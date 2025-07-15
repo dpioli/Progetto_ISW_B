@@ -4,6 +4,9 @@ import java.util.*;
 
 import vista.Vista;
 
+/**
+ * Classe che si occupa unicamente dell'interazione utente. Permette di ricavare input da usare in classi con logica applicativa.
+ */
 public class InputDati {
 	
 	private static Scanner lettore = creaScanner();
