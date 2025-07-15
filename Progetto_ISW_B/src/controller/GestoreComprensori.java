@@ -13,13 +13,14 @@ public class GestoreComprensori {
 	
 
 	private static final String MSG_CREAZIONE_COMPRENSORIO = "Stai creando un nuovo comprensorio, inserisci" 
-								+ " le informazioni necessarie";
+			+ " le informazioni necessarie";
 	private static final String MSG_NOME_COMPRENSORIO = "Inserisci il nome del comprensorio > ";
 	private static final String MSG_NOME_COMP_NON_VALIDO = "Il nome inserito non è valido in quanto gia presente, riprova";
 	private static final String MSG_INSERISCI_COMUNI = "Inserisci il nome del comune (o 'fine' per terminare) > ";
-	private static final String MSG_TERMINAZIONE = "fine";
 	private static final String MSG_ERRORE_INSERIMENTO_COMUNI = "Errore: Il comprensorio deve contenere almeno un comune.";
 	private static final String MSG_SUCCESSO_COMPRENSORIO = "Comprensorio creato con successo!";
+	private static final String MSG_SEL_COMPRENSORIO = "Seleziona il comprensorio di appartenenza della gerarchia > ";
+	private static final String MSG_TERMINAZIONE = "fine";
 	
 	
 	LogicaPersistenza logica;
@@ -27,8 +28,8 @@ public class GestoreComprensori {
 	Vista v;
 	
 	public GestoreComprensori(LogicaPersistenza logica, Vista v) {
-		this.comprensori = logica.getComprensori();
 		this.logica = logica;
+		this.comprensori = logica.getComprensori();
 		this.v = v;
 	}
 
@@ -74,11 +75,11 @@ public class GestoreComprensori {
 		ArrayList<Comprensorio> comprensori = logica.getComprensori();
 		StringBuffer sb = new StringBuffer();
 		for(int i = 0; i < comprensori.size(); i++) {
-			sb.append(i + ": " + comprensori.get(i) + "\n"); ///////////////////////////////
+			sb.append(i + ": " + formattaComprensorio(comprensori.get(i)) + "\n"); ///////////////////////////////
 		}
 		
 		v.mostraMessaggio(sb.toString());
-		int scelta = InputDati.leggiIntero("Seleziona il comprensorio di appartenenza della gerarchia > ", 0, comprensori.size());
+		int scelta = InputDati.leggiIntero(MSG_SEL_COMPRENSORIO, 0, comprensori.size());
 		return comprensori.get(scelta);
 	}
 	
@@ -87,6 +88,9 @@ public class GestoreComprensori {
 	 */
 	public String formattaComprensori() {
 		return Utilitaria.formattaLista(comprensori);
+	}
+	public String formattaComprensorio(Comprensorio c) {
+		return Utilitaria.formattaComprensorio(c);
 	}
 
 }

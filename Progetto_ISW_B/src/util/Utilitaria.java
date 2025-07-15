@@ -12,8 +12,10 @@ import applicazione.CategoriaFoglia;
 import applicazione.Comprensorio;
 import applicazione.FatConversione;
 import applicazione.Gerarchia;
+import applicazione.InsiemeChiuso;
 import applicazione.Proposta;
 import applicazione.PropostaScambio;
+import utenti.Fruitore;
 import utenti.IUtente;
 
 public abstract class Utilitaria {
@@ -26,10 +28,13 @@ public abstract class Utilitaria {
 	static final Map<Class<?>, Function<Object, String>> FORMATTERS = new HashMap<>();
 
 	static {
+		FORMATTERS.put(IUtente.class, o -> formattaUtente((IUtente) o));
+		FORMATTERS.put(Comprensorio.class, o -> formattaComprensorio((Comprensorio) o));
 	    FORMATTERS.put(CampoCaratteristico.class, o -> formattaCampoCaratteristico((CampoCaratteristico) o));
+	    FORMATTERS.put(Gerarchia.class, o -> generaAlberoStringa((Gerarchia) o));
 	    FORMATTERS.put(Proposta.class, o -> formattaProposta((Proposta) o));
-	    FORMATTERS.put(PropostaScambio.class, o -> formattaProposteScambio((PropostaScambio) o));
-	    FORMATTERS.put(IUtente.class, o -> formattaUtente((IUtente) o));
+	    FORMATTERS.put(PropostaScambio.class, o -> formattaScambio((PropostaScambio) o));
+	    FORMATTERS.put(InsiemeChiuso.class, o -> formattaInsiemeChiuso((InsiemeChiuso) o));
 	}
 	
 	public static <T> String formattaLista(ArrayList<T> lista) {
@@ -68,7 +73,7 @@ public abstract class Utilitaria {
 	 * COMPRENSORIO
 	 * 
 	 */
-	public String formattaComprensorio(Comprensorio comprensorio) {
+	public static String formattaComprensorio(Comprensorio comprensorio) {
 		return String.format("Comprensorio: %s\nComuni: %s", comprensorio.getNome(), comprensorio.getComuni());
 	}
 	
@@ -128,14 +133,34 @@ public abstract class Utilitaria {
     public static String formattaProposta(Proposta p) {
 		return " [prestazione " + p.getTipo().name().toLowerCase() 
 				+ ": "+ p.getPrestazione().getNome() 
-				+ ", ore: " + p.getQuantitaOre() + "]";
+				+ ", ore: " + p.getQuantitaOre() + "]\n";
 	}
     
-    public static String formattaProposteScambio(PropostaScambio ps) {
+    public static String formattaScambio(PropostaScambio ps) {
 		return String.format("Richiesta: " + ps.getNomeRichiesta() 
 					+ " -> " + " Offerta: " + ps.getNomeOfferta() + " | " 
-								+ " Stato: " + ps.getStatoFinale().toString());
+								+ " Stato: " + ps.getStatoFinale().name());
 	}
+    /**
+     * INSIEME CHIUSO
+     */
+    public static String formattaInsiemeChiuso(InsiemeChiuso ic) {
+		ArrayList<Fruitore> fruitoriAssociati = new ArrayList<>();
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append("\n- id: ");
+		sb.append(ic.getId() + "\n\t");
+		
+		for(PropostaScambio p: ic.getProposte()) {
+			sb.append(formattaScambio(p))
+				.append("| Proposta da: " + p.getAssociato().getMail() + "\n\t");
+			fruitoriAssociati.add(p.getAssociato());
+		}
+		
+		sb.append(formattaFruitori(fruitoriAssociati));
+		return sb.toString();
+	}
+
 
     /**
      * 
@@ -145,6 +170,18 @@ public abstract class Utilitaria {
     public static String formattaUtente(IUtente u) {
 		return String.format("Username = %s", u.getUsername());
 	}
+    
+    public static String formattaFruitori(ArrayList<Fruitore> fruitoriAssociati) {
+		StringBuffer sb = new StringBuffer();
+		sb.append("\n\tFruitori coinvolti: \n\t");
+		
+		for(Fruitore f: fruitoriAssociati) {
+			sb.append("- " + f.getUsername())
+				.append(" -> " + f.getMail())
+				.append(" | " + f.getNomeComprensorio() + "\n\t");
+		}
+		return sb.toString();
+    }
     
     /**
      * 

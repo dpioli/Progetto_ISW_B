@@ -126,7 +126,7 @@ public class MenuConfiguratore extends Menu {
 	 * Metodo per visualizzare le proposte relative ad una specifica categoria foglia
 	 */
 	public String formattaProposte() {
-		return gProposte.formattaProposte(gGerarchie);
+		return gProposte.formattaProposteDiFoglia(gGerarchie);
 	}
 	
 

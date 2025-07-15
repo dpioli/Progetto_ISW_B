@@ -2,12 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import applicazione.CampoCaratteristico;
-import applicazione.Categoria;
 import applicazione.CategoriaFoglia;
 import applicazione.CategoriaNonFoglia;
 import applicazione.Comprensorio;
@@ -44,14 +39,14 @@ public class GestoreGerarchie {
 	private static final String MSG_ANNULLATO_SCAMBIO = "Hai annullato la proposta di scambio...";	
 	
 	
-	ArrayList<Gerarchia> gerarchie; 
 	LogicaPersistenza logica;
+	ArrayList<Gerarchia> gerarchie; 
 	Vista v;
 	GestoreCategorie gC;
 	
 	public GestoreGerarchie(LogicaPersistenza logica, Vista v) {
-		this.gerarchie = logica.getGerarchie();
 		this.logica = logica;
+		this.gerarchie = logica.getGerarchie();
 		this.v = v;
 		this.gC = new GestoreCategorie(logica, v);
 	}

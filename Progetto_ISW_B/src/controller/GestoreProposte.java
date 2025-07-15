@@ -49,13 +49,13 @@ public class GestoreProposte {
 	
 	private static final String COLON = ": ";
 	
-	ArrayList<PropostaScambio> proposte; 
 	LogicaPersistenza logica;
+	ArrayList<PropostaScambio> proposte; 
 	Vista v;
 	
 	public GestoreProposte(LogicaPersistenza logica, Vista v) {
-		this.proposte = logica.getScambi();
 		this.logica = logica;
+		this.proposte = logica.getScambi();
 		this.v = v;
 	}
 	
@@ -74,7 +74,7 @@ public class GestoreProposte {
 	/**
 	 * Metodo per visualizzare le proposte relative ad una specifica categoria foglia
 	 */
-	public String formattaProposte(GestoreGerarchie gGerarchie) {
+	public String formattaProposteDiFoglia(GestoreGerarchie gGerarchie) {
 		
 		ArrayList<CategoriaFoglia> categorieFoglia = logica.getCategorieFoglia();
 		ArrayList<PropostaScambio> proposte = logica.getScambi();
@@ -102,7 +102,7 @@ public class GestoreProposte {
 				}
 				
 				sb.append("> ")
-					.append( Utilitaria.formattaProposteScambio(p) )
+					.append( Utilitaria.formattaScambio(p) )
 					.append("\n")
 					.append("\t")
 					.append(FRUITORE_ASSOCIATO 
@@ -174,7 +174,7 @@ public class GestoreProposte {
 		
 		//SCAMBIO
 		PropostaScambio scambio = new PropostaScambio(richiesta, offerta, id);
-		boolean sn = InputDati.yesOrNo(MSG_CONFERMA + Utilitaria.formattaProposteScambio(scambio) + MSG_Y_N);
+		boolean sn = InputDati.yesOrNo(MSG_CONFERMA + Utilitaria.formattaScambio(scambio) + MSG_Y_N);
 		
 		if(sn) { //aggiunto alle proposte aperte
 			scambio.setFruitoreAssociato(fruit);
@@ -384,7 +384,7 @@ public class GestoreProposte {
 		
 		for(PropostaScambio p: proposte) {
 			boolean corrisponde = fruit.getUsername().equals(p.getNomeAssociato());
-			if(corrisponde && (p.getStatoFinale() == null)) {
+			if(corrisponde && (p.getStatoFinale() == StatoProposta.APERTA)) {
 				proposteFruit.add(p);
 			}
 		}
@@ -421,7 +421,7 @@ public class GestoreProposte {
 		for(PropostaScambio p : proposte) {
 			if(p.getId() == proposta.getId()) {
 				p.setStatoFinale(StatoProposta.RITIRATA);
-				v.mostraMessaggio( Utilitaria.formattaProposteScambio(p) );
+				v.mostraMessaggio( Utilitaria.formattaScambio(p) );
 			}
 		}
 	}
@@ -457,7 +457,7 @@ public class GestoreProposte {
 		
 		for(int i = 0; i < proposte.size(); i++) {
 			sb.append(i + COLON);
-			sb.append( Utilitaria.formattaProposteScambio(proposte.get(i)) );
+			sb.append( Utilitaria.formattaScambio(proposte.get(i)) );
 		}
 		sb.append(proposte.size() + ANNULLA_SELEZIONE);
 		
@@ -489,7 +489,7 @@ public class GestoreProposte {
 			return MSG_ASSENZA_PROPOSTE;
 		} else {
 			for(PropostaScambio p: proposteFruit) {
-				sb.append(NEW_LINE_ARROW + Utilitaria.formattaProposteScambio(p));
+				sb.append(NEW_LINE_ARROW + Utilitaria.formattaScambio(p));
 			}
 			return sb.toString();
 				

@@ -58,7 +58,8 @@ public class PropostaScambio {
 	}
 	
 	public StatoProposta getStatoFinale() {
-		return statoFinale;
+		return (statoFinale == null) ? statoIniziale
+			  : statoFinale;
 	}
 	
 	public void setStatoFinale(StatoProposta stato) {
