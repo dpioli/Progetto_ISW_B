@@ -1,6 +1,5 @@
 package menu;
 
-import persistenza.LogicaPersistenza;
 import util.InputDati;
 import vista.Vista;
 

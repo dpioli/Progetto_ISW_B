@@ -24,9 +24,6 @@ public class MenuConfiguratore extends Menu {
 	private VistaConfiguratore vc;
 	
 	private Gestori g;
-	private GestoreComprensori gComprensori;
-	private GestoreGerarchie gGerarchie;
-	private GestoreProposte gProposte;
 
 	private final static String titolo = "\tMENU CONFIGURATORE";
 
@@ -70,40 +67,6 @@ public class MenuConfiguratore extends Menu {
 		this.logica = logica;
 		this.vc = new VistaConfiguratore();
 		this.g = new Gestori(logica, vc);
-		this.gComprensori = g.getgCom();
-		this.gGerarchie = g.getgGer();
-		this.gProposte = g.getgProp();
-	}
-	
-
-	public void mostraComprensori() {
-		vc.visualizzaComprensori(gComprensori.formattaComprensori());
-	}
-	
-	public void mostraGerarchie() {
-		vc.visualizzaGerarchie(gGerarchie.formattaGerarchie());
-	}
-	
-	public void mostraFatConv() {
-		vc.visualizzaFatConv(formattaFatConv());
-	}
-	
-	public void mostraProposte() {
-		vc.visualizzaProposte(formattaProposte());
-	}
-	
-	public void mostraInsiemiChiusi() {
-		vc.visualizzaInsiemiChiusi(gProposte.formattaInsiemiChiusi());
-	}
-	
-	
-	
-	/**
-	 * Metodo di visualizzazione della matrice dei fattori di conversione.
-	 */
-	public String formattaFatConv() {
-		FatConversione fdc = logica.getFatConversione();
-		return Utilitaria.formattaFatConv(fdc, logica.getCategorieFoglia());
 	}
 	
 
@@ -111,22 +74,34 @@ public class MenuConfiguratore extends Menu {
 	 * Metodo di creazione Comprensorio Geografico:
 	 */
 	public void creaComprensorio() {
-		gComprensori.creaComprensorio();
+		g.creaComprensorio();;
 	}
 
 	/**
 	 * Metodo di creazione Gerarchia:
 	*/
-	public void creaGerarchia() {
-		gGerarchie.creaGerarchia(gComprensori, config);
+	public void creaGerarchia(Configuratore config) {
+		g.creaGerarchia(config);
 	}
-
 	
-	/**
-	 * Metodo per visualizzare le proposte relative ad una specifica categoria foglia
-	 */
-	public String formattaProposte() {
-		return gProposte.formattaProposteDiFoglia(gGerarchie);
+	public void mostraComprensori() {
+		vc.visualizzaComprensori(g.formattaComprensori());
+	}
+	
+	public void mostraGerarchie() {
+		vc.visualizzaGerarchie(g.formattaGerarchie());
+	}
+	
+	public void mostraFatConv() {
+		vc.visualizzaFatConv(Utilitaria.formattaFatConv(logica.getFatConversione(), logica.getCategorieFoglia()));
+	}
+	
+	public void mostraProposte() {
+		vc.visualizzaProposte(g.formattaProposte());
+	}
+	
+	public void mostraInsiemiChiusi() {
+		vc.visualizzaInsiemiChiusi(g.formattaInsiemiChiusi());
 	}
 	
 

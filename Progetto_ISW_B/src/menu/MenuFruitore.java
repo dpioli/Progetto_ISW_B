@@ -1,11 +1,5 @@
 package menu;
 
-import java.util.*;
-
-
-import applicazione.CategoriaFoglia;
-import controller.GestoreGerarchie;
-import controller.GestoreProposte;
 import controller.Gestori;
 import persistenza.LogicaPersistenza;
 import utenti.Fruitore;
@@ -24,8 +18,6 @@ public class MenuFruitore extends Menu{
 	private VistaFruitore vf;
 	
 	private Gestori g;
-	private GestoreGerarchie gGerarchie;
-	private GestoreProposte gProposte;
 	
 	private static final String titolo = "\tMENU FRUITORE";
 	
@@ -50,15 +42,13 @@ public class MenuFruitore extends Menu{
 		this.logica = logica;
 		this.vf = new VistaFruitore();
 		this.g = new Gestori(logica, vf);
-		this.gGerarchie = g.getgGer();
-		this.gProposte = g.getgProp();
 	}
 	
 	/**
 	 * Metodo per navigare in profondita' tra le gerarchie
 	 */
 	public void naviga() {
-		gGerarchie.naviga(fruit);
+		g.naviga(fruit);
 	}
 	
 	/**
@@ -67,8 +57,7 @@ public class MenuFruitore extends Menu{
 	 * 2. gProposte crea e verifica il soddisfacimento degli scambi
 	 */
 	public void richiediPrestazioni() {
-		ArrayList<CategoriaFoglia> foglie = gGerarchie.recuperaFoglieDisponibili(fruit);
-		gProposte.richiediPrestazioni(fruit, foglie);
+		g.richiediPrestazioni(fruit);
 	}
 	
 	
@@ -76,12 +65,12 @@ public class MenuFruitore extends Menu{
 	 * Metodo per poter ritirare le proposte pendenti
 	 */
 	public void ritiraProposte() {
-		gProposte.ritiraProposte(fruit);
+		g.ritiraProposte(fruit);
 	}
 	
 	
 	public void mostraProposte() {
-		gProposte.mostraProposte(fruit, vf);
+		g.mostraProposte(fruit, vf);
 	}
 
 }
