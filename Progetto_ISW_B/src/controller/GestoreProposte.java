@@ -102,7 +102,7 @@ public class GestoreProposte {
 				}
 				
 				sb.append("> ")
-					.append(p.toString())
+					.append( Utilitaria.formattaProposteScambio(p) )
 					.append("\n")
 					.append("\t")
 					.append(FRUITORE_ASSOCIATO 
@@ -122,7 +122,7 @@ public class GestoreProposte {
 	 * Metodo per andare a visualizzare l'insiemi chiusi in modo da poter poi contatare i fruitori associati
 	 */
 	public String formattaInsiemiChiusi() {
-		return Utilitaria.formatta(logica.getInsiemi());
+		return Utilitaria.formattaLista(logica.getInsiemi());
 	}
 	
 	
@@ -174,7 +174,7 @@ public class GestoreProposte {
 		
 		//SCAMBIO
 		PropostaScambio scambio = new PropostaScambio(richiesta, offerta, id);
-		boolean sn = InputDati.yesOrNo(MSG_CONFERMA + scambio.toString() + MSG_Y_N);
+		boolean sn = InputDati.yesOrNo(MSG_CONFERMA + Utilitaria.formattaProposteScambio(scambio) + MSG_Y_N);
 		
 		if(sn) { //aggiunto alle proposte aperte
 			scambio.setFruitoreAssociato(fruit);
@@ -183,7 +183,7 @@ public class GestoreProposte {
 			// verifica che lo scambio venga soddisfatto da delle proposte preesistenti
 			verificaSoddisfacimento(scambio);
 		} else {
-			v.mostraErrore(MSG_ANNULLATO_SCAMBIO + MSG_MENU_PRINCIPALE );
+			v.mostraErrore(MSG_ANNULLATO_SCAMBIO + MSG_MENU_PRINCIPALE);
 			return;
 		}
 	}
@@ -421,7 +421,7 @@ public class GestoreProposte {
 		for(PropostaScambio p : proposte) {
 			if(p.getId() == proposta.getId()) {
 				p.setStatoFinale(StatoProposta.RITIRATA);
-				v.mostraMessaggio(p.toString());
+				v.mostraMessaggio( Utilitaria.formattaProposteScambio(p) );
 			}
 		}
 	}
@@ -456,7 +456,8 @@ public class GestoreProposte {
 		StringBuffer sb = new StringBuffer();
 		
 		for(int i = 0; i < proposte.size(); i++) {
-			sb.append(i + COLON + proposte.get(i).toString());
+			sb.append(i + COLON);
+			sb.append( Utilitaria.formattaProposteScambio(proposte.get(i)) );
 		}
 		sb.append(proposte.size() + ANNULLA_SELEZIONE);
 		
@@ -488,7 +489,7 @@ public class GestoreProposte {
 			return MSG_ASSENZA_PROPOSTE;
 		} else {
 			for(PropostaScambio p: proposteFruit) {
-				sb.append(NEW_LINE_ARROW + p.toString());
+				sb.append(NEW_LINE_ARROW + Utilitaria.formattaProposteScambio(p));
 			}
 			return sb.toString();
 				

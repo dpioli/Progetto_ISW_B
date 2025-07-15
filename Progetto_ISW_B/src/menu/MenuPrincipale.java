@@ -3,9 +3,6 @@ package menu;
 import controller.GestoreComprensori;
 import controller.Gestori;
 import persistenza.LogicaPersistenza;
-import utenti.Configuratore;
-import utenti.Fruitore;
-import utenti.IUtente;
 import vista.Vista;
 
 

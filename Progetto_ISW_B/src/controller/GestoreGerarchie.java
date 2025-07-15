@@ -139,7 +139,7 @@ public class GestoreGerarchie {
 	 * Metodo di visualizzazione delle gerarchie.
 	 */
 	public String formattaGerarchie() {
-		return Utilitaria.formatta(gerarchie);
+		return Utilitaria.formattaLista(gerarchie);
 	}
 	
 	/**

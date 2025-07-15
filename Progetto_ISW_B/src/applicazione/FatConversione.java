@@ -16,10 +16,7 @@ public class FatConversione {
 	//MESSAGGI PER LA RICHIESTA
 	private static final String INTERVALLO_DA_CONSIDERARE = "Considera l'intervallo che va da MIN = %f a MAX = %f (compresi)";
 	private static final String RICHIESTA_FDC = "\nInserire valore fattore di conversione della nuova foglia associato alla prima foglia F1 > ";
-	
-	//MESSAGGI PER LA VISUALIZZAZIONE
-	private static final String LEGENDA = "----- LEGENDA -----\n";
-	
+		
 	//VALORI DI MASSIMO E MINIMO INDICATI DAL TEMA
 	private static double MAX_FDC = 2;
 	private static double MIN_FDC = 0.5;
@@ -187,67 +184,14 @@ public class FatConversione {
 	/**
 	 * Metodo che stampa i fattori di conversione a terminale.
 	 */
-	private boolean eVuoto() {
+	public boolean eVuoto() {
 		return (fdc.size() == 1) ? true : false;
 	}
-	
-	
-	/**
-	 * Metodo di visualizzazione della matrice dei fattori di conversione.
-	 */
-	public String formattaFatConv(ArrayList<CategoriaFoglia> foglie) {
-		
-		if(fdc == null)
-			return null;
-		
-		StringBuffer sb = new StringBuffer();
-		sb.append(fdc.toString());
-		sb.append(formattaLegenda(foglie));
-		
-		return sb.toString();
+
+	public int dimensione() {
+		return fdc.size();
 	}
 	
-	/**
-	 * Metodo di visualizzazione legenda relativa alle categorie foglia della matrice dei fattori di conversione.
-	 */
-	private String formattaLegenda(ArrayList<CategoriaFoglia> foglie) {
-	    StringBuilder sb = new StringBuilder(LEGENDA);
-	    for (CategoriaFoglia f : foglie) {
-	        sb.append("F")
-	          .append(f.getId())
-	          .append(" : ")
-	          .append(f.getNome())
-	          .append("\n");
-	    }
-	    return sb.toString();
-	}
-
 	
-	/**
-	 * Metodo di formattazione stringa da stampare a video.
-	 */
-	public String toString() {
-		
-		if(eVuoto()) return null;
-		
-		StringBuffer sb = new StringBuffer();
-		//STAMPO LA PRIMA RIGA CON GLI IDENTIFICATIVI
-		for (int i = 0; i < fdc.get(0).size(); i++) {
-	        sb.append(String.format("%-15s", i == 0 ? "IDENTIFICATIVI" : "F" + i));
-	    }
-		sb.append("\n");
-
-	    //STAMPO IL RESTO DELLA MATRICE
-	    for (int i = 1; i < fdc.size(); i++) {	
-	        for (int j = 0; j < fdc.get(i).size(); j++) {
-
-	        	String value =  (j == 0 ? "F" + i : String.format("%.2f", fdc.get(i).get(j)));
-	            sb.append(String.format("%-15s", value));
-	        }
-	        sb.append("\n");
-	    }
-
-	    return sb.toString();
-	}
 		
 }

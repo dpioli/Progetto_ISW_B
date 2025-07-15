@@ -2,24 +2,13 @@ package menu;
 
 import java.util.*;
 
-import applicazione.CampoCaratteristico;
-import applicazione.Categoria;
+
 import applicazione.CategoriaFoglia;
-import applicazione.Gerarchia;
-import applicazione.InsiemeChiuso;
-import applicazione.Proposta;
-import applicazione.PropostaScambio;
-import applicazione.StatoProposta;
-import applicazione.TipoProposta;
 import controller.GestoreGerarchie;
 import controller.GestoreProposte;
 import controller.Gestori;
-import persistenza.GestorePersistenza;
 import persistenza.LogicaPersistenza;
 import utenti.Fruitore;
-import util.InputDati;
-import util.Utilitaria;
-import vista.Vista;
 import vista.VistaFruitore;
 
 /**

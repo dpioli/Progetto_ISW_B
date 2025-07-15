@@ -86,7 +86,7 @@ public class GestoreComprensori {
 	 * Metodo di visualizzazione dei comprensori.
 	 */
 	public String formattaComprensori() {
-		return Utilitaria.formatta(comprensori);
+		return Utilitaria.formattaLista(comprensori);
 	}
 
 }

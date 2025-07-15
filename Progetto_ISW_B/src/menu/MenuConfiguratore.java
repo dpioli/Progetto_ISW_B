@@ -8,6 +8,7 @@ import controller.GestoreGerarchie;
 import controller.GestoreProposte;
 import controller.Gestori;
 import utenti.Configuratore;
+import util.Utilitaria;
 import vista.VistaConfiguratore;
 
 /**
@@ -102,7 +103,7 @@ public class MenuConfiguratore extends Menu {
 	 */
 	public String formattaFatConv() {
 		FatConversione fdc = logica.getFatConversione();
-		return fdc.formattaFatConv(logica.getCategorieFoglia());
+		return Utilitaria.formattaFatConv(fdc, logica.getCategorieFoglia());
 	}
 	
 
