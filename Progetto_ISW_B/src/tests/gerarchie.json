@@ -1,0 +1,42 @@
+[
+  {
+    "catRadice": {
+      "nome": "Radice",
+      "campCaratt": {
+        "nomeCampo": "CampoCTest",
+        "valoriCampo": {
+          "Ramo 2": "Secondo ramo della radice",
+          "Ramo 1": "Primo ramo della radice"
+        }
+      },
+      "sottoCateg": [
+        {
+          "id": 1,
+          "nome": "Foglia 1",
+          "sottoCateg": [],
+          "foglia": true
+        },
+        {
+          "id": 2,
+          "nome": "Foglia 2",
+          "sottoCateg": [],
+          "foglia": true
+        }
+      ],
+      "completo": true,
+      "dominio": 2,
+      "foglia": false
+    },
+    "proprietario": {
+      "username": "Admin",
+      "password": "Test"
+    },
+    "comprensorio": {
+      "nome": "ZonaTest",
+      "comuni": [
+        "zona1",
+        "zona2"
+      ]
+    }
+  }
+]
