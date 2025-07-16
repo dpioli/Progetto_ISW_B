@@ -1,10 +1,10 @@
 package persistenza;
 
-import java.io.*;
+//import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
 
-import com.google.gson.*;
+//import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 
 import applicazione.CategoriaFoglia;
@@ -33,70 +33,11 @@ public class GestorePersistenza {
 	private static final String FILE_PROPOSTE = "../Progetto_ISW_B/src/dati/proposte.json";
 	private static final String FILE_INSIEMI_CHIUSI = "../Progetto_ISW_B/src/dati/insiemiChiusi.json";
 	
-	private static final String MSG_ERRORE_SALVATAGGIO = "Errore durante il salvataggio: ";
-	private static final String MSG_FILE_NON_TROVATO = "File non trovato: ";
-	private static final String MSG_ERRORE_CARICAMENTO_FILE = "Errore durante il caricamento: ";
-	
-	private static Gson gson;
-	
 	/**
 	 * Costruttore della classe GestorePersistenza
 	 */
-	public GestorePersistenza() {
-		GestorePersistenza.gson = new GsonBuilder().setPrettyPrinting().create();
-	}
+	public GestorePersistenza() {}
 	
-	/**
-	 * Metodo generico per salvare i dati su un file json
-	 * @param <T>
-	 * @param oggetto
-	 * @param fpath
-	 */
-	private static <T> void salva(T oggetto, String fpath) {
-		try(FileWriter wr = new FileWriter(fpath)){
-			gson.toJson(oggetto, wr);
-			wr.close();
-		} catch (IOException e) {
-			System.err.println(MSG_ERRORE_SALVATAGGIO + e.getMessage());
-		}
-	}
-	
-	/**
-	 * Metodo generico per cericare i dati salvati su un file json
-	 * @param <T>
-	 * @param obj
-	 * @param fpath
-	 * @return oggetto generico salvato sul file
-	 */
-	private static <T> T carica(Type typeOfT, String fpath) {
-	    T oggetto = null;
-	    File file = new File(fpath);
-	    if (!file.exists()) {
-	    	System.err.println(MSG_FILE_NON_TROVATO + fpath);
-	    	return null;
-	    }
-	    try (FileReader rd = new FileReader(fpath)){
-	        oggetto = gson.fromJson(rd, typeOfT);
-	    } catch (IOException e) {
-	        System.err.println(MSG_ERRORE_CARICAMENTO_FILE + e.getMessage());
-	    }
-	    return oggetto != null ? oggetto : null; // per collezioni non creiamo nuovi oggetti vuoti
-	}
-	
-	
-	/**
-	 * Metodo generico per caricare una lista di oggetti
-	 * @param <T>
-	 * @param typeToken
-	 * @param nomeFile
-	 * @return
-	 */
-	public static <T> ArrayList<T> caricaLista(TypeToken<ArrayList<T>> typeToken, String nomeFile) {
-		 Type listType = typeToken.getType();
-		 ArrayList<T> lista = carica(listType, nomeFile);
-		 return (lista != null) ? lista : new ArrayList<>();
-	}
-
 	
 	/*
 	 * 
@@ -111,7 +52,7 @@ public class GestorePersistenza {
 	 * @param gerarchie
 	 */
 	public static void salvaGerarchie(ArrayList<Gerarchia> gerarchie) {
-		salva(gerarchie, FILE_GERARCHIE);
+		SalvatoreDati.salva(gerarchie, FILE_GERARCHIE);
 	}
 	
 	/**
@@ -119,7 +60,7 @@ public class GestorePersistenza {
 	 * @param comprensori
 	 */
 	public static void salvaComprensori(ArrayList<Comprensorio> comprensori) {
-		salva(comprensori, FILE_COMPRENSORI);
+		SalvatoreDati.salva(comprensori, FILE_COMPRENSORI);
 	}
 	
 	/**
@@ -127,7 +68,7 @@ public class GestorePersistenza {
 	 * @param configuratori
 	 */
 	public static void salvaConfiguratori(ArrayList<Configuratore> configuratori) {
-		salva(configuratori, FILE_CONFIGURATORI);
+		SalvatoreDati.salva(configuratori, FILE_CONFIGURATORI);
 	}
 	
 	/**
@@ -135,7 +76,7 @@ public class GestorePersistenza {
 	 * @param fatConversione
 	 */
 	public static void salvaFatConversione(FatConversione fatConversione) {
-		salva(fatConversione, FILE_FATT_CONVERSIONE);
+		SalvatoreDati.salva(fatConversione, FILE_FATT_CONVERSIONE);
 	}
 	
 	/**
@@ -143,7 +84,7 @@ public class GestorePersistenza {
 	 * @param categorieFoglia
 	 */
 	public static void salvaCategorieFoglia(ArrayList<CategoriaFoglia> categorieFoglia) {
-		salva(categorieFoglia, FILE_CATEGORIEFOGLIA);
+		SalvatoreDati.salva(categorieFoglia, FILE_CATEGORIEFOGLIA);
 	}
 	
 	/**
@@ -151,7 +92,7 @@ public class GestorePersistenza {
 	 * @param fruitori
 	 */
 	public static void salvaFruitori(ArrayList<Fruitore> fruitori) {
-		salva(fruitori, FILE_FRUITORI);
+		SalvatoreDati.salva(fruitori, FILE_FRUITORI);
 	}
 	
 	/**
@@ -159,7 +100,7 @@ public class GestorePersistenza {
 	 * @param scambi
 	 */
 	public static void salvaScambi(ArrayList<PropostaScambio> scambi) {
-		salva(scambi, FILE_PROPOSTE);
+		SalvatoreDati.salva(scambi, FILE_PROPOSTE);
 	}
 	
 	/**
@@ -167,7 +108,7 @@ public class GestorePersistenza {
 	 * @param insiemi
 	 */
 	public static void salvaInsiemiChiusi(ArrayList<InsiemeChiuso> insiemi) {
-		salva(insiemi, FILE_INSIEMI_CHIUSI);
+		SalvatoreDati.salva(insiemi, FILE_INSIEMI_CHIUSI);
 	}
 	
 	
@@ -198,7 +139,7 @@ public class GestorePersistenza {
 	 * @return insieme dei configuratori
 	 */
 	public static ArrayList<Configuratore> caricaConfiguratori() {
-	     return caricaLista(new TypeToken<ArrayList<Configuratore>>() {}, FILE_CONFIGURATORI);
+	     return CaricatoreDati.caricaLista(new TypeToken<ArrayList<Configuratore>>() {}, FILE_CONFIGURATORI);
 	}
 
 	
@@ -207,7 +148,7 @@ public class GestorePersistenza {
 	 * @return lista dei fruitori registrati
 	 */
 	public static ArrayList<Fruitore> caricaFruitori() {
-		return caricaLista(new TypeToken<ArrayList<Fruitore>>() {}, FILE_FRUITORI);
+		return CaricatoreDati.caricaLista(new TypeToken<ArrayList<Fruitore>>() {}, FILE_FRUITORI);
 	}
 	
 	
@@ -216,7 +157,7 @@ public class GestorePersistenza {
 	 * @return insieme dei comprensori
 	 */
 	 public static ArrayList<Comprensorio> caricaComprensorio() {
-	     return caricaLista(new TypeToken<ArrayList<Comprensorio>>() {}, FILE_COMPRENSORI);
+	     return CaricatoreDati.caricaLista(new TypeToken<ArrayList<Comprensorio>>() {}, FILE_COMPRENSORI);
 	 }
 	
 	
@@ -225,7 +166,7 @@ public class GestorePersistenza {
 	 * @return lista delle categorie foglia
 	 */
 	public static ArrayList<CategoriaFoglia> caricaCategorieFoglia() {
-	     return caricaLista(new TypeToken<ArrayList<CategoriaFoglia>>() {}, FILE_CATEGORIEFOGLIA);
+	     return CaricatoreDati.caricaLista(new TypeToken<ArrayList<CategoriaFoglia>>() {}, FILE_CATEGORIEFOGLIA);
 	}
 	
 	
@@ -234,7 +175,7 @@ public class GestorePersistenza {
 	 * @return insieme delle gerarchie
 	 */
 	public static ArrayList<Gerarchia> caricaGerarchie() {
-        return caricaLista(new TypeToken<ArrayList<Gerarchia>>() {}, FILE_GERARCHIE);
+        return CaricatoreDati.caricaLista(new TypeToken<ArrayList<Gerarchia>>() {}, FILE_GERARCHIE);
     }
 
 	
@@ -243,7 +184,7 @@ public class GestorePersistenza {
 	 * @return lista delle proposte accettate
 	 */
 	public static ArrayList<PropostaScambio> caricaScambi() {
-		return caricaLista(new TypeToken<ArrayList<PropostaScambio>>() {}, FILE_PROPOSTE);
+		return CaricatoreDati.caricaLista(new TypeToken<ArrayList<PropostaScambio>>() {}, FILE_PROPOSTE);
 	}
 	
 	
@@ -252,7 +193,7 @@ public class GestorePersistenza {
 	 * @return lista degli insiemi chiusi
 	 */
 	public static ArrayList<InsiemeChiuso> caricaInsiemi() {
-		return caricaLista(new TypeToken<ArrayList<InsiemeChiuso>>() {}, FILE_INSIEMI_CHIUSI);
+		return CaricatoreDati.caricaLista(new TypeToken<ArrayList<InsiemeChiuso>>() {}, FILE_INSIEMI_CHIUSI);
 	}
 	
 	
@@ -262,7 +203,7 @@ public class GestorePersistenza {
 	 */
 	public static FatConversione caricaFatConversione(){
 		Type listType = new TypeToken<FatConversione>() {}.getType();
-		FatConversione fatConversione = carica(listType, FILE_FATT_CONVERSIONE);
+		FatConversione fatConversione = CaricatoreDati.carica(listType, FILE_FATT_CONVERSIONE);
 		if(fatConversione == null) {
 			return new FatConversione();
 		}
