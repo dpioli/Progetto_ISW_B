@@ -1,7 +1,5 @@
 package applicazione;
 
-import java.util.List;
-
 import utenti.Configuratore;
 
 /**
