@@ -7,6 +7,7 @@ import applicazione.CategoriaFoglia;
 import applicazione.CategoriaNonFoglia;
 import applicazione.Comprensorio;
 import applicazione.Gerarchia;
+import applicazione.PropostaScambio;
 import persistenza.GestorePersistenza;
 import persistenza.LogicaPersistenza;
 import utenti.Configuratore;
@@ -31,6 +32,11 @@ public class GestoreGerarchie {
 	private static final String MSG_DESCRIZIONE_CAMPOCARATT = "Inserisci la descrizione per questo valore (premere invio altrimenti) > ";
 	private static final String MSG_INSERISCI_SOTTOCATEG = "Inserisci le sottocategorie della gerarchia appena creata:\n ";
 	private static final String MSG_GERARCHIA_CREATA_CON_SUCCESSO = "La gerarchia è stata creata con successo!";
+	
+	private static final String MSG_ASSENZA_PROPOSTE_PER_PRESTAZIONE = "\nNon è presente nessuna proposta per questa prestazione.\n";
+	private static final String MSG_ELENCO_PROPOSTE = "\nElenco proposte in cui è presente -> ";
+	private static final String MSG_OPERAZIONE_ANNULLATA = "\nOperazione annullata....\n";
+
 	
 	private static final String MSG_INIZIALE = "Gerarchie presenti nel tuo comprensorio:";
 	private static final String MSG_SELEZ_GERARCH = "Seleziona una gerarchia > ";
@@ -204,6 +210,41 @@ public class GestoreGerarchie {
 	public ArrayList<CategoriaFoglia> recuperaFoglieDisponibili(Fruitore fruit) {
 	   return gC.recuperaFoglieDisponibili(fruit);
 	}
-	
+	public String formattaProposteDiFoglia(ArrayList<CategoriaFoglia> categorieFoglia, ArrayList<PropostaScambio> proposte) {
+		//return gProp.formattaProposteDiFoglia(gGer);
+		int selezionata = selezionaCategoria(categorieFoglia);
+		
+		if(selezionata == categorieFoglia.size()) {
+			return MSG_OPERAZIONE_ANNULLATA;
+		}
+			
+		CategoriaFoglia f = categorieFoglia.get(selezionata);
+		StringBuffer sb = new StringBuffer();
+		boolean presenteProposta = false;
+		
+		for(PropostaScambio p : proposte) {
+			boolean presenteRichiesta = p.getNomeRichiesta().equals(f.getNome());
+			boolean presenteOfferta = p.getNomeOfferta().equals(f.getNome());
+			
+			if(presenteRichiesta || presenteOfferta) {
+				if(!presenteProposta) {
+					sb.append(MSG_ELENCO_PROPOSTE)
+						.append(f.getNome().toUpperCase())
+						.append(":\n");
+					presenteProposta = true;
+				}
+				
+				sb.append("> ")
+					.append( Utilitaria.formattaScambio(p) )
+					.append("\n\t")
+					.append(Utilitaria.formattaAssociato(p));
+			}
+		}
+		if(presenteProposta) {
+			return sb.toString();
+		} else {
+			return MSG_ASSENZA_PROPOSTE_PER_PRESTAZIONE;
+		}
+	}
 
 }

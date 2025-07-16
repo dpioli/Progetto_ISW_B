@@ -1,8 +1,13 @@
 package persistenza;
 
 
+import java.lang.reflect.Type;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import applicazione.FatConversione;
 
 
 /**
@@ -32,7 +37,6 @@ public class GestorePersistenza {
     public SalvatoreDati getSalvatore() {
         return salvatore;
     }
-	
 	
 
 }
