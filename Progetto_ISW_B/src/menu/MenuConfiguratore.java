@@ -105,7 +105,8 @@ public class MenuConfiguratore extends Menu {
 	 * Metodo di salvataggio dei file gson.
 	 */
 	public void salva() {
-		GestorePersistenza.salvaTutto(logica);
+		GestorePersistenza gp = new GestorePersistenza();
+		gp.getSalvatore().salvaTutto(logica);
 		vc.mostraMessaggio(MSG_SALVATAGGIO);
 	}
 	

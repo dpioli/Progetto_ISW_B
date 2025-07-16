@@ -2,6 +2,6 @@ package vista;
 
 public interface IVistaFruitore {
 	
-	static void visualizzaProposte() {}
+	 void visualizzaProposte(String testo); 
 
 }

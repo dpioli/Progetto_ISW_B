@@ -28,14 +28,15 @@ public class LogicaPersistenza {
 	private ArrayList<InsiemeChiuso> insiemi = new ArrayList<InsiemeChiuso>();
 	
 	public LogicaPersistenza() {
-		this.gerarchie = GestorePersistenza.caricaGerarchie();
-		this.comprensori = GestorePersistenza.caricaComprensorio();
-		this.configuratori = GestorePersistenza.caricaConfiguratori();
-		this.fatConversione = GestorePersistenza.caricaFatConversione();
-		this.categorieFoglia = GestorePersistenza.caricaCategorieFoglia();
-		this.fruitori = GestorePersistenza.caricaFruitori();
-		this.scambi = GestorePersistenza.caricaScambi();
-		this.insiemi = GestorePersistenza.caricaInsiemi();
+		GestorePersistenza gp = new GestorePersistenza();
+		this.gerarchie = gp.getCaricatore().caricaGerarchie();
+		this.comprensori = gp.getCaricatore().caricaComprensorio();
+		this.configuratori = gp.getCaricatore().caricaConfiguratori();
+		this.fatConversione = gp.getCaricatore().caricaFatConversione();
+		this.categorieFoglia = gp.getCaricatore().caricaCategorieFoglia();
+		this.fruitori = gp.getCaricatore().caricaFruitori();
+		this.scambi = gp.getCaricatore().caricaScambi();
+		this.insiemi = gp.getCaricatore().caricaInsiemi();
 	}
 	
 	/*

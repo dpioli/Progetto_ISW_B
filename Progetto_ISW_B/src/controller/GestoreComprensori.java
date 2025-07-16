@@ -67,7 +67,8 @@ public class GestoreComprensori {
 		}
 		Comprensorio nuovoComprensorio = new Comprensorio(nomeComprensorio, comuni);
 		logica.addComprensorio(nuovoComprensorio);
-		GestorePersistenza.salvaComprensori(logica.getComprensori());
+		GestorePersistenza gp = new GestorePersistenza();
+		gp.getSalvatore().salvaComprensori(logica.getComprensori());
 		
 		v.mostraMessaggio(MSG_SUCCESSO_COMPRENSORIO);
 	}

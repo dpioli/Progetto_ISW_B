@@ -2,14 +2,14 @@ package vista;
 
 public interface IVistaConfiguratore{
 	
-	static void visualizzaComprensori(String sb) {}
+	void visualizzaComprensori(String sb);
 
-	static void visualizzaGerarchie(String sb) {}
+	void visualizzaGerarchie(String sb);
 	
-	static void visualizzaFatConv(String sb) {}
+	void visualizzaFatConv(String sb);
 	
-	static void visualizzaProposte(String sb) {}
+	void visualizzaProposte(String sb);
 
-	static void visualizzaInsiemiChiusi(String sb) {}
+	void visualizzaInsiemiChiusi(String sb);
 	
 }

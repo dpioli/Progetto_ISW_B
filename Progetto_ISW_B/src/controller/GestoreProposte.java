@@ -97,9 +97,10 @@ public class GestoreProposte {
 		if(sn) { //aggiunto alle proposte aperte
 			scambio.setFruitoreAssociato(fruit);
 			logica.addScambio(scambio);
-			GestorePersistenza.salvaScambi(logica.getScambi());
+			GestorePersistenza gp = new GestorePersistenza();
+			gp.getSalvatore().salvaScambi(logica.getScambi());
 			// verifica che lo scambio venga soddisfatto da delle proposte preesistenti
-			verificaSoddisfacimento(scambio);
+			verificaSoddisfacimento(scambio, gp);
 		} else {
 			v.mostraErrore(MSG_ANNULLATO_SCAMBIO + MSG_MENU_PRINCIPALE);
 			return;
@@ -120,7 +121,7 @@ public class GestoreProposte {
 	 * 		sia l'insieme che le proposte in modo persistente.
 	 * @param proposta
 	 */
-	private void verificaSoddisfacimento(PropostaScambio proposta) {
+	private void verificaSoddisfacimento(PropostaScambio proposta, GestorePersistenza gp) {
 		
 		ArrayList<PropostaScambio> proposteValide = selezionaProposteValide(logica.getScambi(), proposta);
 		if(proposteValide.isEmpty()) {
@@ -138,8 +139,8 @@ public class GestoreProposte {
 				ins.aggiungiProposteAInsiemeChiuso(p);
 				
 				logica.aggiungiInsieme(ins);
-				GestorePersistenza.salvaInsiemiChiusi(logica.getInsiemi());
-				GestorePersistenza.salvaScambi(logica.getScambi());
+				gp.getSalvatore().salvaInsiemiChiusi(logica.getInsiemi());
+				gp.getSalvatore().salvaScambi(logica.getScambi());
 				
 				v.mostraMessaggio(MSG_PROPOSTA_SODDISFATTA);
 				return;
@@ -157,8 +158,8 @@ public class GestoreProposte {
 				insC.aggiungiProposteAInsiemeChiuso(p);
 			}
 			logica.aggiungiInsieme(insC);
-			GestorePersistenza.salvaInsiemiChiusi(logica.getInsiemi());
-			GestorePersistenza.salvaScambi(logica.getScambi());
+			gp.getSalvatore().salvaInsiemiChiusi(logica.getInsiemi());
+			gp.getSalvatore().salvaScambi(logica.getScambi());
 			
 			v.mostraMessaggio(MSG_PROPOSTA_SODDISFATTA);
 			return;
@@ -323,7 +324,8 @@ public class GestoreProposte {
 		boolean conferma = InputDati.yesOrNo(MSG_CONFERMA_RITIRO_PROPOSTA);
 		if(conferma) {
 			aggiornaStatoARitirata(p, proposte);
-			GestorePersistenza.salvaScambi(proposte);
+			GestorePersistenza gp = new GestorePersistenza();
+			gp.getSalvatore().salvaScambi(proposte);
 			v.mostraMessaggio(MSG_PROPOSTA_RITIRATA);
 		} else {
 			v.mostraMessaggio(MSG_OPERAZIONE_ANNULLATA);

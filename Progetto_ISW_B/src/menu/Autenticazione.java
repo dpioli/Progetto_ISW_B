@@ -94,6 +94,7 @@ public class Autenticazione {
 	 * 3. Salvaraggio.
 	 */
 	public void primoAccessoConfig() {
+		GestorePersistenza gp = new GestorePersistenza();
 	    controllaPredefinite();
 
 	    LogicaAutenticazione.primoAccessoGenerico(
@@ -103,7 +104,7 @@ public class Autenticazione {
 	            return new Configuratore(username, password);
 	        },
 	        config -> logica.addConfiguratore(config),
-	        () -> GestorePersistenza.salvaConfiguratori(logica.getConfiguratori()),
+	        () -> gp.getSalvatore().salvaConfiguratori(logica.getConfiguratori()),
 	        true,
 	        MSG_SUCC_REGIST,
 	        v
@@ -120,6 +121,8 @@ public class Autenticazione {
 	 * 5. Inserimento mail
 	 */
 	public void primoAccessoFruit(GestoreComprensori gC) {
+		GestorePersistenza gp = new GestorePersistenza();
+		
 	    if (logica.getComprensori().isEmpty()) {
 	        v.mostraErrore(MSG_ASSENZA_COMPRENSORIO);
 	        return;
@@ -136,7 +139,7 @@ public class Autenticazione {
 	            return new Fruitore(comp, username, password, email);
 	        },
 	        fruitore -> logica.addFruitore(fruitore),
-	        () -> GestorePersistenza.salvaFruitori(logica.getFruitori()),
+	        () -> gp.getSalvatore().salvaFruitori(logica.getFruitori()),
 	        false,
 	        MSG_SUCC_REGIST, 
 	        v

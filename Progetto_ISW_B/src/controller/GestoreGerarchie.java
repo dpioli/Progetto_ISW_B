@@ -142,9 +142,10 @@ public class GestoreGerarchie {
 	 * Metodo di salvataggio gerarchie, categorie foglia e matrice dei fattori di conversione.
 	 */
 	public void salvaGerarchieEFoglie() {
-		GestorePersistenza.salvaGerarchie(logica.getGerarchie());
-		GestorePersistenza.salvaCategorieFoglia(logica.getCategorieFoglia());
-		GestorePersistenza.salvaFatConversione(logica.getFatConversione());
+		GestorePersistenza gp = new GestorePersistenza();
+		gp.getSalvatore().salvaGerarchie(logica.getGerarchie());
+		gp.getSalvatore().salvaCategorieFoglia(logica.getCategorieFoglia());
+		gp.getSalvatore().salvaFatConversione(logica.getFatConversione());
 	}
 	
 	
