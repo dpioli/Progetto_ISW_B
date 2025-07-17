@@ -22,10 +22,12 @@ public class GestorePersistenza {
 	 * Costruttore della classe GestorePersistenza
 	 */
     public GestorePersistenza() {
-    	 this.gson = new GsonBuilder()
-    	            .registerTypeAdapter(CategoriaComponent.class, new CategoriaComponentAdapter())
-    	            .setPrettyPrinting()
-    	            .create();
+    	
+    	this.gson = new GsonBuilder()
+    		    .registerTypeAdapter(CategoriaComponent.class, new CategoriaComponentDeserializer())
+    		    .setPrettyPrinting()
+    		    .create();
+  
         this.caricatore = new CaricatoreDati(gson);
         this.salvatore = new SalvatoreDati(gson);
     }
