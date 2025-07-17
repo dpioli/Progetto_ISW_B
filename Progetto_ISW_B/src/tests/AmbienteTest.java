@@ -37,5 +37,16 @@ public class AmbienteTest {
 		Gerarchia gerarchia = new Gerarchia(radice, configuratore, comprensorio);
 		return gerarchia;
 	}
+	
+	public ArrayList<CategoriaFoglia> creaCatFoglia() {
+		ArrayList<CategoriaFoglia> categorieFoglia = new ArrayList<CategoriaFoglia>();
+		CategoriaFoglia foglia1 = new CategoriaFoglia("Foglia 1", 0);
+		CategoriaFoglia foglia2 = new CategoriaFoglia("Foglia 2", 1);
+		
+		categorieFoglia.add(foglia1);
+		categorieFoglia.add(foglia2);
+		
+		return categorieFoglia;
+	}
 
 }

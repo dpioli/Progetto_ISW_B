@@ -3,6 +3,7 @@ package controller;
 import java.util.ArrayList;
 
 import applicazione.CategoriaFoglia;
+import applicazione.FatConversione;
 import applicazione.InsiemeChiuso;
 import applicazione.Proposta;
 import applicazione.PropostaScambio;
@@ -56,6 +57,10 @@ public class GestoreProposte {
 		this.v = v;
 	}
 	
+	public GestoreProposte(LogicaPersistenza logica) {
+		this.logica = logica;
+	};
+	
 	/**
 	 * Metodo per la formulazione di una richiesta di scambi.
 	 * 1. inserice ore (durata della prestazione d'opera desiderata)
@@ -105,6 +110,13 @@ public class GestoreProposte {
 			v.mostraErrore(MSG_ANNULLATO_SCAMBIO + MSG_MENU_PRINCIPALE);
 			return;
 		}
+	}
+	
+	public Double calcolaOfferta(Integer catScelta, Integer catOfferta, Double oreRichieste, FatConversione fdc) {
+		ArrayList<Double> fattori = fdc.prendiRiga(catScelta + 1);
+		double valore = (fattori.get(catOfferta + 1) * oreRichieste);
+		double arrotondato = Utilitaria.arrotondaCustom(valore);
+		return arrotondato;
 	}
 	
 	
@@ -168,6 +180,8 @@ public class GestoreProposte {
 			return;
 		}
 	}
+	
+	
 	
 	private boolean cercaCatena(ArrayList<PropostaScambio> catena, ArrayList<PropostaScambio> proposteValide) {
 		ArrayList<PropostaScambio> propostePendenti = new ArrayList<>(proposteValide);
@@ -384,6 +398,45 @@ public class GestoreProposte {
 		int ultimo = scambi.size() - 1;
 		PropostaScambio p = scambi.get(ultimo);
 		return p.getId();
+	}
+	
+	/**
+	 * Metodo per effettuare il testing della funzionalità
+	 * @param proposta
+	 * @param proposte
+	 * @return InsiemeChiuso
+	 */
+	public InsiemeChiuso verificaSoddisfacimentoTest(PropostaScambio proposta, ArrayList<PropostaScambio> proposte) {
+		
+		ArrayList<PropostaScambio> proposteValide = selezionaProposteValide(proposte, proposta);
+		if(proposteValide.isEmpty()) {
+			return null;
+		}
+		
+		for(PropostaScambio p: proposteValide) {
+			if(coppiaPerfetta(proposta, p)) {
+				InsiemeChiuso ins = new InsiemeChiuso(recuperaIdInsiemeChiuso());
+				aggiornaStatoAChiusa(proposta, proposte);
+				aggiornaStatoAChiusa(p, proposte);
+				ins.aggiungiProposteAInsiemeChiuso(proposta);
+				ins.aggiungiProposteAInsiemeChiuso(p);
+				return ins;
+			}
+		}
+		
+		ArrayList<PropostaScambio> catena = new ArrayList<PropostaScambio>();
+		catena.add(proposta);
+		
+		if(cercaCatena(catena, proposteValide)) {
+			InsiemeChiuso insC = new InsiemeChiuso(recuperaIdInsiemeChiuso());
+			for(PropostaScambio p: catena) {
+				aggiornaStatoAChiusa(p, proposte);
+				insC.aggiungiProposteAInsiemeChiuso(p);
+			}
+			return insC;
+		} else {
+			return null;
+		}
 	}
 	
 	private int recuperaIdInsiemeChiuso() {
