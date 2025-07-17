@@ -3,6 +3,7 @@ package controller;
 import java.util.ArrayList;
 
 import applicazione.CategoriaFoglia;
+import applicazione.FatConversione;
 import applicazione.InsiemeChiuso;
 import applicazione.Proposta;
 import applicazione.PropostaScambio;
@@ -54,6 +55,10 @@ public class GestoreProposte {
 		this.logica = logica;
 		this.proposte = logica.getScambi();
 		this.v = v;
+	}
+	//PER TEST
+	public GestoreProposte(LogicaPersistenza logica) {
+		this.logica = logica;
 	}
 	
 	/**
@@ -107,6 +112,13 @@ public class GestoreProposte {
 		}
 	}
 	
+	//PER TEST
+	public Double calcolaOfferta(Integer catScelta, Integer catOfferta, Double oreRichieste, FatConversione fdc) {
+		ArrayList<Double> fattori = fdc.prendiRiga(catScelta + 1);
+		double valore = (fattori.get(catOfferta + 1) * oreRichieste);
+		double arrotondato = Utilitaria.arrotondaCustom(valore);
+		return arrotondato;
+	}
 	
 	/**
 	 * Metodo per verificare se una porposta inserita può essere soddisfatta da una singola proposta o da una catena
@@ -405,6 +417,45 @@ public class GestoreProposte {
 	
 	public void mostraPropostePerFruitore(Fruitore fruit, VistaFruitore vf) {
 		vf.visualizzaPropostePerFruitore(fruit, logica.getScambi());
+	}
+	//PER TEST
+	/**
+	 * Metodo per effettuare il testing della funzionalità
+	 * @param proposta
+	 * @param proposte
+	 * @return InsiemeChiuso
+	 */
+	public InsiemeChiuso verificaSoddisfacimentoTest(PropostaScambio proposta, ArrayList<PropostaScambio> proposte) {
+		
+		ArrayList<PropostaScambio> proposteValide = selezionaProposteValide(proposte, proposta);
+		if(proposteValide.isEmpty()) {
+			return null;
+		}
+		
+		for(PropostaScambio p: proposteValide) {
+			if(coppiaPerfetta(proposta, p)) {
+				InsiemeChiuso ins = new InsiemeChiuso(recuperaIdInsiemeChiuso());
+				aggiornaStatoAChiusa(proposta, proposte);
+				aggiornaStatoAChiusa(p, proposte);
+				ins.aggiungiProposteAInsiemeChiuso(proposta);
+				ins.aggiungiProposteAInsiemeChiuso(p);
+				return ins;
+			}
+		}
+		
+		ArrayList<PropostaScambio> catena = new ArrayList<PropostaScambio>();
+		catena.add(proposta);
+		
+		if(cercaCatena(catena, proposteValide)) {
+			InsiemeChiuso insC = new InsiemeChiuso(recuperaIdInsiemeChiuso());
+			for(PropostaScambio p: catena) {
+				aggiornaStatoAChiusa(p, proposte);
+				insC.aggiungiProposteAInsiemeChiuso(p);
+			}
+			return insC;
+		} else {
+			return null;
+		}
 	}
 
 }
