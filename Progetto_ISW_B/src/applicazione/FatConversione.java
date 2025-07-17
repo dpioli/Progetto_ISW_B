@@ -172,6 +172,46 @@ public class FatConversione {
 		fdc.get(cont).set(cont, 0.0); 
 	}
 	
+	public void aggiornaValoriTest(Double k) { 
+		
+		int cont = fdc.size() - 1; //punto a prendere il nuovo arrivato**
+		if(cont == 1) return; 
+		
+		ArrayList<Double> ramiUscenti = fdc.get(1); 
+		
+		double max = calcolaMAX(ramiUscenti);
+		double min = calcolaMIN(ramiUscenti);
+		
+		//AGGANCIO ALLA PRIMA (quindi posizione 1)
+		fdc.get(cont).set(1, k); 
+		//RICAVO INVERSO
+		fdc.get(1).set(cont, 1 / k);
+
+		// COMPLETO SAPENDO CHE LE TRANSIZIONI SONO PRODOTTO DEL NUOVO INSERIMENTO (k) CON USCENTI DALLA PRIMA FOGLIA
+		for(int i = 2; i < cont; i++) {
+			
+			//double valore = fdc.get(cont).get(0) * fdc.get(0).get(i);
+			double valore = k * ramiUscenti.get(i);
+			fdc.get(cont).set(i, valore);
+			
+			//COMPLETO LA COLONNA CON L'INVERSO
+			double invertito = 1 / valore;
+			fdc.get(i).set(cont, invertito);
+		}
+		//mi assicuro la diagonale sia nulla
+		fdc.get(cont).set(cont, 0.0); 
+	}
+	
+	public void agganciaTest(Integer nuova, Double k) {
+		
+		Double id = nuova.doubleValue();	
+		fdc.get(0).add(id);
+
+		aggiungiRiga(id);
+		azzeraColonna();
+		aggiornaValoriTest(k);
+	}
+	
 	/**
 	 * Metodo che mi restituisce la riga riferita a un particolare ID
 	 * @param i
