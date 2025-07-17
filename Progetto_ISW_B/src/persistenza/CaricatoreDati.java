@@ -18,7 +18,7 @@ import utenti.Fruitore;
 
 
 /**
- * Classe per caricare i dati
+ * Classe con responsabilità di caricamento dati
  * 
  * @author Irene Romano 736566
  */

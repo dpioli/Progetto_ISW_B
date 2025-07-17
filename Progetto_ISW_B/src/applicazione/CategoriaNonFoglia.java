@@ -1,92 +1,65 @@
 package applicazione;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
- * Classe per andare a identificare una caetgoria intermedia all'interno di una gerarchia
+ * Classe per andare a identificare una caetgoria intermedia all'interno di una gerarchia.
+ * APPLICATO COMPOSITE: una categoria foglia è Composite dell'albero degenere.
  * @author Diego Pioli 736160
  *
  */
-public class CategoriaNonFoglia extends Categoria{
+public class CategoriaNonFoglia extends CategoriaComponent{
 	
-	public CategoriaNonFoglia(String nome, CampoCaratteristico campCaratt, Boolean completo, Integer dominio) {
-		super(nome, campCaratt, completo, dominio, false);
-	}
-	
-	public CategoriaNonFoglia(String nome, CampoCaratteristico campCaratt, Integer dominio) {
-		super(nome, campCaratt, dominio, false);
-	}
-}
-
-/**
- * // CategoriaComponent.java
-public abstract class CategoriaComponent {
-    protected String nome;
-
-    public CategoriaComponent(String nome) {
-        this.nome = nome;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public abstract boolean eUguale(String nomeCat);
-
-    public void aggiungi(CategoriaComponent componente) {
-        throw new UnsupportedOperationException();
-    }
-
-    public void rimuovi(CategoriaComponent componente) {
-        throw new UnsupportedOperationException();
-    }
-
-    public java.util.List<CategoriaComponent> getFigli() {
-        throw new UnsupportedOperationException();
-    }
-
-    public abstract void stampaStruttura(int livello);
-}
-//////////////////////
- * // CategoriaFoglia.java
-public class CategoriaFoglia extends CategoriaComponent {
-    private int id;
-
-    public CategoriaFoglia(String nome, int ultimoId) {
-        super(nome);
-        this.id = ultimoId + 1;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    @Override
-    public boolean eUguale(String nomeCat) {
-        return nome.equalsIgnoreCase(nomeCat);
-    }
-
-    @Override
-    public void stampaStruttura(int livello) {
-        System.out.println("  ".repeat(livello) + "- " + nome + " (Foglia ID: " + id + ")");
-    }
-}
-
-//////////////////////////////////
- * // CategoriaComposita.java
-import java.util.ArrayList;
-import java.util.List;
-
-public class CategoriaComposita extends CategoriaComponent {
-    private List<CategoriaComponent> figli = new ArrayList<>();
+	private List<CategoriaComponent> figli = new ArrayList<>();
     private CampoCaratteristico campo;
     private Boolean completo;
     private Integer dominio;
 
-    public CategoriaComposita(String nome, CampoCaratteristico campo, Boolean completo, Integer dominio) {
+    public CategoriaNonFoglia(String nome, CampoCaratteristico campo, Boolean completo, Integer dominio) {
         super(nome);
         this.campo = campo;
         this.completo = completo;
         this.dominio = dominio;
     }
+    
+    public CategoriaNonFoglia(String nome, CampoCaratteristico campo, Integer dominio) {
+    	super(nome);
+    	this.campo = campo;
+    	this.dominio = dominio;
+    }
+    
+    /**
+     * 
+     * GETTERS
+     * 
+     */
+    public CampoCaratteristico getCampo() {
+		return campo;
+	}
+	
+	public Boolean getCompleto() {
+		return completo;
+	}
+	
+	public Integer getDominio() {
+		return dominio;	
+	}
+
+	/**
+	 * Metodo per ritornare i valori del campo caratteristico
+	 * @return coppia di valori valore=descrizione presenti nel campo caratteristico della gerarchia
+	 */
+	public HashMap<String, String> getValoriCampo(){
+		return campo.getValori();
+	}
+	
+	/**
+	 * 
+	 * METODI DA IMPLEMENTARE
+	 * 
+	 */
 
     @Override
     public void aggiungi(CategoriaComponent componente) {
@@ -102,20 +75,24 @@ public class CategoriaComposita extends CategoriaComponent {
     public List<CategoriaComponent> getFigli() {
         return figli;
     }
-
+    
     @Override
-    public boolean eUguale(String nomeCat) {
-        return nome.equalsIgnoreCase(nomeCat);
+    public boolean isFoglia() {
+        return false;
+    }
+    /**
+     * 
+     * METODI AGGIUNTI
+     * 
+     */
+	/**
+	 * Metodo per verificare se e' presente una categoria con quel nome all'interno di una gerarchia
+	 * @param nomeCat
+	 * @return true o false
+	 */
+
+    public boolean contieneNome(String nome) {
+        return figli.stream().anyMatch(c -> c.eUguale(nome));
     }
 
-    @Override
-    public void stampaStruttura(int livello) {
-        System.out.println("  ".repeat(livello) + "+ " + nome);
-        for (CategoriaComponent c : figli) {
-            c.stampaStruttura(livello + 1);
-        }
-    }
 }
-
-
- * */

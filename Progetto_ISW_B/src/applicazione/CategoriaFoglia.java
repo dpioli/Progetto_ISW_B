@@ -1,11 +1,12 @@
 package applicazione;
 
 /**
- * Classe per andare a identificare una classe foglia di una gerarchia
+ * Classe per andare a identificare una classe foglia di una gerarchia.
+ * APPLICATO COMPOSITE: una categoria foglia è Leaf dell'albero degenere.
  * @author Irene Romano 736566
  *
  */
-public class CategoriaFoglia extends Categoria{
+public class CategoriaFoglia extends CategoriaComponent{
 	
 	private int id;
 	
@@ -13,10 +14,10 @@ public class CategoriaFoglia extends Categoria{
 	 * Costruttore oggetto foglia, assegna un numero identificativo passato come parametro
 	 * per mantenere consistenza nella persistenza.
 	 * @param nome
-	 * @param ultimoID, identificativo foglia precedete (salvata nel file .json)
+	 * @param ultimoID, identificativo foglia precedente (salvata nel file .json)
 	 */
 	public CategoriaFoglia(String nome, Integer ultimoID) {
-		super(nome, null, null, null, true);
+		super(nome);
 		this.id = ++ultimoID;
 	}
 
@@ -24,9 +25,9 @@ public class CategoriaFoglia extends Categoria{
 	public int getId() {
 		return id;
 	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 	
+	@Override
+    public boolean isFoglia() {
+        return true;
+    }
 }

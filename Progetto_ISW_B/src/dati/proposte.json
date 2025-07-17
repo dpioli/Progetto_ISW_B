@@ -5,7 +5,6 @@
       "prestazione": {
         "id": 1,
         "nome": "foglia1",
-        "sottoCateg": [],
         "foglia": true
       },
       "tipo": "RICHIESTA",
@@ -15,7 +14,6 @@
       "prestazione": {
         "id": 2,
         "nome": "foglia2",
-        "sottoCateg": [],
         "foglia": true
       },
       "tipo": "OFFERTA",
@@ -44,7 +42,6 @@
       "prestazione": {
         "id": 3,
         "nome": "foglia3",
-        "sottoCateg": [],
         "foglia": true
       },
       "tipo": "RICHIESTA",
@@ -54,7 +51,6 @@
       "prestazione": {
         "id": 1,
         "nome": "foglia1",
-        "sottoCateg": [],
         "foglia": true
       },
       "tipo": "OFFERTA",
@@ -83,7 +79,6 @@
       "prestazione": {
         "id": 2,
         "nome": "foglia2",
-        "sottoCateg": [],
         "foglia": true
       },
       "tipo": "RICHIESTA",
@@ -93,7 +88,6 @@
       "prestazione": {
         "id": 3,
         "nome": "foglia3",
-        "sottoCateg": [],
         "foglia": true
       },
       "tipo": "OFFERTA",
@@ -122,7 +116,6 @@
       "prestazione": {
         "id": 7,
         "nome": "fogliola1",
-        "sottoCateg": [],
         "foglia": true
       },
       "tipo": "RICHIESTA",
@@ -132,7 +125,6 @@
       "prestazione": {
         "id": 8,
         "nome": "fogliola2",
-        "sottoCateg": [],
         "foglia": true
       },
       "tipo": "OFFERTA",

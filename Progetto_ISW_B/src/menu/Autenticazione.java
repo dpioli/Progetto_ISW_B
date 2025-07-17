@@ -36,7 +36,6 @@ public class Autenticazione {
 	private static final String MSG_RICHIESTA_AUTENTICAZIONE = "Inserire le credenziali di autenticazione: ";
 	private static final String MSG_NON_VALIDO = "Username non valido, utente già registrato nel sistema. Riprova. ";
 	
-	///////////////////
 	private static final String MSG_ASSENZA_COMPRENSORIO = "Non è presente nessun comprensorio, creane uno prima di continuare.";
 	private static final String MSG_SELEZ_COMP = "\nScegli il comprensorio a cui appartieni tra quelli presenti";
 	private static final String MSG_SUCC_REGIST = "\n\nRegistrazione avvenuta con successo.\n";

@@ -7,8 +7,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 import applicazione.CampoCaratteristico;
-import applicazione.Categoria;
+import applicazione.CategoriaComponent;
 import applicazione.CategoriaFoglia;
+import applicazione.CategoriaNonFoglia;
 import applicazione.Comprensorio;
 import applicazione.FatConversione;
 import applicazione.Gerarchia;
@@ -18,6 +19,9 @@ import applicazione.PropostaScambio;
 import utenti.Fruitore;
 import utenti.IUtente;
 
+/**
+ * Classe utilitaria di supporto che centralizza in un unico punto i metodi di formattazione.
+ */
 public abstract class Utilitaria {
 	
 	private static final double SOGLIA_BASSA = 0.4;
@@ -105,29 +109,30 @@ public abstract class Utilitaria {
 	 * @param eUltimo
 	 * @param builder
 	 */
-    private static void costruisciStringaGrafo(Categoria categoria, String prefisso, boolean eUltimo, StringBuilder builder) {
+    private static void costruisciStringaGrafo(CategoriaComponent categoria, String prefisso, boolean eUltimo, StringBuilder builder) {
         builder.append(prefisso);
         if (!prefisso.isEmpty()) {
             builder.append(eUltimo ? "└── " : "├── ");
         }
-        if(!(categoria.isFoglia())) {
-        	builder.append(categoria.getNome())
-        			.append(formattaCampoCaratteristico(categoria.getCampCaratt()))
+        if(!(categoria instanceof CategoriaFoglia)) {
+        	builder.append(categoria.getNome() + "\t")
+        			.append(formattaCampoCaratteristico(((CategoriaNonFoglia) categoria).getCampo()))
         			.append("\n");
+        	
+        	List<CategoriaComponent> figli = categoria.getFigli();
+        	for (int i = 0; i < figli.size(); i++) {
+        		boolean ultimo = (i == figli.size() - 1);
+        		String nuovoPrefisso = prefisso + (prefisso.isEmpty() ? " " : (eUltimo ? "    " : "│   "));
+        		costruisciStringaGrafo(figli.get(i), nuovoPrefisso, ultimo, builder);
+        	}
         } else {
         	builder.append(categoria.getNome()).append("\n");
         }
         
-        List<Categoria> figli = categoria.getSottoCateg();
-        for (int i = 0; i < figli.size(); i++) {
-            boolean ultimo = (i == figli.size() - 1);
-            String nuovoPrefisso = prefisso + (prefisso.isEmpty() ? " " : (eUltimo ? "    " : "│   "));
-            costruisciStringaGrafo(figli.get(i), nuovoPrefisso, ultimo, builder);
-        }
     }
     
     public static String formattaCampoCaratteristico(CampoCaratteristico cc) {
-		return String.format("%s --> %s", cc.getNomeCampo(), cc.getValori().keySet());
+		return String.format(" %s --> %s", cc.getNomeCampo(), cc.getValori().keySet());
 	}
     
     /**
@@ -270,6 +275,4 @@ public abstract class Utilitaria {
 
 	    return sb.toString();
 	}
-	
-
 }

@@ -15,7 +15,7 @@ import utenti.Configuratore;
 import utenti.Fruitore;
 
 /**
- * Classe per salvare i dati
+ * Classe con responsabilità salvataggio dati.
  * 
  * @author Irene Romano 736566
  */

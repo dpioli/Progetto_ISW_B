@@ -56,8 +56,7 @@ public class GestoreGerarchie {
 		this.v = v;
 		this.gC = new GestoreCategorie(logica, v);
 	}
-	
-	
+
 	
 	/*
 	 * 
@@ -169,18 +168,18 @@ public class GestoreGerarchie {
 	public void naviga(Fruitore fruit) {
 		v.mostraMessaggio(X);
 		v.mostraMessaggio(MSG_INIZIALE);
-		ArrayList<Gerarchia> gerarch = new ArrayList<Gerarchia>();
+		ArrayList<Gerarchia> gerarchia = new ArrayList<Gerarchia>();
 		for(Gerarchia g: logica.getGerarchie()) {
 			if(g.getNomeComprensorio().equals(fruit.getNomeComprensorio())) {
-				gerarch.add(g);
+				gerarchia.add(g);
 			}
 		}
 		Gerarchia gScelta;
-		if(gerarch.isEmpty()) {
+		if(gerarchia.isEmpty()) {
 			v.mostraErrore(MSG_ANNULLATO_SCAMBIO);
 			return;
 		} else {
-			gScelta = selezionaGerarchia(gerarch);
+			gScelta = selezionaGerarchia(gerarchia);
             gC.navigaCategoria(gScelta.getCatRadice(), new HashMap<>()); 
             // Inizializziamo la mappa dei valori di campo per la navigazione
 		}	
@@ -195,7 +194,7 @@ public class GestoreGerarchie {
 	private Gerarchia selezionaGerarchia(ArrayList<Gerarchia> gerarch) {
 		StringBuffer sb = new StringBuffer();
 		for(int i = 0; i < gerarch.size(); i++) {
-			sb.append(i + COLON + gerarch.get(i).getCatRadice().getNome()); 
+			sb.append(i + COLON + gerarch.get(i).getNomeRadice()); 
 		}
 		v.mostraMessaggio(sb.toString());
 		
@@ -210,6 +209,13 @@ public class GestoreGerarchie {
 	public ArrayList<CategoriaFoglia> recuperaFoglieDisponibili(Fruitore fruit) {
 	   return gC.recuperaFoglieDisponibili(fruit);
 	}
+	
+	/**
+	 * Metodo di formattazione prestazioni
+	 * @param categorieFoglia = lista delle categorie foglia a disposizione tra cui cercare
+	 * @param proposte = lista delle proposte
+	 * @return stringa delle proposte (richieste/offerte) presenti tra le foglie
+	 */
 	public String formattaProposteDiFoglia(ArrayList<CategoriaFoglia> categorieFoglia, ArrayList<PropostaScambio> proposte) {
 		//return gProp.formattaProposteDiFoglia(gGer);
 		int selezionata = selezionaCategoria(categorieFoglia);

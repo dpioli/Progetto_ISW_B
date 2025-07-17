@@ -10,7 +10,7 @@ import vista.Vista;
 
 /**
  *  Classe a supporto di Autenticazione. UTILIY CONTROLLER
- *  Le funzioni di LogicaAuten cazione sarebbero responsabilità di Autenticazione.
+ *  Le funzioni di LogicaAutenticazione sarebbero responsabilità di Autenticazione.
  */
 public class LogicaAutenticazione {
 	

@@ -1,13 +1,10 @@
 package persistenza;
 
 
-import java.lang.reflect.Type;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import applicazione.FatConversione;
+import applicazione.CategoriaComponent;
 
 
 /**
@@ -25,7 +22,10 @@ public class GestorePersistenza {
 	 * Costruttore della classe GestorePersistenza
 	 */
     public GestorePersistenza() {
-        this.gson = new GsonBuilder().setPrettyPrinting().create();
+    	 this.gson = new GsonBuilder()
+    	            .registerTypeAdapter(CategoriaComponent.class, new CategoriaComponentAdapter())
+    	            .setPrettyPrinting()
+    	            .create();
         this.caricatore = new CaricatoreDati(gson);
         this.salvatore = new SalvatoreDati(gson);
     }

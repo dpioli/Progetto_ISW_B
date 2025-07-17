@@ -3,13 +3,14 @@ package applicazione;
 import utenti.Configuratore;
 
 /**
- * Classe per identificare le proprieta' di una gerarchia
+ * Classe per identificare le proprieta' di una gerarchia.
+ * dopo APPLICAZIONE COMPOSITE: la radice è una categoria componente da cui si dirama la gerarchia.
  * @author Diego Pioli 736160
  *
  */
 public class Gerarchia {
 	
-	private Categoria catRadice;
+	private CategoriaComponent catRadice;
 	private Configuratore proprietario;
 	private Comprensorio comprensorio;
 	
@@ -19,13 +20,13 @@ public class Gerarchia {
 	 * @param prorpietario
 	 * @param compr 
 	 */
-	public Gerarchia (Categoria catRadice, Configuratore prorpietario, Comprensorio comprensorio) {
+	public Gerarchia (CategoriaComponent catRadice, Configuratore prorpietario, Comprensorio comprensorio) {
 		this.catRadice = catRadice;
 		this.proprietario = prorpietario;
 		this.comprensorio = comprensorio;
 	}
 
-	public Categoria getCatRadice() {
+	public CategoriaComponent getCatRadice() {
 		return catRadice;
 	}
 
@@ -36,8 +37,13 @@ public class Gerarchia {
 	public Comprensorio getComprensorio() {
 		return comprensorio;
 	}
+	
 	public String getNomeComprensorio() {
 		return comprensorio.getNome();
+	}
+	
+	public String getNomeRadice() {
+		return catRadice.getNome();
 	}
 	
 	/**

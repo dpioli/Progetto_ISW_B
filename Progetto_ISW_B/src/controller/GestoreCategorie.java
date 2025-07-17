@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import applicazione.CampoCaratteristico;
-import applicazione.Categoria;
+import applicazione.CategoriaComponent;
 import applicazione.CategoriaFoglia;
 import applicazione.CategoriaNonFoglia;
 import applicazione.Gerarchia;
@@ -48,6 +48,7 @@ public class GestoreCategorie {
 	private static final String MSG_MENU_PRINCIPALE = "Ritorno al menu principale.\n";
 	private static final String MSG_ASSENZA_SOTTOCATEG = "Non ci sono sottocategorie. Ritorno al menu principale.";
 	private static final String MSG_CAMPO_CARATT = "Campo caratteristico: ";
+	private static final String ERRORE_AGGIUNTA_FIGLI = "Errore nell'aggiunta di sottocategorie a una NonFoglia.";
 	private static final String MSG_SOTTOCATEG_DISP = "Sottocategorie disponibili:";
 	private static final String MSG_CHECK_COMPRENSORIO = "\nNon ci sono Gerarchie appartenenti al tuo comprensorio geografico.\n";
 	private static final String MSG_PRESTAZIONI_A_DISPOSIZIONE = "Prestazioni a disposizione >>\n";
@@ -72,18 +73,23 @@ public class GestoreCategorie {
 	 * della categoria passata come parametro.
 	 * @param categoria a cui aggiungere sottocategorie
 	 */
-	public void addSottoCategorie(Categoria categoria) {
-		for(Entry<String, String> v: categoria.getValoriCampo().entrySet()) {
-			creaCategoria(categoria);
+	public void addSottoCategorie(CategoriaComponent categoria) {
+		if(categoria.isFoglia()) return;
+	    
+		if(categoria instanceof CategoriaNonFoglia nonFoglia) {
+			for(Entry<String, String> v: nonFoglia.getValoriCampo().entrySet()) {
+				creaCategoria(categoria);
+			}
+		} else {
+	        throw new IllegalStateException(ERRORE_AGGIUNTA_FIGLI);
 		}
-		
 	}
 	
 	/**
 	 * Metodo di creazione categoria che rimanda a uno dei due casi tra foglia e non foglia.
 	 * @param radice = categoria di aggancio
 	 */
-	private void creaCategoria(Categoria radice) {
+	private void creaCategoria(CategoriaComponent radice) {
 		int scelta = InputDati.leggiIntero(MSG_CERAZIONE_NODI, 1, 2);
 		
 		switch(scelta) {
@@ -104,16 +110,13 @@ public class GestoreCategorie {
 	 * Richiede l'inserimento del nome del campo caratteristico e dei sui valori.
 	 * @param radice = categoria di aggancio
 	 */
-	private void creaCategoriaNonFoglia(Categoria radice) {
+	private void creaCategoriaNonFoglia(CategoriaComponent radice) {
 		v.mostraMessaggio(MSG_CATEGORIA_NON_FOGLIA);
 		
 		String nomeCatNonFl = InputDati.leggiStringaNonVuota(MSG_NOME_CATEGORIA);
-		for(Categoria c: radice.getSottoCateg()) {
-			if(c.eUguale(nomeCatNonFl)) {
-				v.mostraErrore(MSG_NOME_CATEGORIA_NON_VALIDO);
-				return;
-			}
-		}
+		if (esisteNome(radice, nomeCatNonFl))
+		    return;
+		
 		String nomeCampo = InputDati.leggiStringaNonVuota(MSG_NOME_CAMPOCARATT);
 		HashMap<String, String> valoriCampo = new HashMap<>();
 		
@@ -127,11 +130,12 @@ public class GestoreCategorie {
 				valoriCampo.put(valore, desc);
 			}
 		}
+		
 		int dimensioneDominio = valoriCampo.size();
 		CampoCaratteristico cC = new CampoCaratteristico(nomeCampo, valoriCampo);
-		CategoriaNonFoglia catNnF1 = new CategoriaNonFoglia(nomeCatNonFl, cC, dimensioneDominio);
 		
-		radice.getSottoCateg().add(catNnF1);
+		CategoriaNonFoglia catNnF1 = new CategoriaNonFoglia(nomeCatNonFl, cC, dimensioneDominio);
+		radice.aggiungi(catNnF1);
 		addSottoCategorie(catNnF1);
 		
 	}
@@ -142,23 +146,34 @@ public class GestoreCategorie {
 	 * Chiama il metodo di aggiunta dell'FDC per il calcolo dei fattori rispetto a quelle preesistenti.
 	 * @param radice = categoria di aggancio
 	 */
-	private void creaCategoriaFoglia(Categoria radice) {
+	private void creaCategoriaFoglia(CategoriaComponent radice) {
 		
 		v.mostraMessaggio(MSG_CATEGORIA_FOGLIA);
-		String nomeFoglia = InputDati.leggiStringaNonVuota(MSG_NOME_CATEGORIA);
 		
-		for(Categoria c: radice.getSottoCateg()) {
-			if(c.eUguale(nomeFoglia)) {
-				v.mostraErrore(MSG_NOME_CATEGORIA_NON_VALIDO);
-				return;
-			}
-		}
+		String nomeFoglia = InputDati.leggiStringaNonVuota(MSG_NOME_CATEGORIA);
+		if (esisteNome(radice, nomeFoglia))
+		    return;
+		
 		int ultimoID = recuperaUltimoID();
 		CategoriaFoglia nuovaCategFoglia = new CategoriaFoglia(nomeFoglia, ultimoID);
-		radice.getSottoCateg().add(nuovaCategFoglia);
+		radice.aggiungi(nuovaCategFoglia);
 		
 		logica.addCategoriaFoglia(nuovaCategFoglia);
 		aggiungiFDC(nuovaCategFoglia.getId());
+	}
+	
+	/**
+	 * Metodo che mi permette di controllare l'unicità del nome inserito nella gerarchia.
+	 * @param categoria = radice della gerarchia degenere
+	 * @param nome
+	 * @return vero se ho passato effettivamente una radice ed essa contiene tra i suoi figli una categoria con lo stesso nome.
+	 */
+	private boolean esisteNome(CategoriaComponent categoria, String nome) {
+		if (!categoria.isFoglia() && ((CategoriaNonFoglia) categoria).contieneNome(nome)) {
+		    v.mostraErrore(MSG_NOME_CATEGORIA_NON_VALIDO);
+		    return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -193,7 +208,7 @@ public class GestoreCategorie {
 	 * @param categoriaCorrente
 	 * @param valoriImpostati
 	 */
-	public void navigaCategoria(Categoria categoriaCorrente, Map<String, String> valoriImpostati) {
+	public void navigaCategoria(CategoriaComponent categoriaCorrente, Map<String, String> valoriImpostati) {
 	   v.mostraMessaggio(CATEGORIA_CORRENTE + categoriaCorrente.getNome());
 
 	    if (!valoriImpostati.isEmpty()) {
@@ -206,14 +221,15 @@ public class GestoreCategorie {
 	       return;
 	    }
 
-	    List<Categoria> sottocategorie = categoriaCorrente.getSottoCateg();
-	    if (sottocategorie == null || sottocategorie.isEmpty()) {
-	 	   v.mostraErrore(MSG_ASSENZA_SOTTOCATEG);
-	       return;
+	    List<CategoriaComponent> sottocategorie = new ArrayList<>();
+	    if(categoriaCorrente.isFoglia() || categoriaCorrente.getFigli().isEmpty()) {
+	    	 v.mostraErrore(MSG_ASSENZA_SOTTOCATEG);
+		       return;
 	    }
+	    sottocategorie = categoriaCorrente.getFigli();
 
-	    CampoCaratteristico campo = categoriaCorrente.getCampCaratt();
-	    Categoria prossimaCategoria = null;
+	    CampoCaratteristico campo = ((CategoriaNonFoglia) categoriaCorrente).getCampo();
+	    CategoriaComponent prossimaCategoria = null;
 
 	    if (campo != null) {
 	 	   v.mostraMessaggio(MSG_CAMPO_CARATT + campo.getNomeCampo());
@@ -231,7 +247,7 @@ public class GestoreCategorie {
 	 * @param sottocategorie
 	 * @return
 	 */
-	private Categoria selezionaSottoCategoria(List<Categoria> sottocategorie) {
+	private CategoriaComponent selezionaSottoCategoria(List<CategoriaComponent> sottocategorie) {
 		v.mostraMessaggio(MSG_SOTTOCATEG_DISP);
 		
 		StringBuffer sb = new StringBuffer();
@@ -278,20 +294,19 @@ public class GestoreCategorie {
 	 * @param categoria da cui ricavare le sottocategorie
 	 * @return array di foglie
 	 */
-	private ArrayList<CategoriaFoglia>  raccoltaFoglie(Categoria cat) {
-		ArrayList<CategoriaFoglia> cf = new ArrayList<>();
+	private ArrayList<CategoriaFoglia>  raccoltaFoglie(CategoriaComponent cat) {
+		ArrayList<CategoriaFoglia> foglie = new ArrayList<>();
 
 		if(cat.isFoglia()) {
 			CategoriaFoglia foglia = getFogliaDaNome(cat);
-			if (foglia != null) {
-			    cf.add(foglia);
-			}
-	    } else if(cat.getSottoCateg() != null) {
-	        for (Categoria sotto : cat.getSottoCateg()) {
-	            cf.addAll(raccoltaFoglie(sotto));
+			if (foglia != null) 
+				foglie.add(foglia);
+	    } else if(cat.getFigli() != null) {
+	        for (CategoriaComponent sotto : cat.getFigli()) {
+	            foglie.addAll(raccoltaFoglie(sotto));
 	        }
 	    }
-		return cf;
+		return foglie;
 	}
 	
 	/**
@@ -299,7 +314,7 @@ public class GestoreCategorie {
 	 * @param categoria che verifico sia di tipo foglia
 	 * @return foglia 
 	 */
-	private CategoriaFoglia getFogliaDaNome(Categoria cat) {
+	private CategoriaFoglia getFogliaDaNome(CategoriaComponent cat) {
 	    String nomeCategoria = cat.getNome().trim().toLowerCase();
 
 	    for (CategoriaFoglia f : logica.getCategorieFoglia()) {
