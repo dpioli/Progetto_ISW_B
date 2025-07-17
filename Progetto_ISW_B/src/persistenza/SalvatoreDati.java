@@ -117,7 +117,6 @@ public class SalvatoreDati {
 		salva(insiemi, FILE_INSIEMI_CHIUSI);
 	}
 	
-	
 	public void salvaTutto(LogicaPersistenza logica) {
 		salvaGerarchie(logica.getGerarchie());
 		salvaCategorieFoglia(logica.getCategorieFoglia());
