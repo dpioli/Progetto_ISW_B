@@ -5,6 +5,9 @@ import applicazione.*;
 
 import java.lang.reflect.Type;
 
+/**
+ * Classe a supporto della Deserializzazione di oggetti di tipo CategoriaComponent (classe astratta)
+ */
 public class CategoriaComponentDeserializer implements JsonDeserializer<CategoriaComponent> {
 
     @Override
