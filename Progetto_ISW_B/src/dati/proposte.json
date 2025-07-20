@@ -1,1 +1,622 @@
-[]
+[
+  {
+    "id": 1,
+    "richiesta": {
+      "prestazione": {
+        "id": 3,
+        "nome": "allenamenti tecnici di calcio per principianti"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 5.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 5,
+        "nome": "lezioni tecniche di tennis"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 3.0
+    },
+    "statoIniziale": "APERTA",
+    "statoFinale": "CHIUSA",
+    "associato": {
+      "username": "fruitore1",
+      "password": "primo",
+      "mail": "fruitore1@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Sud",
+        "comuni": [
+          "Castel Mella",
+          "Orzinuovi",
+          "Bagnolo Mella",
+          "Castenedolo"
+        ]
+      }
+    }
+  },
+  {
+    "id": 2,
+    "richiesta": {
+      "prestazione": {
+        "id": 5,
+        "nome": "lezioni tecniche di tennis"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 3.2
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 3,
+        "nome": "allenamenti tecnici di calcio per principianti"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 5.0
+    },
+    "statoIniziale": "APERTA",
+    "statoFinale": "CHIUSA",
+    "associato": {
+      "username": "fruitore2",
+      "password": "secondo",
+      "mail": "fruitore2@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Sud",
+        "comuni": [
+          "Castel Mella",
+          "Orzinuovi",
+          "Bagnolo Mella",
+          "Castenedolo"
+        ]
+      }
+    }
+  },
+  {
+    "id": 3,
+    "richiesta": {
+      "prestazione": {
+        "id": 2,
+        "nome": "lezioni di calcio teoriche di strategie di gioco"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 1.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 6,
+        "nome": "lezioni di tennis individuali per principianti"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 1.0
+    },
+    "statoIniziale": "APERTA",
+    "statoFinale": "CHIUSA",
+    "associato": {
+      "username": "fruitore1",
+      "password": "primo",
+      "mail": "fruitore1@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Sud",
+        "comuni": [
+          "Castel Mella",
+          "Orzinuovi",
+          "Bagnolo Mella",
+          "Castenedolo"
+        ]
+      }
+    }
+  },
+  {
+    "id": 4,
+    "richiesta": {
+      "prestazione": {
+        "id": 6,
+        "nome": "lezioni di tennis individuali per principianti"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 1.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 3,
+        "nome": "allenamenti tecnici di calcio per principianti"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 1.0
+    },
+    "statoIniziale": "APERTA",
+    "statoFinale": "CHIUSA",
+    "associato": {
+      "username": "fruitore2",
+      "password": "secondo",
+      "mail": "fruitore2@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Sud",
+        "comuni": [
+          "Castel Mella",
+          "Orzinuovi",
+          "Bagnolo Mella",
+          "Castenedolo"
+        ]
+      }
+    }
+  },
+  {
+    "id": 5,
+    "richiesta": {
+      "prestazione": {
+        "id": 3,
+        "nome": "allenamenti tecnici di calcio per principianti"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 1.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 2,
+        "nome": "lezioni di calcio teoriche di strategie di gioco"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 1.0
+    },
+    "statoIniziale": "APERTA",
+    "statoFinale": "CHIUSA",
+    "associato": {
+      "username": "fruitore4",
+      "password": "quarto",
+      "mail": "fruitore4@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Sud",
+        "comuni": [
+          "Castel Mella",
+          "Orzinuovi",
+          "Bagnolo Mella",
+          "Castenedolo"
+        ]
+      }
+    }
+  },
+  {
+    "id": 6,
+    "richiesta": {
+      "prestazione": {
+        "id": 9,
+        "nome": "lezioni di tennis a coppie per esperti"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 7.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 2,
+        "nome": "lezioni di calcio teoriche di strategie di gioco"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 12.5
+    },
+    "statoIniziale": "APERTA",
+    "associato": {
+      "username": "fruitore1",
+      "password": "primo",
+      "mail": "fruitore1@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Sud",
+        "comuni": [
+          "Castel Mella",
+          "Orzinuovi",
+          "Bagnolo Mella",
+          "Castenedolo"
+        ]
+      }
+    }
+  },
+  {
+    "id": 7,
+    "richiesta": {
+      "prestazione": {
+        "id": 7,
+        "nome": "lezioni di tennis individuali per esperti"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 4.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 1,
+        "nome": "lezioni di calcio teoriche con analisi video"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 5.0
+    },
+    "statoIniziale": "APERTA",
+    "associato": {
+      "username": "fruitore1",
+      "password": "primo",
+      "mail": "fruitore1@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Sud",
+        "comuni": [
+          "Castel Mella",
+          "Orzinuovi",
+          "Bagnolo Mella",
+          "Castenedolo"
+        ]
+      }
+    }
+  },
+  {
+    "id": 8,
+    "richiesta": {
+      "prestazione": {
+        "id": 8,
+        "nome": "lezioni di tennis a coppie per principianti"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 12.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 5,
+        "nome": "lezioni tecniche di tennis"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 9.0
+    },
+    "statoIniziale": "APERTA",
+    "associato": {
+      "username": "fruitore2",
+      "password": "secondo",
+      "mail": "fruitore2@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Sud",
+        "comuni": [
+          "Castel Mella",
+          "Orzinuovi",
+          "Bagnolo Mella",
+          "Castenedolo"
+        ]
+      }
+    }
+  },
+  {
+    "id": 9,
+    "richiesta": {
+      "prestazione": {
+        "id": 4,
+        "nome": "allenamenti tecnici di calcio per esperti"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 9.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 1,
+        "nome": "lezioni di calcio teoriche con analisi video"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 12.0
+    },
+    "statoIniziale": "APERTA",
+    "associato": {
+      "username": "fruitore2",
+      "password": "secondo",
+      "mail": "fruitore2@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Sud",
+        "comuni": [
+          "Castel Mella",
+          "Orzinuovi",
+          "Bagnolo Mella",
+          "Castenedolo"
+        ]
+      }
+    }
+  },
+  {
+    "id": 10,
+    "richiesta": {
+      "prestazione": {
+        "id": 11,
+        "nome": "allenamenti di pallavolo per principianti"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 5.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 12,
+        "nome": "allenamenti di pallavolo per esperti"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 5.0
+    },
+    "statoIniziale": "APERTA",
+    "statoFinale": "RITIRATA",
+    "associato": {
+      "username": "fruitore3",
+      "password": "terzo",
+      "mail": "fruitore3@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Ovest",
+        "comuni": [
+          "Rodengo",
+          "Castegnato",
+          "Ospitaletto",
+          "Roncadelle"
+        ]
+      }
+    }
+  },
+  {
+    "id": 11,
+    "richiesta": {
+      "prestazione": {
+        "id": 10,
+        "nome": "lezioni tecniche di pallavolo"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 8.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 11,
+        "nome": "allenamenti di pallavolo per principianti"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 7.0
+    },
+    "statoIniziale": "APERTA",
+    "associato": {
+      "username": "fruitore3",
+      "password": "terzo",
+      "mail": "fruitore3@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Ovest",
+        "comuni": [
+          "Rodengo",
+          "Castegnato",
+          "Ospitaletto",
+          "Roncadelle"
+        ]
+      }
+    }
+  },
+  {
+    "id": 12,
+    "richiesta": {
+      "prestazione": {
+        "id": 11,
+        "nome": "allenamenti di pallavolo per principianti"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 8.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 10,
+        "nome": "lezioni tecniche di pallavolo"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 9.0
+    },
+    "statoIniziale": "APERTA",
+    "associato": {
+      "username": "fruitore3",
+      "password": "terzo",
+      "mail": "fruitore3@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Ovest",
+        "comuni": [
+          "Rodengo",
+          "Castegnato",
+          "Ospitaletto",
+          "Roncadelle"
+        ]
+      }
+    }
+  },
+  {
+    "id": 13,
+    "richiesta": {
+      "prestazione": {
+        "id": 5,
+        "nome": "lezioni tecniche di tennis"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 6.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 6,
+        "nome": "lezioni di tennis individuali per principianti"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 11.0
+    },
+    "statoIniziale": "APERTA",
+    "associato": {
+      "username": "fruitore4",
+      "password": "quarto",
+      "mail": "fruitore4@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Sud",
+        "comuni": [
+          "Castel Mella",
+          "Orzinuovi",
+          "Bagnolo Mella",
+          "Castenedolo"
+        ]
+      }
+    }
+  },
+  {
+    "id": 14,
+    "richiesta": {
+      "prestazione": {
+        "id": 8,
+        "nome": "lezioni di tennis a coppie per principianti"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 4.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 9,
+        "nome": "lezioni di tennis a coppie per esperti"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 3.0
+    },
+    "statoIniziale": "APERTA",
+    "associato": {
+      "username": "fruitore4",
+      "password": "quarto",
+      "mail": "fruitore4@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Sud",
+        "comuni": [
+          "Castel Mella",
+          "Orzinuovi",
+          "Bagnolo Mella",
+          "Castenedolo"
+        ]
+      }
+    }
+  },
+  {
+    "id": 15,
+    "richiesta": {
+      "prestazione": {
+        "id": 3,
+        "nome": "allenamenti tecnici di calcio per principianti"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 3.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 9,
+        "nome": "lezioni di tennis a coppie per esperti"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 2.0
+    },
+    "statoIniziale": "APERTA",
+    "statoFinale": "RITIRATA",
+    "associato": {
+      "username": "fruitore4",
+      "password": "quarto",
+      "mail": "fruitore4@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Sud",
+        "comuni": [
+          "Castel Mella",
+          "Orzinuovi",
+          "Bagnolo Mella",
+          "Castenedolo"
+        ]
+      }
+    }
+  },
+  {
+    "id": 16,
+    "richiesta": {
+      "prestazione": {
+        "id": 10,
+        "nome": "lezioni tecniche di pallavolo"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 4.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 11,
+        "nome": "allenamenti di pallavolo per principianti"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 3.5
+    },
+    "statoIniziale": "APERTA",
+    "associato": {
+      "username": "fruitore5",
+      "password": "quinto",
+      "mail": "fruitore5@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Ovest",
+        "comuni": [
+          "Rodengo",
+          "Castegnato",
+          "Ospitaletto",
+          "Roncadelle"
+        ]
+      }
+    }
+  },
+  {
+    "id": 17,
+    "richiesta": {
+      "prestazione": {
+        "id": 10,
+        "nome": "lezioni tecniche di pallavolo"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 6.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 12,
+        "nome": "allenamenti di pallavolo per esperti"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 5.0
+    },
+    "statoIniziale": "APERTA",
+    "statoFinale": "RITIRATA",
+    "associato": {
+      "username": "fruitore5",
+      "password": "quinto",
+      "mail": "fruitore5@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Ovest",
+        "comuni": [
+          "Rodengo",
+          "Castegnato",
+          "Ospitaletto",
+          "Roncadelle"
+        ]
+      }
+    }
+  },
+  {
+    "id": 18,
+    "richiesta": {
+      "prestazione": {
+        "id": 12,
+        "nome": "allenamenti di pallavolo per esperti"
+      },
+      "tipo": "RICHIESTA",
+      "quantitaOre": 1.0
+    },
+    "offerta": {
+      "prestazione": {
+        "id": 11,
+        "nome": "allenamenti di pallavolo per principianti"
+      },
+      "tipo": "OFFERTA",
+      "quantitaOre": 1.0
+    },
+    "statoIniziale": "APERTA",
+    "associato": {
+      "username": "fruitore5",
+      "password": "quinto",
+      "mail": "fruitore5@gmail.com",
+      "comprensorio": {
+        "nome": "Brescia Ovest",
+        "comuni": [
+          "Rodengo",
+          "Castegnato",
+          "Ospitaletto",
+          "Roncadelle"
+        ]
+      }
+    }
+  }
+]

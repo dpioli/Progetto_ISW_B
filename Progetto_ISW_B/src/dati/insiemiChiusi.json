@@ -1,1 +1,187 @@
-[]
+[
+  {
+    "id": 1,
+    "proposte": [
+      {
+        "id": 2,
+        "richiesta": {
+          "prestazione": {
+            "id": 5,
+            "nome": "lezioni tecniche di tennis"
+          },
+          "tipo": "RICHIESTA",
+          "quantitaOre": 3.2
+        },
+        "offerta": {
+          "prestazione": {
+            "id": 3,
+            "nome": "allenamenti tecnici di calcio per principianti"
+          },
+          "tipo": "OFFERTA",
+          "quantitaOre": 5.0
+        },
+        "statoIniziale": "APERTA",
+        "statoFinale": "CHIUSA",
+        "associato": {
+          "username": "fruitore2",
+          "password": "secondo",
+          "mail": "fruitore2@gmail.com",
+          "comprensorio": {
+            "nome": "Brescia Sud",
+            "comuni": [
+              "Castel Mella",
+              "Orzinuovi",
+              "Bagnolo Mella",
+              "Castenedolo"
+            ]
+          }
+        }
+      },
+      {
+        "id": 1,
+        "richiesta": {
+          "prestazione": {
+            "id": 3,
+            "nome": "allenamenti tecnici di calcio per principianti"
+          },
+          "tipo": "RICHIESTA",
+          "quantitaOre": 5.0
+        },
+        "offerta": {
+          "prestazione": {
+            "id": 5,
+            "nome": "lezioni tecniche di tennis"
+          },
+          "tipo": "OFFERTA",
+          "quantitaOre": 3.0
+        },
+        "statoIniziale": "APERTA",
+        "statoFinale": "CHIUSA",
+        "associato": {
+          "username": "fruitore1",
+          "password": "primo",
+          "mail": "fruitore1@gmail.com",
+          "comprensorio": {
+            "nome": "Brescia Sud",
+            "comuni": [
+              "Castel Mella",
+              "Orzinuovi",
+              "Bagnolo Mella",
+              "Castenedolo"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "proposte": [
+      {
+        "id": 5,
+        "richiesta": {
+          "prestazione": {
+            "id": 3,
+            "nome": "allenamenti tecnici di calcio per principianti"
+          },
+          "tipo": "RICHIESTA",
+          "quantitaOre": 1.0
+        },
+        "offerta": {
+          "prestazione": {
+            "id": 2,
+            "nome": "lezioni di calcio teoriche di strategie di gioco"
+          },
+          "tipo": "OFFERTA",
+          "quantitaOre": 1.0
+        },
+        "statoIniziale": "APERTA",
+        "statoFinale": "CHIUSA",
+        "associato": {
+          "username": "fruitore4",
+          "password": "quarto",
+          "mail": "fruitore4@gmail.com",
+          "comprensorio": {
+            "nome": "Brescia Sud",
+            "comuni": [
+              "Castel Mella",
+              "Orzinuovi",
+              "Bagnolo Mella",
+              "Castenedolo"
+            ]
+          }
+        }
+      },
+      {
+        "id": 4,
+        "richiesta": {
+          "prestazione": {
+            "id": 6,
+            "nome": "lezioni di tennis individuali per principianti"
+          },
+          "tipo": "RICHIESTA",
+          "quantitaOre": 1.0
+        },
+        "offerta": {
+          "prestazione": {
+            "id": 3,
+            "nome": "allenamenti tecnici di calcio per principianti"
+          },
+          "tipo": "OFFERTA",
+          "quantitaOre": 1.0
+        },
+        "statoIniziale": "APERTA",
+        "statoFinale": "CHIUSA",
+        "associato": {
+          "username": "fruitore2",
+          "password": "secondo",
+          "mail": "fruitore2@gmail.com",
+          "comprensorio": {
+            "nome": "Brescia Sud",
+            "comuni": [
+              "Castel Mella",
+              "Orzinuovi",
+              "Bagnolo Mella",
+              "Castenedolo"
+            ]
+          }
+        }
+      },
+      {
+        "id": 3,
+        "richiesta": {
+          "prestazione": {
+            "id": 2,
+            "nome": "lezioni di calcio teoriche di strategie di gioco"
+          },
+          "tipo": "RICHIESTA",
+          "quantitaOre": 1.0
+        },
+        "offerta": {
+          "prestazione": {
+            "id": 6,
+            "nome": "lezioni di tennis individuali per principianti"
+          },
+          "tipo": "OFFERTA",
+          "quantitaOre": 1.0
+        },
+        "statoIniziale": "APERTA",
+        "statoFinale": "CHIUSA",
+        "associato": {
+          "username": "fruitore1",
+          "password": "primo",
+          "mail": "fruitore1@gmail.com",
+          "comprensorio": {
+            "nome": "Brescia Sud",
+            "comuni": [
+              "Castel Mella",
+              "Orzinuovi",
+              "Bagnolo Mella",
+              "Castenedolo"
+            ]
+          }
+        }
+      }
+    ]
+  }
+]

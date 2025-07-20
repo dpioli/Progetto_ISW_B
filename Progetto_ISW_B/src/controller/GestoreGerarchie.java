@@ -194,7 +194,7 @@ public class GestoreGerarchie {
 	private Gerarchia selezionaGerarchia(ArrayList<Gerarchia> gerarch) {
 		StringBuffer sb = new StringBuffer();
 		for(int i = 0; i < gerarch.size(); i++) {
-			sb.append(i + COLON + gerarch.get(i).getNomeRadice()); 
+			sb.append(i + COLON + gerarch.get(i).getNomeRadice() + "\n"); 
 		}
 		v.mostraMessaggio(sb.toString());
 		

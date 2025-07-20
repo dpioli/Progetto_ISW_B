@@ -145,7 +145,7 @@ public abstract class Utilitaria {
 		
 		for(int i = 0; i < proposte.size(); i++) {
 			sb.append(i + COLON);
-			sb.append( Utilitaria.formattaScambio(proposte.get(i)) );
+			sb.append( Utilitaria.formattaScambio(proposte.get(i)) + "\n");
 		}
 		sb.append(proposte.size() + ANNULLA_SELEZIONE);
 		
