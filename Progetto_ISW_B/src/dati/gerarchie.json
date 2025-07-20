@@ -1,0 +1,212 @@
+[
+  {
+    "catRadice": {
+      "figli": [
+        {
+          "figli": [
+            {
+              "id": 1,
+              "nome": "lezioni di calcio teoriche con analisi video"
+            },
+            {
+              "id": 2,
+              "nome": "lezioni di calcio teoriche di strategie di gioco"
+            }
+          ],
+          "campo": {
+            "nomeCampo": "tipologia",
+            "valoriCampo": {
+              "strategia": "",
+              "analisi": ""
+            }
+          },
+          "dominio": 2,
+          "nome": "lezioni di tattica"
+        },
+        {
+          "figli": [
+            {
+              "id": 3,
+              "nome": "allenamenti tecnici di calcio per principianti"
+            },
+            {
+              "id": 4,
+              "nome": "allenamenti tecnici di calcio per esperti"
+            }
+          ],
+          "campo": {
+            "nomeCampo": "livello",
+            "valoriCampo": {
+              "esperto": "",
+              "principiante": ""
+            }
+          },
+          "dominio": 2,
+          "nome": "lezioni di tecnica"
+        }
+      ],
+      "campo": {
+        "nomeCampo": "tipologia",
+        "valoriCampo": {
+          "tecnica": "",
+          "tattica": ""
+        }
+      },
+      "dominio": 2,
+      "nome": "lezioni di calcio"
+    },
+    "proprietario": {
+      "username": "IreneR",
+      "password": "ProgettoISW"
+    },
+    "comprensorio": {
+      "nome": "Brescia Sud",
+      "comuni": [
+        "Castel Mella",
+        "Orzinuovi",
+        "Bagnolo Mella",
+        "Castenedolo"
+      ]
+    }
+  },
+  {
+    "catRadice": {
+      "figli": [
+        {
+          "id": 5,
+          "nome": "lezioni tecniche di tennis"
+        },
+        {
+          "figli": [
+            {
+              "figli": [
+                {
+                  "id": 6,
+                  "nome": "lezioni di tennis individuali per principianti"
+                },
+                {
+                  "id": 7,
+                  "nome": "lezioni di tennis individuali per esperti"
+                }
+              ],
+              "campo": {
+                "nomeCampo": "livello",
+                "valoriCampo": {
+                  "principianti": "",
+                  "esperti": ""
+                }
+              },
+              "dominio": 2,
+              "nome": "lezioni di tennis individuali"
+            },
+            {
+              "figli": [
+                {
+                  "id": 8,
+                  "nome": "lezioni di tennis a coppie per principianti"
+                },
+                {
+                  "id": 9,
+                  "nome": "lezioni di tennis a coppie per esperti"
+                }
+              ],
+              "campo": {
+                "nomeCampo": "livello",
+                "valoriCampo": {
+                  "principianti": "",
+                  "esperti": ""
+                }
+              },
+              "dominio": 2,
+              "nome": "lezioni di tennis a coppie"
+            }
+          ],
+          "campo": {
+            "nomeCampo": "tipologia",
+            "valoriCampo": {
+              "coppia": "",
+              "singolo": ""
+            }
+          },
+          "dominio": 2,
+          "nome": "lezioni pratiche di tennis"
+        }
+      ],
+      "campo": {
+        "nomeCampo": "tipologia",
+        "valoriCampo": {
+          "tecnica": "",
+          "pratica": ""
+        }
+      },
+      "dominio": 2,
+      "nome": "lezioni di tennis"
+    },
+    "proprietario": {
+      "username": "IreneR",
+      "password": "ProgettoISW"
+    },
+    "comprensorio": {
+      "nome": "Brescia Sud",
+      "comuni": [
+        "Castel Mella",
+        "Orzinuovi",
+        "Bagnolo Mella",
+        "Castenedolo"
+      ]
+    }
+  },
+  {
+    "catRadice": {
+      "figli": [
+        {
+          "id": 10,
+          "nome": "lezioni tecniche di pallavolo"
+        },
+        {
+          "figli": [
+            {
+              "id": 11,
+              "nome": "allenamenti di pallavolo per principianti"
+            },
+            {
+              "id": 12,
+              "nome": "allenamenti di pallavolo per esperti"
+            }
+          ],
+          "campo": {
+            "nomeCampo": "livello",
+            "valoriCampo": {
+              "principianti": "",
+              "esperti": ""
+            }
+          },
+          "dominio": 2,
+          "nome": "lezioni pratiche di pallavolo"
+        }
+      ],
+      "campo": {
+        "nomeCampo": "tipologia",
+        "valoriCampo": {
+          "teoria": "",
+          "pratica": ""
+        }
+      },
+      "dominio": 2,
+      "nome": "lezioni di pallavolo"
+    },
+    "proprietario": {
+      "username": "IreneR",
+      "password": "ProgettoISW"
+    },
+    "comprensorio": {
+      "nome": "Brescia Ovest",
+      "comuni": [
+        "Rodengo",
+        "Castegnato",
+        "Ospitaletto",
+        "Roncadelle"
+      ]
+    }
+  }
+]

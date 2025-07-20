@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "nome": "lezioni di calcio teoriche con analisi video"
+  },
+  {
+    "id": 2,
+    "nome": "lezioni di calcio teoriche di strategie di gioco"
+  },
+  {
+    "id": 3,
+    "nome": "allenamenti tecnici di calcio per principianti"
+  },
+  {
+    "id": 4,
+    "nome": "allenamenti tecnici di calcio per esperti"
+  },
+  {
+    "id": 5,
+    "nome": "lezioni tecniche di tennis"
+  },
+  {
+    "id": 6,
+    "nome": "lezioni di tennis individuali per principianti"
+  },
+  {
+    "id": 7,
+    "nome": "lezioni di tennis individuali per esperti"
+  },
+  {
+    "id": 8,
+    "nome": "lezioni di tennis a coppie per principianti"
+  },
+  {
+    "id": 9,
+    "nome": "lezioni di tennis a coppie per esperti"
+  },
+  {
+    "id": 10,
+    "nome": "lezioni tecniche di pallavolo"
+  },
+  {
+    "id": 11,
+    "nome": "allenamenti di pallavolo per principianti"
+  },
+  {
+    "id": 12,
+    "nome": "allenamenti di pallavolo per esperti"
+  }
+]

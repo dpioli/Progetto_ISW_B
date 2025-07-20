@@ -1,0 +1,72 @@
+[
+  {
+    "username": "fruitore1",
+    "password": "primo",
+    "mail": "fruitore1@gmail.com",
+    "comprensorio": {
+      "nome": "Brescia Sud",
+      "comuni": [
+        "Castel Mella",
+        "Orzinuovi",
+        "Bagnolo Mella",
+        "Castenedolo"
+      ]
+    }
+  },
+  {
+    "username": "fruitore2",
+    "password": "secondo",
+    "mail": "fruitore2@gmail.com",
+    "comprensorio": {
+      "nome": "Brescia Sud",
+      "comuni": [
+        "Castel Mella",
+        "Orzinuovi",
+        "Bagnolo Mella",
+        "Castenedolo"
+      ]
+    }
+  },
+  {
+    "username": "fruitore3",
+    "password": "terzo",
+    "mail": "fruitore3@gmail.com",
+    "comprensorio": {
+      "nome": "Brescia Ovest",
+      "comuni": [
+        "Rodengo",
+        "Castegnato",
+        "Ospitaletto",
+        "Roncadelle"
+      ]
+    }
+  },
+  {
+    "username": "fruitore4",
+    "password": "quarto",
+    "mail": "fruitore4@gmail.com",
+    "comprensorio": {
+      "nome": "Brescia Sud",
+      "comuni": [
+        "Castel Mella",
+        "Orzinuovi",
+        "Bagnolo Mella",
+        "Castenedolo"
+      ]
+    }
+  },
+  {
+    "username": "fruitore5",
+    "password": "quinto",
+    "mail": "fruitore5@gmail.com",
+    "comprensorio": {
+      "nome": "Brescia Ovest",
+      "comuni": [
+        "Rodengo",
+        "Castegnato",
+        "Ospitaletto",
+        "Roncadelle"
+      ]
+    }
+  }
+]

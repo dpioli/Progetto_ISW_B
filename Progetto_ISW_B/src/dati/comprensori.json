@@ -1,0 +1,20 @@
+[
+  {
+    "nome": "Brescia Ovest",
+    "comuni": [
+      "Rodengo",
+      "Castegnato",
+      "Ospitaletto",
+      "Roncadelle"
+    ]
+  },
+  {
+    "nome": "Brescia Sud",
+    "comuni": [
+      "Castel Mella",
+      "Orzinuovi",
+      "Bagnolo Mella",
+      "Castenedolo"
+    ]
+  }
+]
